@@ -1,5 +1,6 @@
 
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:eduhub/constant/color_manage.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -20,7 +21,8 @@ class _SplashScreenState extends State<SplashScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xFFE27BF5), Color(0xFF7C5EF1), //0xE27BF5,,0x7C5EF1
+           ColorManage.firstPrimary,
+            ColorManage.secondPrimary,
           ],begin: Alignment.centerLeft,
           end: Alignment.centerRight,
           stops: [0.0,0.75 ],
