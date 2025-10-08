@@ -40,6 +40,9 @@ dependencies:
   provider: ^6.1.5+1
   animated_toggle_switch: ^0.8.5
   shared_preferences: ^2.5.3
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +60,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true # Add this line
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
