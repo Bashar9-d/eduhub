@@ -1,4 +1,5 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:eduhub/constant/color_manage.dart';
 import 'package:eduhub/view/begin_screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
@@ -27,10 +28,10 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
           height: MediaQuery.of(context).size.height * 0.35,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFE27BF5), Color(0xFF7C5EF1)],
+              colors: [ColorManage.firstPrimary,ColorManage.secondPrimary],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              stops: [0.0,0.75 ],
+              stops: ColorManage.stopsColor,
             ),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(40),
@@ -64,17 +65,17 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
                 style: ToggleStyle(
                   indicatorGradient: const LinearGradient(
                     colors: [
-                       Color(0xFFE27BF5),Color(0xFF7C5EF1), //0xE27BF5,,0x7C5EF1
+                      ColorManage.firstPrimary,ColorManage.secondPrimary
                     ],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    stops: [0.0,0.75 ],
+                    stops: ColorManage.stopsColor,
                     // begin: Alignment.centerLeft,
                     // end: Alignment.bottomRight,
                   ),
                   boxShadow: [
                     const BoxShadow(
-                      color: Colors.black26,
+                      color: ColorManage.boxShadowToggle,
                       spreadRadius: 1,blurRadius: 2,
                       offset: Offset(-3, -3)
                     )

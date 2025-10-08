@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constant/color_manage.dart';
 import 'onboardin_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final seen = prefs.getBool('onBoardingDone') ?? false;
 
     setState(() {
-      nextPage = seen ?  ToggleSwitchWidget() :  OnboardinScreen();
+      nextPage = seen ?  ToggleSwitchWidget() :  OnboardingScreen();
     });
   }
 
@@ -39,10 +40,10 @@ class _SplashScreenState extends State<SplashScreen> {
       return Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFE27BF5), Color(0xFF7C5EF1)],
+            colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            stops: [0.0, 0.75],
+            stops: ColorManage.stopsColor,
           ),
         ),
         child: const Center(

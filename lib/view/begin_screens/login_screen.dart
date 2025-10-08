@@ -2,6 +2,8 @@ import 'package:eduhub/view/student_screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constant/color_manage.dart';
+
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -138,10 +140,10 @@ class _LoginScreenState extends State<LoginScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
-                  colors: [Color(0xFFE27BF5), Color(0xFF7C5EF1)],
+                  colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  stops: [0.0, 0.75],
+                  stops: ColorManage.stopsColor,
                 ),
               ),
               child: Center(

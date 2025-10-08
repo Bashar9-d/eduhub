@@ -3,26 +3,28 @@ import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constant/color_manage.dart';
+import '../../constant/textstyle_manage.dart';
 import '../../model/onborading_model.dart';
 
-class OnboardinScreen extends StatefulWidget {
-  OnboardinScreen({super.key});
+class OnboardingScreen extends StatefulWidget {
+  OnboardingScreen({super.key});
 
   @override
-  State<OnboardinScreen> createState() => _OnboardinScreenState();
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardinScreenState extends State<OnboardinScreen> {
+class _OnboardingScreenState extends State<OnboardingScreen> {
   List<OnBoardingModel> pages = [
     OnBoardingModel(
       image: 'assets/onboarding1.png',
-      title: 'Welcome to the Coursee',
+      title: 'Welcome to the EduHub',
       subtitle:
           'Reference site about Lorem Ipsum, giving information on its origins, as well .',
     ),
     OnBoardingModel(
-      image: 'assets/onborading2.png',
-      title: 'Enjoy the Courses',
+      image: 'assets/onboarding2.png',
+      title: 'Enjoy the EduHub',
       subtitle:
           'Reference site about Lorem Ipsum, giving information on its origins, as well .',
     ),
@@ -67,10 +69,7 @@ class _OnboardinScreenState extends State<OnboardinScreen> {
                         Center(
                           child: Text(
                             pages[index].title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 23,
-                            ),
+                            style: TextStyleManage.titleOnBoarding,
                           ),
                         ),
                         SizedBox(
@@ -78,11 +77,7 @@ class _OnboardinScreenState extends State<OnboardinScreen> {
                           child: Center(
                             child: Text(
                               pages[index].subtitle,
-                              style: TextStyle(
-                                color: Color(0xFF727272),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                              ),
+                              style: TextStyleManage.subtitleOnBoarding,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -102,20 +97,20 @@ class _OnboardinScreenState extends State<OnboardinScreen> {
                                 gradient: _currentPage == index
                                     ? LinearGradient(
                                         colors: [
-                                          Color(0xFFE27BF5), Color(0xFF7C5EF1),
+                                  ColorManage.firstPrimary, ColorManage.secondPrimary,
                                         ],
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
-                                  stops: [0.0, 0.75],
+                                  stops:ColorManage.stopsColor,
                                       )
                                     : LinearGradient(
                                         colors: [
-                                          Color(0xFFD8D7D7),
-                                          Color(0xFFD8D7D7),
+                                          ColorManage.nonActiveIndicator,
+                                          ColorManage.nonActiveIndicator,
                                         ],
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
-                                  stops: [0.0, 0.75],
+                                  stops: ColorManage.stopsColor,
                                       ),
                               ),
                               width: 10,
@@ -130,16 +125,16 @@ class _OnboardinScreenState extends State<OnboardinScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               gradient: LinearGradient(
-                                colors: [Color(0xFFE27BF5), Color(0xFF7C5EF1), ],
+                                colors: [ColorManage.firstPrimary, ColorManage.secondPrimary, ],
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
-                                stops: [0.0, 0.75],
+                                stops: ColorManage.stopsColor,
                               ),
                             ),
                             child: Center(
                               child: Text(
                                 'Next',
-                                style: TextStyle(color: Colors.white,fontSize: 16,fontWeight:FontWeight.w600 ),
+                                style: TextStyleManage.nextButtonOnBoarding,
                               ),
                             ),
                           ),
@@ -184,13 +179,11 @@ class _OnboardinScreenState extends State<OnboardinScreen> {
                                         begin: Alignment.centerLeft,
                                         end: Alignment.centerRight,
                                         colors: [
-                                          Color(0xFFE27BF5),
-                                          Color(0xFF7C5EF1),
-                                          //0xE27BF5,,0x7C5EF1
+                                          ColorManage.firstPrimary, ColorManage.secondPrimary
                                         ],
                                         // begin: Alignment.centerLeft,
                                         // end: Alignment.centerRight,
-                                        stops: [0.0, 0.75],
+                                        stops: ColorManage.stopsColor,
                                       ).createShader(
                                         Rect.fromLTWH(
                                           0,
@@ -201,7 +194,7 @@ class _OnboardinScreenState extends State<OnboardinScreen> {
                                       ),
                                   child: Text(
                                     'Skip',
-                                    style: TextStyle(color: Colors.white,fontSize: 16,fontWeight:FontWeight.w600),
+                                    style: TextStyleManage.skipButtonOnBoarding,
                                   ),
                                 ),
                               )

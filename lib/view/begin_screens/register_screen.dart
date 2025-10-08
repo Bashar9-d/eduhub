@@ -1,3 +1,4 @@
+import 'package:eduhub/constant/color_manage.dart';
 import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -144,10 +145,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
-                  colors: [Color(0xFFE27BF5), Color(0xFF7C5EF1)],
+                  colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  stops: [0.0, 0.75],
+                  stops: ColorManage.stopsColor,
                 ),
               ),
               child: Center(
