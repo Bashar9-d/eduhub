@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../view/a.dart';
-import '../view/b.dart';
-import '../view/c.dart';
+import '../view/student_screens/a.dart';
+import '../view/student_screens/b.dart';
+import '../view/student_screens/c.dart';
+
+
 
 class BottomNavBarController extends ChangeNotifier{
   final List<Widget> _screens=[A(),B(),C()];

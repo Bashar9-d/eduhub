@@ -1,11 +1,12 @@
 import 'package:eduhub/controller/bottom_nav_bar_controller.dart';
-import 'package:eduhub/view/splash_screen.dart';
+import 'package:eduhub/view/begin_screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
