@@ -32,7 +32,11 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
     );
   }
   }
-
+@override
+  void initState() {
+    super.initState();
+    checkLogin();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
