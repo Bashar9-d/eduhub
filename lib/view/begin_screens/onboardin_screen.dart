@@ -1,11 +1,12 @@
-
+import 'package:eduhub/constant/image_manage.dart';
+import 'package:eduhub/constant/numbers_manage.dart';
+import 'package:eduhub/constant/style_widget_manage.dart';
 import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../constant/color_manage.dart';
 import '../../constant/textstyle_manage.dart';
-import '../../model/onborading_model.dart';
+import '../../controller/begin_controller/onboarding_controller.dart';
 
 class OnboardingScreen extends StatefulWidget {
   OnboardingScreen({super.key});
@@ -17,19 +18,19 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   List<OnBoardingModel> pages = [
     OnBoardingModel(
-      image: 'assets/onboarding1.png',
+      image: ImageManage.onBoarding1,
       title: 'Welcome to the EduHub',
       subtitle:
-          'Reference site about Lorem Ipsum, giving information on its origins, as well .',
+          'Reference site about Lorem Ipsum, giving information on its origins, as well .\n\u200B\n\u200B',
     ),
     OnBoardingModel(
-      image: 'assets/onboarding2.png',
+      image: ImageManage.onBoarding2,
       title: 'Enjoy the EduHub',
       subtitle:
           'Reference site about Lorem Ipsum, giving information on its origins, as well .',
     ),
     OnBoardingModel(
-      image: 'assets/onboarding1.png',
+      image: ImageManage.onBoarding3,
       title: 'No interruption',
       subtitle:
           'Reference site about Lorem Ipsum, giving information on its origins, as well .',
@@ -43,7 +44,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 20),
@@ -62,7 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     //Spacer(),
-                    Center(child: Image.asset(pages[index].image,)),
+                    Center(child: Image.asset(pages[index].image)),
                     Column(
                       spacing: 10,
                       children: [
@@ -72,16 +73,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             style: TextStyleManage.titleOnBoarding,
                           ),
                         ),
-                        SizedBox(
-                          width: 220,
-                          child: Center(
-                            child: Text(
-                              pages[index].subtitle,
-                              style: TextStyleManage.subtitleOnBoarding,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+                        Text(
+                          pages[index].subtitle,
+                           style: TextStyleManage.subtitleOnBoarding,
+                          textAlign: TextAlign.center,
                         ),
+
+                        // Container(
+                        //               width: double.infinity,
+                        //              constraints: const BoxConstraints(
+                        //                maxHeight: 80,minHeight: 80
+                        //              ),
+                        //               child: Text(
+                        //                 pages[index].subtitle,maxLines: 3,overflow: TextOverflow.ellipsis,
+                        //                 style: TextStyleManage.subtitleOnBoarding,
+                        //                 textAlign: TextAlign.center,
+                        //               ),
+                        //             ),
                       ],
                     ),
                     Column(
@@ -95,23 +103,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 gradient: _currentPage == index
-                                    ? LinearGradient(
-                                        colors: [
-                                  ColorManage.firstPrimary, ColorManage.secondPrimary,
-                                        ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  stops:ColorManage.stopsColor,
-                                      )
-                                    : LinearGradient(
-                                        colors: [
-                                          ColorManage.nonActiveIndicator,
-                                          ColorManage.nonActiveIndicator,
-                                        ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  stops: ColorManage.stopsColor,
-                                      ),
+                                    ? StyleWidgetManage.onBoardingIndicatorTrue
+                                    : StyleWidgetManage
+                                          .onBoardingIndicatorFalse,
                               ),
                               width: 10,
                               height: 10,
@@ -120,32 +114,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                         GestureDetector(
                           child: Container(
-                            width: MediaQuery.of(context).size.width*0.5,
-                            height:   MediaQuery.of(context).size.height * 0.06,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              gradient: LinearGradient(
-                                colors: [ColorManage.firstPrimary, ColorManage.secondPrimary, ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                stops: ColorManage.stopsColor,
-                              ),
-                            ),
+                            width: MediaQuery.of(context).size.width * NumbersManage.nextWidth,
+                            height: MediaQuery.of(context).size.height * NumbersManage.nextHeight,
+                            decoration:StyleWidgetManage.nextButtonDecoration,
                             child: Center(
                               child: Text(
                                 'Next',
-                                style: TextStyleManage.nextButtonOnBoarding,
+                                style: TextStyleManage.nextButton,
                               ),
                             ),
                           ),
                           onTap: () async {
                             if (_currentPage != pages.length - 1) {
                               _controller.nextPage(
-                                duration: Duration(milliseconds: 300),
+                                duration: Duration(milliseconds: NumbersManage.nextPageDuration),
                                 curve: Curves.easeIn,
                               );
                             } else {
-                              SharedPreferences seenOnBoarding=await SharedPreferences.getInstance();
+                              SharedPreferences seenOnBoarding =
+                                  await SharedPreferences.getInstance();
                               seenOnBoarding.setBool('onBoardingDone', true);
                               Navigator.pushAndRemoveUntil(
                                 context,
@@ -160,8 +147,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         _currentPage != pages.length - 1
                             ? GestureDetector(
                                 onTap: () async {
-                                  SharedPreferences seenOnBoarding=await SharedPreferences.getInstance();
-                                  seenOnBoarding.setBool('onBoardingDone', true);
+                                  SharedPreferences seenOnBoarding =
+                                      await SharedPreferences.getInstance();
+                                  seenOnBoarding.setBool(
+                                    'onBoardingDone',
+                                    true,
+                                  );
 
                                   Navigator.pushAndRemoveUntil(
                                     context,
@@ -174,17 +165,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 },
 
                                 child: ShaderMask(
-                                  shaderCallback: (bounds) =>
-                                      const LinearGradient(
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        colors: [
-                                          ColorManage.firstPrimary, ColorManage.secondPrimary
-                                        ],
-                                        // begin: Alignment.centerLeft,
-                                        // end: Alignment.centerRight,
-                                        stops: ColorManage.stopsColor,
-                                      ).createShader(
+                                  shaderCallback: (bounds) => StyleWidgetManage
+                                      .onBoardingIndicatorTrue
+                                      .createShader(
                                         Rect.fromLTWH(
                                           0,
                                           0,
@@ -198,8 +181,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   ),
                                 ),
                               )
-                            : //else
-                              SizedBox(child: Text('')),
+                            : SizedBox(child: Text('')),
                       ],
                     ),
 

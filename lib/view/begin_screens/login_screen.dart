@@ -1,19 +1,20 @@
+import 'package:eduhub/constant/style_widget_manage.dart';
+import 'package:eduhub/constant/textstyle_manage.dart';
 import 'package:eduhub/view/student_screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/color_manage.dart';
-
+import '../../constant/numbers_manage.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  //Container(
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool showErrorEmail = false;
@@ -60,7 +61,10 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 42.0, vertical: 22),
+            padding: const EdgeInsets.symmetric(
+              horizontal: NumbersManage.horizontalLoginAndRegister,
+              vertical: NumbersManage.verticalLoginAndRegister,
+            ),
             child: TextField(
               controller: emailController,
 
@@ -75,7 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 42.0, vertical: 22),
+            padding: const EdgeInsets.symmetric(
+              horizontal: NumbersManage.horizontalLoginAndRegister,
+              vertical: NumbersManage.verticalLoginAndRegister,
+            ),
             child: TextField(
               obscureText: true,
               controller: passwordController,
@@ -135,29 +142,17 @@ class _LoginScreenState extends State<LoginScreen> {
             },
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 90, horizontal: 34),
-              width: MediaQuery.of(context).size.width * 0.5,
-              height: MediaQuery.of(context).size.height * 0.06,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  stops: ColorManage.stopsColor,
-                ),
-              ),
+              width:
+                  MediaQuery.of(context).size.width * NumbersManage.nextWidth,
+              height:
+                  MediaQuery.of(context).size.height * NumbersManage.nextHeight,
+              decoration: StyleWidgetManage.nextButtonDecoration,
               child: Center(
-                child: Text(
-                  'Next',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                child: Text('Next', style: TextStyleManage.nextButton),
               ),
             ),
           ),
+
         ],
       ),
     );

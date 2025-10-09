@@ -1,6 +1,10 @@
 import 'package:eduhub/constant/color_manage.dart';
+import 'package:eduhub/constant/style_widget_manage.dart';
+import 'package:eduhub/constant/textstyle_manage.dart';
 import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../constant/numbers_manage.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -15,7 +19,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   bool showErrorEmail = false;
-
   bool showErrorPassword = false;
   bool showErrorName = false;
 
@@ -34,8 +37,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return regExp.hasMatch(password);
   }
 
-  List<String> dropDwonItems = ['Student', 'Teacher'];
-  String? selectedItem ;
+  List<String> dropDownItems = ['Student', 'Teacher'];
+  String? selectedItem;
+
   bool showErrorDropDown = false;
 
   @override
@@ -45,7 +49,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 42.0, vertical: 22),
+            padding: const EdgeInsets.symmetric(
+              horizontal: NumbersManage.horizontalLoginAndRegister,
+              vertical: NumbersManage.verticalLoginAndRegister,
+            ),
             child: TextField(
               controller: nameController,
               keyboardType: TextInputType.text,
@@ -58,38 +65,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 42.0, vertical: 22),
+            padding: const EdgeInsets.symmetric(
+              horizontal: NumbersManage.horizontalLoginAndRegister,
+              vertical: NumbersManage.verticalLoginAndRegister,
+            ),
             child: SizedBox(
               width: double.infinity,
-              child: DropdownButtonFormField<String>(//OR    DropdownButton
-
+              child: DropdownButtonFormField<String>(
+                //OR    DropdownButton
                 decoration: InputDecoration(
-
                   alignLabelWithHint: true,
                   hintText: 'Choose Role',
                   errorText: showErrorDropDown
                       ? 'This Field is required'
                       : null,
                 ),
-                items: dropDwonItems
+                items: dropDownItems
                     .map(
                       (item) => DropdownMenuItem<String>(
                         value: item,
-                        child: Text(item,),
+                        child: Text(
+                          item,
+                          style: TextStyleManage.textInDropDown,
+                        ),
                       ),
                     )
                     .toList(),
 
                 onChanged: (item) => setState(() => selectedItem = item),
-
               ),
-
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 42.0, vertical: 22),
+            padding: const EdgeInsets.symmetric(
+              horizontal: NumbersManage.horizontalLoginAndRegister,
+              vertical: NumbersManage.verticalLoginAndRegister,
+            ),
             child: TextField(
-
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
@@ -103,7 +115,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 42.0, vertical: 22),
+            padding: const EdgeInsets.symmetric(
+              horizontal: NumbersManage.horizontalLoginAndRegister,
+              vertical: NumbersManage.verticalLoginAndRegister,
+            ),
             child: TextField(
               obscureText: true,
               controller: passwordController,
@@ -120,16 +135,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
           GestureDetector(
             onTap: () {
               setState(() {
-                showErrorDropDown=selectedItem==null?true:false;
-               showErrorPassword =
+                showErrorDropDown = selectedItem == null ? true : false;
+                showErrorPassword =
                     passwordController.text.isEmpty ||
                     (!validatePassword(password: passwordController.text));
                 showErrorEmail =
                     emailController.text.isEmpty ||
                     (!isEmail(email: emailController.text));
                 showErrorName = nameController.text.isEmpty;
-              });//!(_formKey.currentState!.validate())&&
-              if (!showErrorDropDown&&!showErrorEmail && !showErrorPassword && !showErrorName) {
+              });
+              if (!showErrorDropDown &&
+                  !showErrorEmail &&
+                  !showErrorPassword &&
+                  !showErrorName) {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => ToggleSwitchWidget()),
@@ -138,34 +156,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
               }
             },
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 90, horizontal: 34),
-              width: MediaQuery.of(context).size.width * 0.5,
-              height:  MediaQuery.of(context).size.height * 0.06,
-
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  stops: ColorManage.stopsColor,
-                ),
+              margin: EdgeInsets.symmetric(
+                vertical: NumbersManage.verticalRegister2,
+                horizontal: NumbersManage.horizontalRegister2,
               ),
+              width:
+                  MediaQuery.of(context).size.width * NumbersManage.nextWidth,
+              height:
+                  MediaQuery.of(context).size.height * NumbersManage.nextHeight,
+
+              decoration: StyleWidgetManage.nextButtonDecoration,
               child: Center(
-                child: Text(
-                  'Next',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                child: Text('Next', style: TextStyleManage.nextButton),
               ),
             ),
           ),
         ],
       ),
-
     );
   }
 }

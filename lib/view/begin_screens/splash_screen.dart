@@ -1,11 +1,11 @@
-
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:eduhub/constant/style_widget_manage.dart';
 import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../constant/color_manage.dart';
+import '../../constant/image_manage.dart';
 import 'onboardin_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final seen = prefs.getBool('onBoardingDone') ?? false;
 
     setState(() {
-      nextPage = seen ?  ToggleSwitchWidget() :  OnboardingScreen();
+      nextPage = seen ? ToggleSwitchWidget() : OnboardingScreen();
     });
   }
 
@@ -38,48 +38,29 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     if (nextPage == null) {
       return Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            stops: ColorManage.stopsColor,
-          ),
-        ),
+        decoration: StyleWidgetManage.gradiantDecoration,
         child: const Center(
-          child: Image(
-            image: AssetImage('assets/eduhub logo.png'),
-            width: 200,
-          ),
+          child: Image(image: AssetImage(ImageManage.logo), width: 200),
         ),
       );
     }
 
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFFE27BF5), Color(0xFF7C5EF1),
-          ],begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          stops: [0.0,0.75 ],
-        ),
-      ),
+      decoration: StyleWidgetManage.gradiantDecoration,
       child: AnimatedSplashScreen(
         backgroundColor: Colors.transparent,
-        splash: Image.asset('assets/eduhub logo.png',),
+        splash: Image.asset(ImageManage.logo),
         splashIconSize: 300,
-        nextScreen:nextPage!,
+        nextScreen: nextPage!,
         duration: 2300,
         pageTransitionType: PageTransitionType.rightToLeft,
-        splashTransition:SplashTransition.fadeTransition ,
-       // animationDuration: Duration(seconds: 1),
+        splashTransition: SplashTransition.fadeTransition,
+        // animationDuration: Duration(seconds: 1),
       ),
     );
   }
-
-
 }
+
 // @override
 //   void initState() {
 //     super.initState();

@@ -2,6 +2,8 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:eduhub/constant/color_manage.dart';
 import 'package:eduhub/view/begin_screens/register_screen.dart';
 import 'package:flutter/material.dart';
+import '../../constant/image_manage.dart';
+import '../../constant/style_widget_manage.dart';
 import 'login_screen.dart';
 
 class ToggleSwitchWidget extends StatefulWidget {
@@ -20,30 +22,18 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-
       appBar: AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.35,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [ColorManage.firstPrimary,ColorManage.secondPrimary],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              stops: ColorManage.stopsColor,
-            ),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
-            ),
-          ),
+          //height: MediaQuery.of(context).size.height * 0.35,
+          decoration: StyleWidgetManage.toggleDecoration,
           child: Column(
             spacing: 5,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/eduhub logo.png', width: 170, height: 170),
+              Image.asset(ImageManage.logo, width: 170, height: 170),
               AnimatedToggleSwitch<bool>.size(
                 current: firstSwitchValue,
                 values: const [true, false],
@@ -63,16 +53,7 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
                 borderWidth: 0,
                 iconAnimationType: AnimationType.onSelected,
                 style: ToggleStyle(
-                  indicatorGradient: const LinearGradient(
-                    colors: [
-                      ColorManage.firstPrimary,ColorManage.secondPrimary
-                    ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    stops: ColorManage.stopsColor,
-                    // begin: Alignment.centerLeft,
-                    // end: Alignment.bottomRight,
-                  ),
+                  indicatorGradient:  StyleWidgetManage.onBoardingIndicatorTrue,
                   boxShadow: [
                     const BoxShadow(
                       color: ColorManage.boxShadowToggle,
@@ -95,7 +76,7 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
             ],
           ),
         ),
-        toolbarHeight: MediaQuery.of(context).size.height * 0.30,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.27,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
