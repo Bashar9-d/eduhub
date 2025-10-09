@@ -49,7 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding:  EdgeInsets.symmetric(
               horizontal: NumbersManage.horizontalLoginAndRegister,
               vertical: NumbersManage.verticalLoginAndRegister,
             ),
@@ -65,7 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding:  EdgeInsets.symmetric(
               horizontal: NumbersManage.horizontalLoginAndRegister,
               vertical: NumbersManage.verticalLoginAndRegister,
             ),
@@ -97,7 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding:  EdgeInsets.symmetric(
               horizontal: NumbersManage.horizontalLoginAndRegister,
               vertical: NumbersManage.verticalLoginAndRegister,
             ),
@@ -115,7 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding:  EdgeInsets.symmetric(
               horizontal: NumbersManage.horizontalLoginAndRegister,
               vertical: NumbersManage.verticalLoginAndRegister,
             ),
@@ -157,8 +157,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             },
             child: Container(
               margin: EdgeInsets.symmetric(
-                vertical: NumbersManage.verticalRegister2,
-                horizontal: NumbersManage.horizontalRegister2,
+                vertical: NumbersManage.verticalLoginAndRegister2,
+                horizontal: NumbersManage.horizontalLoginAndRegister2,
               ),
               width:
                   MediaQuery.of(context).size.width * NumbersManage.nextWidth,

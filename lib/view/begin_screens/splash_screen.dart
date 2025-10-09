@@ -2,6 +2,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:eduhub/constant/style_widget_manage.dart';
 import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final seen = prefs.getBool('onBoardingDone') ?? false;
 
     setState(() {
-      nextPage = seen ? ToggleSwitchWidget() : OnboardingScreen();
+      nextPage = seen ? OnboardingScreen() : OnboardingScreen();
     });
   }
 
@@ -39,8 +40,8 @@ class _SplashScreenState extends State<SplashScreen> {
     if (nextPage == null) {
       return Container(
         decoration: StyleWidgetManage.gradiantDecoration,
-        child: const Center(
-          child: Image(image: AssetImage(ImageManage.logo), width: 200),
+        child:  Center(
+          child: Image(image: AssetImage(ImageManage.logo), width: 200.w),
         ),
       );
     }

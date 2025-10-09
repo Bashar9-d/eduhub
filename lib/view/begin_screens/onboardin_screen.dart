@@ -3,13 +3,14 @@ import 'package:eduhub/constant/numbers_manage.dart';
 import 'package:eduhub/constant/style_widget_manage.dart';
 import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/textstyle_manage.dart';
 import '../../controller/begin_controller/onboarding_controller.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  OnboardingScreen({super.key});
+  const OnboardingScreen({super.key});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -47,7 +48,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 20),
+          padding: EdgeInsets.symmetric(vertical: 25.0.h, horizontal: 20.w),
           child: PageView.builder(
             itemCount: pages.length,
             controller: _controller,
@@ -57,15 +58,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
             itemBuilder: (context, index) {
               return Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 16.h),
+                //padding: EdgeInsets.all(16.h),
+
                 child: Column(
-                  spacing: 30,
+                  spacing: 30.h,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     //Spacer(),
                     Center(child: Image.asset(pages[index].image)),
                     Column(
-                      spacing: 10,
+                      spacing: 10.h,
                       children: [
                         Center(
                           child: Text(
@@ -93,13 +96,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ],
                     ),
                     Column(
-                      spacing: 24,
+                      spacing: 24.h,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(pages.length, (index) {
                             return Container(
-                              margin: EdgeInsets.symmetric(horizontal: 4),
+                              margin: EdgeInsets.symmetric(horizontal: 4.w),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 gradient: _currentPage == index
@@ -107,8 +110,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     : StyleWidgetManage
                                           .onBoardingIndicatorFalse,
                               ),
-                              width: 10,
-                              height: 10,
+                              width: 10.w,
+                              height: 10.h,
                             );
                           }),
                         ),
@@ -171,8 +174,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                         Rect.fromLTWH(
                                           0,
                                           0,
-                                          bounds.width,
-                                          bounds.height,
+                                          bounds.width.w,
+                                          bounds.height.h,
                                         ),
                                       ),
                                   child: Text(

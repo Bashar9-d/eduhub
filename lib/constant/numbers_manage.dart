@@ -1,37 +1,27 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 class NumbersManage{
   //Splash Screen
   static const double splashIconSize=300;
   static const double splashDuration=2300;
-  static const double splashImageWidth=200;
+  static  double splashImageWidth=200.w;
 
 //On Boarding Screen  (onBoarding)
-  static const double nextWidth= 0.5;
-  static const double nextHeight= 0.06;
+  static  double nextWidth= 0.5.w;
+  static  double nextHeight= 0.06.h;
   static const int nextPageDuration=300;
 
 //Login And Register Screens
-static const double horizontalLoginAndRegister=42.0;
-static const double verticalLoginAndRegister=22.0;
-static const double horizontalRegister2=34.0;
-static const double verticalRegister2=90.0;
+static  double horizontalLoginAndRegister=42.0.w;
+static  double verticalLoginAndRegister=22.0.h;
+static  double horizontalLoginAndRegister2=34.0.w;
+static  double verticalLoginAndRegister2=90.0.h;
 
 //Toggle Widget
 //static const double heightToggle=0.35; //no Used
-static const double toolbarToggleHeight  =0.30;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
-  // static const double splashIconSize=300;
+static  double toolbarToggleHeight  =0.3.h;
+
 
 }

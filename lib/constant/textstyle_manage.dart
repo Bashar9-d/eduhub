@@ -1,12 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'color_manage.dart';
 
 class TextStyleManage {
-  static const TextStyle titleOnBoarding = TextStyle(
+  static  TextStyle titleOnBoarding = TextStyle(
     fontWeight: FontWeight.bold,
-    fontSize: 23,
+    fontSize: 23.sp,
   );
   static const TextStyle subtitleOnBoarding = TextStyle(
     color: ColorManage.subtitleOnBoarding,
@@ -20,14 +21,14 @@ class TextStyleManage {
   //   fontSize: 16,
   //   fontWeight: FontWeight.w600,
   // );
-  static const TextStyle skipButtonOnBoarding = TextStyle(
+  static  TextStyle skipButtonOnBoarding = TextStyle(
     color: Colors.white,
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w600,
   );
-  static const nextButton = TextStyle(
+  static  TextStyle nextButton = TextStyle(
     color: Colors.white,
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w600,
   );
 

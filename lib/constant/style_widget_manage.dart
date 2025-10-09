@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'color_manage.dart';
 
@@ -12,7 +13,7 @@ class StyleWidgetManage {
     ),
   );
 
-  static const toggleDecoration = BoxDecoration(
+  static  BoxDecoration toggleDecoration = BoxDecoration(
     gradient: LinearGradient(//  OR   onBoardingIndicatorTrue
       colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
       begin: Alignment.centerLeft,
@@ -20,13 +21,13 @@ class StyleWidgetManage {
       stops: ColorManage.stopsColor,
     ),
     borderRadius: BorderRadius.only(
-      bottomLeft: Radius.circular(40),
-      bottomRight: Radius.circular(40),
+      bottomLeft: Radius.circular(40.r),
+      bottomRight: Radius.circular(40.r),
     ),
   );
 
   static final nextButtonDecoration =BoxDecoration(
-    borderRadius: BorderRadius.circular(20),
+    borderRadius: BorderRadius.circular(20.r),
     gradient:
     StyleWidgetManage.onBoardingIndicatorTrue,
   );

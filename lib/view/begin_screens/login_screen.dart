@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: NumbersManage.horizontalLoginAndRegister,
               vertical: NumbersManage.verticalLoginAndRegister,
             ),
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: NumbersManage.horizontalLoginAndRegister,
               vertical: NumbersManage.verticalLoginAndRegister,
             ),
@@ -96,7 +96,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 42.0, vertical: 22),
+            padding: EdgeInsets.symmetric(
+              horizontal: NumbersManage.horizontalLoginAndRegister,
+              vertical: NumbersManage.verticalLoginAndRegister,
+            ),
             child: Row(
               children: [
                 Text('Remember Me?'),
@@ -141,7 +144,10 @@ class _LoginScreenState extends State<LoginScreen> {
               }
             },
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 90, horizontal: 34),
+              margin: EdgeInsets.symmetric(
+                vertical: NumbersManage.verticalLoginAndRegister2,
+                horizontal: NumbersManage.horizontalLoginAndRegister2,
+              ),
               width:
                   MediaQuery.of(context).size.width * NumbersManage.nextWidth,
               height:
@@ -152,7 +158,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-
         ],
       ),
     );

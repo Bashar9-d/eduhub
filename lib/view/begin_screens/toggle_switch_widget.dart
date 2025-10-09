@@ -2,6 +2,7 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:eduhub/constant/color_manage.dart';
 import 'package:eduhub/view/begin_screens/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../constant/image_manage.dart';
 import '../../constant/style_widget_manage.dart';
 import 'login_screen.dart';
@@ -29,11 +30,11 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
           //height: MediaQuery.of(context).size.height * 0.35,
           decoration: StyleWidgetManage.toggleDecoration,
           child: Column(
-            spacing: 5,
+            spacing: 5.h,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(ImageManage.logo, width: 170, height: 170),
+              Image.asset(ImageManage.logo, width: 170.w, height: 170.h),
               AnimatedToggleSwitch<bool>.size(
                 current: firstSwitchValue,
                 values: const [true, false],
@@ -76,7 +77,7 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
             ],
           ),
         ),
-        toolbarHeight: MediaQuery.of(context).size.height * 0.27,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.3.h,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
