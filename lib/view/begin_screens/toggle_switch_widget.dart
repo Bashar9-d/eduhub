@@ -3,8 +3,11 @@ import 'package:eduhub/constant/color_manage.dart';
 import 'package:eduhub/view/begin_screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../constant/image_manage.dart';
 import '../../constant/style_widget_manage.dart';
+import '../student_screens/bottom_nav_bar.dart';
+import '../teacher_screens/teacher.dart';
 import 'login_screen.dart';
 
 class ToggleSwitchWidget extends StatefulWidget {
@@ -18,6 +21,17 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
   List<Widget> screens = [LoginScreen(), RegisterScreen()];
   int currentIndex = 0;
   bool firstSwitchValue = true;
+  checkLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+  if(prefs.getString("email")!=null){
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => prefs.getString("role")=="student"?BottomNavBar():Teacher(),
+      ),
+    );
+  }
+  }
 
   @override
   Widget build(BuildContext context) {

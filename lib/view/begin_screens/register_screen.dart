@@ -5,6 +5,9 @@ import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/numbers_manage.dart';
+import '../../constant/text_field_manage.dart';
+import '../../controller/auth_service.dart';
+import '../../model/users_model.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -42,43 +45,87 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool showErrorDropDown = false;
 
+  register() async {
+    setState(() {
+      showErrorDropDown = selectedItem == null ? true : false;
+      showErrorPassword =
+          passwordController.text.isEmpty ||
+              (!validatePassword(password: passwordController.text));
+      showErrorEmail =
+          emailController.text.isEmpty ||
+              (!isEmail(email: emailController.text));
+      showErrorName = nameController.text.isEmpty;
+    });
+
+    if (!showErrorDropDown &&
+        !showErrorEmail &&
+        !showErrorPassword &&
+        !showErrorName) {
+
+
+      UsersModel newUser = UsersModel(
+        name: nameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+        role: selectedItem!.toLowerCase(),
+      );
+
+      AuthService authService = AuthService();
+      final result = await authService.addUser(newUser);
+
+      if (result["success"] == true) {
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => ToggleSwitchWidget()),
+              (route) => false,
+        );
+      } else {
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result["message"] ?? "حدث خطأ ما")),
+        );
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Column(
+      body: Padding(
+        padding:  EdgeInsets.symmetric(
+          horizontal: NumbersManage.horizontalLoginAndRegister,
+          vertical: NumbersManage.verticalLoginAndRegister,
+        ),
+        child: ListView(
         children: [
-          Padding(
-            padding:  EdgeInsets.symmetric(
-              horizontal: NumbersManage.horizontalLoginAndRegister,
-              vertical: NumbersManage.verticalLoginAndRegister,
-            ),
-            child: TextField(
+        buildTextField(
               controller: nameController,
               keyboardType: TextInputType.text,
-              decoration: InputDecoration(
                 errorText: showErrorName ? 'This field is required' : null,
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                hintText: 'Enter Name here',
-                labelText: 'Name',
+                hint: 'Enter Name here',
+                label: 'Name',
               ),
-            ),
-          ),
-          Padding(
-            padding:  EdgeInsets.symmetric(
-              horizontal: NumbersManage.horizontalLoginAndRegister,
-              vertical: NumbersManage.verticalLoginAndRegister,
-            ),
-            child: SizedBox(
+          SizedBox(height: NumbersManage.verticalLoginAndRegister),
+          Text("Role"),
+          SizedBox(
               width: double.infinity,
               child: DropdownButtonFormField<String>(
                 //OR    DropdownButton
                 decoration: InputDecoration(
+                  filled: true,
+                  fillColor: ColorManage.field,
                   alignLabelWithHint: true,
                   hintText: 'Choose Role',
                   errorText: showErrorDropDown
                       ? 'This Field is required'
                       : null,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 items: dropDownItems
                     .map(
@@ -95,84 +142,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onChanged: (item) => setState(() => selectedItem = item),
               ),
             ),
-          ),
-          Padding(
-            padding:  EdgeInsets.symmetric(
-              horizontal: NumbersManage.horizontalLoginAndRegister,
-              vertical: NumbersManage.verticalLoginAndRegister,
-            ),
-            child: TextField(
+
+          buildTextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                errorText: showErrorPassword
+                errorText: showErrorEmail
                     ? 'Enter your correct email'
                     : null,
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                hintText: 'Enter Email here',
-                labelText: 'Email',
-              ),
-            ),
-          ),
-          Padding(
-            padding:  EdgeInsets.symmetric(
-              horizontal: NumbersManage.horizontalLoginAndRegister,
-              vertical: NumbersManage.verticalLoginAndRegister,
-            ),
-            child: TextField(
-              obscureText: true,
-              controller: passwordController,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: InputDecoration(
+                hint: 'Enter Email here',
+                label: 'Email',),
+          buildTextField(
+              obscure: true,
+                controller: passwordController,
+                keyboardType: TextInputType.visiblePassword,
                 errorText: showErrorPassword ? 'Enter stronger password' : null,
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                hintText: 'Enter Password here',
-                labelText: 'Password',
+                hint: 'Enter Password here',
+                label: 'Password',
               ),
-            ),
-          ),
-          Spacer(),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                showErrorDropDown = selectedItem == null ? true : false;
-                showErrorPassword =
-                    passwordController.text.isEmpty ||
-                    (!validatePassword(password: passwordController.text));
-                showErrorEmail =
-                    emailController.text.isEmpty ||
-                    (!isEmail(email: emailController.text));
-                showErrorName = nameController.text.isEmpty;
-              });
-              if (!showErrorDropDown &&
-                  !showErrorEmail &&
-                  !showErrorPassword &&
-                  !showErrorName) {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => ToggleSwitchWidget()),
-                  (route) => false,
-                );
-              }
-            },
+
+
+          InkWell(
+            onTap: register,
             child: Container(
+
               margin: EdgeInsets.symmetric(
                 vertical: NumbersManage.verticalLoginAndRegister2,
                 horizontal: NumbersManage.horizontalLoginAndRegister2,
               ),
-              width:
-                  MediaQuery.of(context).size.width * NumbersManage.nextWidth,
+
               height:
                   MediaQuery.of(context).size.height * NumbersManage.nextHeight,
 
               decoration: StyleWidgetManage.nextButtonDecoration,
               child: Center(
-                child: Text('Next', style: TextStyleManage.nextButton),
+                child: Text('Register', style: TextStyleManage.nextButton),
               ),
             ),
           ),
         ],
-      ),
-    );
+      )));
   }
 }

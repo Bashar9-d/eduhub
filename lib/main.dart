@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:eduhub/controller/bottom_nav_bar_controller.dart';
 import 'package:eduhub/view/begin_screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +7,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -30,7 +41,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Edu hub',
-            localizationsDelegates: [
+           /* localizationsDelegates: [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -39,7 +50,7 @@ class MyApp extends StatelessWidget {
             supportedLocales: [
               Locale('en'), // English
               Locale('ar'), // Spanish
-            ],
+            ],*/
            // home:child,
             // theme: ThemeData(
             //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

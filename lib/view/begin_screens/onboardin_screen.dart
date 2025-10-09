@@ -115,9 +115,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             );
                           }),
                         ),
-                        GestureDetector(
+                        InkWell(
                           child: Container(
-                            width: MediaQuery.of(context).size.width * NumbersManage.nextWidth,
+
                             height: MediaQuery.of(context).size.height * NumbersManage.nextHeight,
                             decoration:StyleWidgetManage.nextButtonDecoration,
                             child: Center(
@@ -148,7 +148,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           },
                         ),
                         _currentPage != pages.length - 1
-                            ? GestureDetector(
+                            ? InkWell(
                                 onTap: () async {
                                   SharedPreferences seenOnBoarding =
                                       await SharedPreferences.getInstance();

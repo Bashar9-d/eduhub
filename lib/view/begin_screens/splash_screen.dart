@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final seen = prefs.getBool('onBoardingDone') ?? false;
 
     setState(() {
-      nextPage = seen ? OnboardingScreen() : OnboardingScreen();
+      nextPage = seen ? ToggleSwitchWidget() : OnboardingScreen();
     });
   }
 
