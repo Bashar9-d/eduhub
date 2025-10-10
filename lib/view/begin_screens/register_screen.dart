@@ -50,10 +50,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       showErrorDropDown = selectedItem == null ? true : false;
       showErrorPassword =
           passwordController.text.isEmpty ||
-              (!validatePassword(password: passwordController.text));
+          (!validatePassword(password: passwordController.text));
       showErrorEmail =
           emailController.text.isEmpty ||
-              (!isEmail(email: emailController.text));
+          (!isEmail(email: emailController.text));
       showErrorName = nameController.text.isEmpty;
     });
 
@@ -61,8 +61,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         !showErrorEmail &&
         !showErrorPassword &&
         !showErrorName) {
-
-
       UsersModel newUser = UsersModel(
         name: nameController.text,
         email: emailController.text,
@@ -74,51 +72,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final result = await authService.addUser(newUser);
 
       if (result["success"] == true) {
-
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => ToggleSwitchWidget()),
-              (route) => false,
+          (route) => false,
         );
       } else {
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(result["message"] ?? "حدث خطأ ما")),
         );
       }
     }
   }
+
   @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
     nameController.dispose();
-
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding:  EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: NumbersManage.horizontalLoginAndRegister,
           vertical: NumbersManage.verticalLoginAndRegister,
         ),
         child: ListView(
-        children: [
-        buildTextField(
+          children: [
+            buildTextField(
               controller: nameController,
               keyboardType: TextInputType.text,
-                errorText: showErrorName ? 'This field is required' : null,
-                hint: 'Enter Name here',
-                label: 'Name',
-              ),
-          SizedBox(height: NumbersManage.verticalLoginAndRegister),
-          Text("Role"),
-          SizedBox(
+              errorText: showErrorName ? 'This field is required' : null,
+              hint: 'Enter Name here',
+              label: 'Name',
+            ),
+            SizedBox(height: NumbersManage.verticalLoginAndRegister),
+            Text("Role"),
+            SizedBox(
               width: double.infinity,
               child: DropdownButtonFormField<String>(
                 //OR    DropdownButton
@@ -151,43 +146,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
 
-          buildTextField(
+            buildTextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
-                errorText: showErrorEmail
-                    ? 'Enter your correct email'
-                    : null,
-                hint: 'Enter Email here',
-                label: 'Email',),
-          buildTextField(
+              errorText: showErrorEmail ? 'Enter your correct email' : null,
+              hint: 'Enter Email here',
+              label: 'Email',
+            ),
+            buildTextField(
               obscure: true,
-                controller: passwordController,
-                keyboardType: TextInputType.visiblePassword,
-                errorText: showErrorPassword ? 'Enter stronger password' : null,
-                hint: 'Enter Password here',
-                label: 'Password',
-              ),
+              controller: passwordController,
+              keyboardType: TextInputType.visiblePassword,
+              errorText: showErrorPassword ? 'Enter stronger password' : null,
+              hint: 'Enter Password here',
+              label: 'Password',
+            ),
 
+            InkWell(
+              onTap: register,
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                  vertical: NumbersManage.verticalLoginAndRegister2,
+                  horizontal: NumbersManage.horizontalLoginAndRegister2,
+                ),
 
-          InkWell(
-            onTap: register,
-            child: Container(
+                height:
+                    MediaQuery.of(context).size.height *
+                    NumbersManage.nextHeight,
 
-              margin: EdgeInsets.symmetric(
-                vertical: NumbersManage.verticalLoginAndRegister2,
-                horizontal: NumbersManage.horizontalLoginAndRegister2,
-              ),
-
-              height:
-                  MediaQuery.of(context).size.height * NumbersManage.nextHeight,
-
-              decoration: StyleWidgetManage.nextButtonDecoration,
-              child: Center(
-                child: Text('Register', style: TextStyleManage.nextButton),
+                decoration: StyleWidgetManage.nextButtonDecoration,
+                child: Center(
+                  child: Text('Register', style: TextStyleManage.nextButton),
+                ),
               ),
             ),
-          ),
-        ],
-      )));
+          ],
+        ),
+      ),
+    );
   }
 }

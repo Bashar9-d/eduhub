@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class Teacher extends StatefulWidget {
@@ -11,6 +10,6 @@ class Teacher extends StatefulWidget {
 class _TeacherState extends State<Teacher> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("Teacher"),),);
+    return Scaffold(body: Center(child: Text("Teacher")));
   }
 }

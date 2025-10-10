@@ -21,22 +21,26 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
   List<Widget> screens = [LoginScreen(), RegisterScreen()];
   int currentIndex = 0;
   bool firstSwitchValue = true;
+
   checkLogin() async {
     final prefs = await SharedPreferences.getInstance();
-  if(prefs.getString("email")!=null){
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => prefs.getString("role")=="student"?BottomNavBar():Teacher(),
-      ),
-    );
+    if (prefs.getString("email") != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              prefs.getString("role") == "student" ? BottomNavBar() : Teacher(),
+        ),
+      );
+    }
   }
-  }
-@override
+
+  @override
   void initState() {
     super.initState();
     checkLogin();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,14 +76,15 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
                 borderWidth: 0,
                 iconAnimationType: AnimationType.onSelected,
                 style: ToggleStyle(
-                  indicatorGradient:  StyleWidgetManage.onBoardingIndicatorTrue,
+                  indicatorGradient: StyleWidgetManage.onBoardingIndicatorTrue,
                   boxShadow: [
                     const BoxShadow(
                       color: ColorManage.boxShadowToggle,
-                      spreadRadius: 1,blurRadius: 2,
-                      offset: Offset(-3, -3)
-                    )
-                  ]
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                      offset: Offset(-3, -3),
+                    ),
+                  ],
                 ),
                 selectedIconScale: 1,
                 onChanged: (value) {

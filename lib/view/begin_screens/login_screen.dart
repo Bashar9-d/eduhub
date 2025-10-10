@@ -23,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool showErrorEmail = false;
   bool showErrorPassword = false;
 
-
   bool isEmail({required String email}) {
     String p =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -45,68 +44,63 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   login() async {
-      setState(() {
-        showErrorPassword = passwordController.text.isEmpty;
-        showErrorEmail = emailController.text.isEmpty;
-      });
+    setState(() {
+      showErrorPassword = passwordController.text.isEmpty;
+      showErrorEmail = emailController.text.isEmpty;
+    });
 
-      if (!showErrorEmail && !showErrorPassword) {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) =>
-          const Center(child: CircularProgressIndicator()),
-        );
+    if (!showErrorEmail && !showErrorPassword) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
 
-        final authService = AuthService();
-        final result = await authService.loginUser(
-          emailController.text.trim(),
-          passwordController.text.trim(),
-        );
-        Navigator.pop(context);
-        if (result["success"] == true ) {
-          final prefs = await SharedPreferences.getInstance();
-
-            await prefs.setString("email", result["data"]["name"] );
-            await prefs.setString("name",result["data"]["name"] );
-            await prefs.setString("id", result["data"]["id"]);
-            await prefs.setString("role", result["data"]["role"],);
-            if (result["data"]["role"] == "Student") {
+      final authService = AuthService();
+      final result = await authService.loginUser(
+        emailController.text.trim(),
+        passwordController.text.trim(),
+      );
+      Navigator.pop(context);
+      print(result);
+      if (result["success"] == true) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString("email", result["data"]["name"]);
+        await prefs.setString("name", result["data"]["name"]);
+        await prefs.setInt("id", result["data"]["id"]);
+        await prefs.setString("role", result["data"]["role"]);
+        if (result["data"]["role"] == "student") {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) => const BottomNavBar(),
-            ),
-          );}else{
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Teacher(),
-                ),
-              );
-            }
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("تم تسجيل الدخول بنجاح ✅")),
-          );
-        } else {
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(result["message"] ?? "فشل تسجيل الدخول ❌"),
-              backgroundColor: Colors.red,
-            ),
+            MaterialPageRoute(builder: (context) => const BottomNavBar()),
           );
         }
+        if (result["data"]["role"] == "teacher"){
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Teacher()),
+        );}
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("تم تسجيل الدخول بنجاح ✅")),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result["message"] ?? "فشل تسجيل الدخول ❌"),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
-
+    }
   }
-@override
+
+  @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,58 +111,57 @@ class _LoginScreenState extends State<LoginScreen> {
           vertical: NumbersManage.verticalLoginAndRegister,
         ),
         child: Column(
-        children: [
-          buildTextField(
+          children: [
+            buildTextField(
               controller: emailController,
 
               keyboardType: TextInputType.emailAddress,
 
-                errorText: showErrorEmail ? 'Enter your correct email' : null,
+              errorText: showErrorEmail ? 'Enter your correct email' : null,
 
-                hint: 'Enter Email here',
+              hint: 'Enter Email here',
 
-                label: 'Email',
-
+              label: 'Email',
             ),
 
-
-        buildTextField(
+            buildTextField(
               obscure: true,
               controller: passwordController,
               keyboardType: TextInputType.visiblePassword,
 
-                errorText: showErrorPassword ? 'Enter stronger password' : null,
+              errorText: showErrorPassword ? 'Enter stronger password' : null,
 
-                hint: 'Enter Password here',
-                label: 'Password',
-              ),
-
-
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: NumbersManage.horizontalLoginAndRegister,
-              vertical: NumbersManage.verticalLoginAndRegister,
+              hint: 'Enter Password here',
+              label: 'Password',
             ),
-          ),
 
-          InkWell(
-            onTap: login,
-            child: Container(
-              margin: EdgeInsets.symmetric(
-                vertical: NumbersManage.verticalLoginAndRegister2,
-                horizontal: NumbersManage.horizontalLoginAndRegister2,
-              ),
-
-              height:
-              MediaQuery.of(context).size.height * NumbersManage.nextHeight,
-              decoration: StyleWidgetManage.nextButtonDecoration,
-              child: Center(
-                child: Text('Login', style: TextStyleManage.nextButton),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: NumbersManage.horizontalLoginAndRegister,
+                vertical: NumbersManage.verticalLoginAndRegister,
               ),
             ),
-          ),
-        ],
+
+            InkWell(
+              onTap: login,
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                  vertical: NumbersManage.verticalLoginAndRegister2,
+                  horizontal: NumbersManage.horizontalLoginAndRegister2,
+                ),
+
+                height:
+                    MediaQuery.of(context).size.height *
+                    NumbersManage.nextHeight,
+                decoration: StyleWidgetManage.nextButtonDecoration,
+                child: Center(
+                  child: Text('Login', style: TextStyleManage.nextButton),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-      ));
+    );
   }
 }
