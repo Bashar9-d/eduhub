@@ -414,8 +414,8 @@ class _SectionsScreenState extends State<SectionsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _openAddSectionDialog,
-        child: const Icon(Icons.add),
         tooltip: 'Add Section',
+        child: const Icon(Icons.add),
       ),
     );
   }
