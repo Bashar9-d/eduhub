@@ -29,7 +29,7 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              prefs.getString("role") == "student" ? BottomNavBar() : Teacher(),
+              prefs.getString("role") == "student" ? BottomNavBar() : CourseListScreen(),
         ),
       );
     }

@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (result["data"]["role"] == "teacher"){
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Teacher()),
+          MaterialPageRoute(builder: (context) => const CourseListScreen()),
         );}
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("تم تسجيل الدخول بنجاح ✅")),

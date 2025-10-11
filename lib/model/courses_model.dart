@@ -4,6 +4,7 @@ class CoursesModel {
   String? description;
   String? thumbnail;
   int? teacherId;
+  String? createdAt;
   String? teacherName;
 
   CoursesModel(
@@ -12,15 +13,17 @@ class CoursesModel {
         this.description,
         this.thumbnail,
         this.teacherId,
+        this.createdAt,
         this.teacherName});
 
   CoursesModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = int.parse(json['id'].toString());
     title = json['title'];
     description = json['description'];
     thumbnail = json['thumbnail'];
-    teacherId = json['teacher_id'];
-    teacherName = json['teacher_name'];
+    teacherId = int.parse(json['teacher_id'].toString());
+    createdAt = json['created_at'];
+    teacherName = json['teacher_name'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -30,6 +33,7 @@ class CoursesModel {
     data['description'] = this.description;
     data['thumbnail'] = this.thumbnail;
     data['teacher_id'] = this.teacherId;
+    data['created_at'] = this.createdAt;
     data['teacher_name'] = this.teacherName;
     return data;
   }

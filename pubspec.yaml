@@ -45,6 +45,10 @@ dependencies:
   intl: any
   flutter_screenutil: ^5.9.3
   http: ^1.5.0
+  supabase_flutter: ^2.10.3
+  file_picker: ^10.3.3
+  path: ^1.9.1
+  image_picker: ^1.2.0
 
 dev_dependencies:
   flutter_test:

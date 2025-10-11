@@ -6,8 +6,8 @@ class SectionsModel {
   SectionsModel({this.id, this.courseId, this.title});
 
   SectionsModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    courseId = json['course_id'];
+    id =int.parse(json['id'].toString()) ;
+    courseId = int.parse(json['course_id'].toString());
     title = json['title'];
   }
 
