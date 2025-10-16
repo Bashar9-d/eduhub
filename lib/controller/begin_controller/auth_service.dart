@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../model/users_model.dart';
+import '../../model/users_model.dart';
 
 class AuthService {
   final String baseUrl = "https://eduhub44.atwebpages.com/users.php";

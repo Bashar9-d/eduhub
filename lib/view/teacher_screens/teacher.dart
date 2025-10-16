@@ -12,6 +12,7 @@ import 'sections_screen.dart'; // استيراد شاشة الأقسام
 
 class CourseListScreen extends StatefulWidget {
   const CourseListScreen({super.key});
+
   @override
   State<CourseListScreen> createState() => _CourseListScreenState();
 }
@@ -275,6 +276,7 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
                                                       ],
                                                     ),
                                                   );
+
 
                                                   if (ok == true) {
                                                     try {

@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../constant/image_manage.dart';
 import '../../constant/style_widget_manage.dart';
 import '../student_screens/bottom_nav_bar.dart';
+import '../teacher_screens/bottom_nav_bar.dart';
 import '../teacher_screens/teacher.dart';
 import 'login_screen.dart';
 
@@ -29,7 +30,7 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              prefs.getString("role") == "student" ? BottomNavBar() : CourseListScreen(),
+              prefs.getString("role") == "student" ? BottomNavBar() : BottomNavBarTeacher(),
         ),
       );
     }

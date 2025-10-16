@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../constant/color_manage.dart';
 import '../../constant/numbers_manage.dart';
 import '../../constant/text_field_manage.dart';
-import '../../controller/auth_service.dart';
+import '../../controller/begin_controller/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

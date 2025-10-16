@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
+
             title: 'Edu hub',
            /* localizationsDelegates: [
               AppLocalizations.delegate,

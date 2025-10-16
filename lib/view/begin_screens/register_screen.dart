@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../constant/numbers_manage.dart';
 import '../../constant/text_field_manage.dart';
-import '../../controller/auth_service.dart';
+import '../../controller/begin_controller/auth_service.dart';
 import '../../model/users_model.dart';
 
 class RegisterScreen extends StatefulWidget {
