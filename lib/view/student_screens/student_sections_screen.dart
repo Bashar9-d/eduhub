@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../controller/enrollment_service.dart';
 import '../../controller/sections_service.dart';
 import '../../controller/lessons_service.dart';
 import '../../model/sections_model.dart';
@@ -23,7 +25,7 @@ class CourseDetailPage extends StatefulWidget {
 class _CourseDetailPageState extends State<CourseDetailPage> {
   final SectionsService sectionsService = SectionsService();
   final LessonsService lessonsService = LessonsService();
-
+  final EnrollmentService enrollmentService = EnrollmentService();
   late Future<List<SectionsModel>> _futureSections;
   int? _expandedSectionIndex;
   LessonsModel? _selectedLesson;
@@ -311,37 +313,40 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
           // زر الرجوع
           Positioned(
-            top: 40,
-            left: 16,
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.black),
-                onPressed: () => Navigator.pop(context),
+            bottom: 20,
+            left: 20,
+            right: 20,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                int userId = prefs.getInt('id') ?? 0;
+
+                if (userId == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Please login first")),
+                  );
+                  return;
+                }
+
+                bool success = await enrollmentService.enrollStudent(userId, widget.course.id!);
+                if (success) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Course added to My Learning")),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("You are already enrolled")),
+                  );
+                }
+              },
+              child: const Text("Register", style: TextStyle(fontSize: 18, color: Colors.white)),
             ),
           ),
-
-          // زر التسجيل
-          if (!widget.isPurchased)
-            Positioned(
-              bottom: 20,
-              left: 20,
-              right: 20,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Register clicked")),
-                  );
-                },
-                child: const Text("Register", style: TextStyle(fontSize: 18, color: Colors.white)),
-              ),
-            ),
         ],
       ),
     );

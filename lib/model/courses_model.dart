@@ -7,34 +7,35 @@ class CoursesModel {
   String? createdAt;
   String? teacherName;
 
-  CoursesModel(
-      {this.id,
-        this.title,
-        this.description,
-        this.thumbnail,
-        this.teacherId,
-        this.createdAt,
-        this.teacherName});
+  CoursesModel({
+    this.id,
+    this.title,
+    this.description,
+    this.thumbnail,
+    this.teacherId,
+    this.createdAt,
+    this.teacherName,
+  });
 
   CoursesModel.fromJson(Map<String, dynamic> json) {
-    id = int.parse(json['id'].toString());
-    title = json['title'];
-    description = json['description'];
-    thumbnail = json['thumbnail'];
-    teacherId = int.parse(json['teacher_id'].toString());
-    createdAt = json['created_at'];
-    teacherName = json['teacher_name'].toString();
+    id = int.tryParse(json['id']?.toString() ?? '') ?? 0;
+    title = json['title']?.toString() ?? '';
+    description = json['description']?.toString() ?? '';
+    thumbnail = json['thumbnail']?.toString() ?? '';
+    teacherId = int.tryParse(json['teacher_id']?.toString() ?? '') ?? 0;
+    createdAt = json['created_at']?.toString() ?? '';
+    teacherName = json['teacher_name']?.toString() ?? '';
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['thumbnail'] = this.thumbnail;
-    data['teacher_id'] = this.teacherId;
-    data['created_at'] = this.createdAt;
-    data['teacher_name'] = this.teacherName;
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['thumbnail'] = thumbnail;
+    data['teacher_id'] = teacherId;
+    data['created_at'] = createdAt;
+    data['teacher_name'] = teacherName;
     return data;
   }
 }

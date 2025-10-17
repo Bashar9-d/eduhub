@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../view/student_screens/courses_store_page.dart';
-import '../view/student_screens/mylearning.dart';
+import '../view/student_screens/my_learning.dart';
 import '../view/student_screens/setting.dart';
 import '../view/teacher_screens/teacher_courses.dart';
 //final List<Widget> _student=[A(),B(),C()];

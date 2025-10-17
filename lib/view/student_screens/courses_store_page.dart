@@ -18,7 +18,8 @@ class CoursesStorePage extends StatefulWidget {
 class _CoursesStorePageState extends State<CoursesStorePage> {
   final CoursesService coursesService = CoursesService();
   late Future<List<CoursesModel>> _futureCourses;
- late String userName ;
+  String userName = 'User';
+
 
   List<Color> colorPalette = [
     Colors.purple,
