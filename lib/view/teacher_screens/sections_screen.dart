@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -5,7 +6,7 @@ import '../../controller/sections_service.dart';
 import '../../controller/lessons_service.dart';
 import '../../model/sections_model.dart';
 import '../../model/lessons_model.dart';
-import 'dart:io';
+
 import 'package:image_picker/image_picker.dart';
 class SectionsScreen extends StatefulWidget {
   final int courseId;
@@ -385,6 +386,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                   if (lessons.isEmpty) const ListTile(title: Center(child: CircularProgressIndicator(),)),
                   ...lessons.map((l) => ListTile(
                     title: Text(l.title ?? ''),
+                    subtitle: Text(l.videoUrl ?? ''),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

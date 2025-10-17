@@ -1,24 +1,22 @@
-import 'package:eduhub/view/teacher_screens/chat.dart';
-import 'package:eduhub/view/teacher_screens/setting.dart';
-import 'package:eduhub/view/teacher_screens/teacher.dart';
+
 import 'package:flutter/material.dart';
 
-import '../view/student_screens/home.dart';
+import '../view/student_screens/courses_store_page.dart';
 import '../view/student_screens/mylearning.dart';
 import '../view/student_screens/setting.dart';
+import '../view/teacher_screens/teacher_courses.dart';
 //final List<Widget> _student=[A(),B(),C()];
 
 
 
 class BottomNavBarController extends ChangeNotifier{
-  final List<Widget> _studentScreens=[HomeStudent(),MyLearningScreen(),SettingScreenStudent()];
-  final List<Widget> _teacherScreens=[CourseListScreen(),ChatScreen(),SettingScreen()];
+  final List<Widget> _studentScreens=[CoursesStorePage(),MyLearningScreen(),SettingScreenStudent()];
+
 
   int _currentIndex=0;
 
   List<Widget> get getScreens=>_studentScreens;
   int get getCurrentIndex=>_currentIndex;
-  List<Widget> get getTeacherScreens=>_teacherScreens;
 
 
   void onPageChanged(int value){
