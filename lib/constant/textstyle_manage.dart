@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'color_manage.dart';
 
 class TextStyleManage {
-  static  TextStyle titleOnBoarding = TextStyle(
+  static TextStyle titleOnBoarding = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 23.sp,
   );
@@ -13,7 +13,6 @@ class TextStyleManage {
     color: ColorManage.subtitleOnBoarding,
     fontFamily: 'Poppins',
     fontWeight: FontWeight.w400,
-
   );
 
   // static const TextStyle nextButtonOnBoarding = TextStyle(
@@ -21,15 +20,45 @@ class TextStyleManage {
   //   fontSize: 16,
   //   fontWeight: FontWeight.w600,
   // );
-  static  TextStyle skipButtonOnBoarding = TextStyle(
+  static TextStyle skipButtonOnBoarding = TextStyle(
     color: Colors.white,
     fontSize: 16.sp,
     fontWeight: FontWeight.w600,
   );
-  static  TextStyle nextButton = TextStyle(
+
+  //
+  static TextStyle listTileHomeStudentName = TextStyle(
+    color: Colors.white,
+    fontSize: 32.sp,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle listTileHomeStudentHello = TextStyle(
+    color: Colors.black,
+    fontSize: 32.sp,
+    fontWeight: FontWeight.w600,
+  );
+  static TextStyle nextButton = TextStyle(
     color: Colors.white,
     fontSize: 16.sp,
     fontWeight: FontWeight.w600,
+  );
+
+  static  TextStyle coursesTypeStyle = TextStyle(
+    color: Colors.white,
+    fontSize: 30.sp,
+    fontWeight: FontWeight.w500,
+  );
+
+  static TextStyle courseNameInGridView= TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 18,
+  );
+
+  static TextStyle courseTypeInGridView=TextStyle(
+    color: Colors.grey,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
   );
 
   static const textInDropDown = TextStyle(color: Color(0xFF616161));

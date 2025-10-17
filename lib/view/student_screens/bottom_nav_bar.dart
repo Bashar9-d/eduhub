@@ -1,11 +1,14 @@
 import 'package:eduhub/controller/bottom_nav_bar_controller.dart';
+import 'package:eduhub/model/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../constant/color_manage.dart';
 
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({super.key});
+  BottomNavBar({super.key});
+
+  UsersModel newUser = UsersModel();
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +27,35 @@ class BottomNavBar extends StatelessWidget {
               highlightColor: Colors.transparent, // 🔥 يلغي اللمعة
               splashFactory: NoSplash.splashFactory, // 🔥 يلغي التأثير كليًا
             ),
-            child: BottomNavigationBar(items: [
-              _buildBNBItem(Icons.home_outlined, bottomNavBarController.getCurrentIndex == 0),
-              _buildBNBItem(Icons.abc_outlined, bottomNavBarController.getCurrentIndex == 1),
-              _buildBNBItem(Icons.settings_outlined, bottomNavBarController.getCurrentIndex == 2),
-            ],
+            child: BottomNavigationBar(
+              backgroundColor: Colors.white,
+              items: [
+                _buildBNBItem(
+                  Icons.home_outlined,
+                  bottomNavBarController.getCurrentIndex == 0,
+                ),
+                _buildBNBItem(
+                  Icons.abc_outlined,
+                  bottomNavBarController.getCurrentIndex == 1,
+                ),
+                _buildBNBItem(
+                  Icons.settings_outlined,
+                  bottomNavBarController.getCurrentIndex == 2,
+                ),
+              ],
               currentIndex: bottomNavBarController.getCurrentIndex,
               selectedItemColor: Colors.black,
               unselectedItemColor: ColorManage.subtitleOnBoarding,
-              showSelectedLabels:false ,showUnselectedLabels: false,
-              onTap:(value) => bottomNavBarController.onPageChanged(value),
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              onTap: (value) => bottomNavBarController.onPageChanged(value),
             ),
           );
         },
       ),
     );
   }
+
   BottomNavigationBarItem _buildBNBItem(IconData icon, bool isSelected) {
     return BottomNavigationBarItem(
       icon: Column(
@@ -63,5 +79,4 @@ class BottomNavBar extends StatelessWidget {
       label: '',
     );
   }
-
 }

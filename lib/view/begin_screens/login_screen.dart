@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (result["data"]["role"] == "student") {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const BottomNavBar()),
+            MaterialPageRoute(builder: (context) =>  BottomNavBar()),
           );
         }
         if (result["data"]["role"] == "teacher"){

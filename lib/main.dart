@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:eduhub/controller/bottom_nav_bar_controller.dart';
 import 'package:eduhub/view/begin_screens/splash_screen.dart';
+import 'package:eduhub/view/student_screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
             // theme: ThemeData(
             //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             // ),
-            home: SplashScreen(),
+            home: BottomNavBar(),
           ),
         );
       },//
