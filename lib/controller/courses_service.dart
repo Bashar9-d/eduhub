@@ -6,9 +6,22 @@ import 'group_service.dart';
 
 
 class CoursesService {
-  // تأكد من وضع http:// أو https:// حسب استضافتك
+
   static const String baseUrl = 'http://eduhub44.atwebpages.com/courses.php';
 
+  Future<List<CoursesModel>> getCoursesByCategory(int categoryId) async {
+    final uri = Uri.parse('$baseUrl?action=get_by_category&category_id=$categoryId');
+    final res = await http.get(uri);
+    if (res.statusCode == 200) {
+      final data = json.decode(res.body);
+      if (data['success'] == true) {
+        return List<CoursesModel>.from(data['data'].map((x) => CoursesModel.fromJson(x)));
+      }
+      return [];
+    } else {
+      throw Exception('Failed to load courses by category');
+    }
+  }
   // GET all
   Future<List<CoursesModel>> getAllCourses() async {
     final uri = Uri.parse('$baseUrl?action=get_all');

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../controller/courses_service.dart';
 import '../../model/courses_model.dart';
 import '../teacher_screens/sections_screen.dart';
+import 'courses_by_category_page.dart';
 
 
 class CoursesStorePage extends StatefulWidget {
@@ -75,7 +76,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => CourseDetailPage( course: course, isPurchased: false,),
+        builder: (_) => StudentSectionsScreen( course: course, isPurchased: false,),
       ),
     );
   }
@@ -133,21 +134,36 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                 itemCount: _categories.length,
                 itemBuilder: (ctx, i) {
                   final cat = _categories[i];
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: cat['color'],
-                        borderRadius: BorderRadius.circular(16),
+                  return // داخل ListView.builder للـ categories
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CoursesByCategoryPage(
+                                categoryId: int.parse(cat['id'].toString()),
+                                categoryName: cat['name'],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            color: cat['color'],
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            cat['name'],
+                            style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        cat['name'],
-                        style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  );
+                    );
+
                 },
               ),
             ),

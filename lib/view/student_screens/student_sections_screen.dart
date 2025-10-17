@@ -10,20 +10,20 @@ import '../../model/sections_model.dart';
 import '../../model/lessons_model.dart';
 import '../../model/courses_model.dart';
 
-class CourseDetailPage extends StatefulWidget {
+class StudentSectionsScreen extends StatefulWidget {
   final CoursesModel course;
   final bool isPurchased;
-  const CourseDetailPage({
+  const StudentSectionsScreen({
     super.key,
     required this.course,
     required this.isPurchased,
   });
 
   @override
-  State<CourseDetailPage> createState() => _CourseDetailPageState();
+  State<StudentSectionsScreen> createState() => _StudentSectionsScreenState();
 }
 
-class _CourseDetailPageState extends State<CourseDetailPage> {
+class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
   final SectionsService sectionsService = SectionsService();
   final LessonsService lessonsService = LessonsService();
   final EnrollmentService enrollmentService = EnrollmentService();
