@@ -26,7 +26,7 @@ class BottomNavBar extends StatelessWidget {
             ),
             child: BottomNavigationBar(items: [
               _buildBNBItem(Icons.home_outlined, bottomNavBarController.getCurrentIndex == 0),
-              _buildBNBItem(Icons.abc_outlined, bottomNavBarController.getCurrentIndex == 1),
+              _buildBNBItem(Icons.book_outlined, bottomNavBarController.getCurrentIndex == 1),
               _buildBNBItem(Icons.settings_outlined, bottomNavBarController.getCurrentIndex == 2),
             ],
               currentIndex: bottomNavBarController.getCurrentIndex,
