@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../controller/enrollment_service.dart';
+import '../../controller/group_service.dart';
 import '../../controller/sections_service.dart';
 import '../../controller/lessons_service.dart';
 import '../../model/sections_model.dart';
@@ -322,6 +323,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),
+              // زر التسجيل
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
                 int userId = prefs.getInt('id') ?? 0;
@@ -335,8 +337,14 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
                 bool success = await enrollmentService.enrollStudent(userId, widget.course.id!);
                 if (success) {
+                  // ✅ بعد شراء الكورس نضيف الطالب للقروب
+                  final group = await GroupService.getGroupByCourse(widget.course.id!);
+                  if (group != null) {
+                    await GroupService.addUserToGroup(group.id!, userId);
+                  }
+
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Course added to My Learning")),
+                    const SnackBar(content: Text("Course added & Joined Group ✅")),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -344,6 +352,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                   );
                 }
               },
+
               child: const Text("Register", style: TextStyle(fontSize: 18, color: Colors.white)),
             ),
           ),

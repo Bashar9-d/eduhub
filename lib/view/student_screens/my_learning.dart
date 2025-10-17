@@ -3,6 +3,8 @@ import '../../controller/enrollment_service.dart';
 import '../../model/courses_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'course_detail_page.dart';
+
 class MyLearningScreen extends StatefulWidget {
   const MyLearningScreen({super.key});
 
@@ -55,11 +57,22 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
             itemCount: courses.length,
             itemBuilder: (context, i) {
               final course = courses[i];
-              return ListTile(
+              return  ListTile(
                 leading: Image.network(course.thumbnail ?? '', width: 50, height: 50, fit: BoxFit.cover),
                 title: Text(course.title ?? ''),
                 subtitle: Text(course.description ?? ''),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CourseDetailPage(
+                        course: course
+                      ),
+                    ),
+                  );
+                },
               );
+
             },
           );
         },
