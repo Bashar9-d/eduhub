@@ -1,7 +1,7 @@
 import 'package:eduhub/constant/style_widget_manage.dart';
 import 'package:eduhub/constant/textstyle_manage.dart';
 import 'package:eduhub/view/student_screens/bottom_nav_bar.dart';
-import 'package:eduhub/view/teacher_screens/teacher.dart';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +9,7 @@ import '../../constant/color_manage.dart';
 import '../../constant/numbers_manage.dart';
 import '../../constant/text_field_manage.dart';
 import '../../controller/begin_controller/auth_service.dart';
+import '../teacher_screens/teacher_courses.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
