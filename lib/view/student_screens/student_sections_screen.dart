@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../controller/enrollment_service.dart';
+import '../../controller/group_service.dart';
 import '../../controller/sections_service.dart';
 import '../../controller/lessons_service.dart';
 import '../../model/sections_model.dart';
 import '../../model/lessons_model.dart';
 import '../../model/courses_model.dart';
 
-class CourseDetailPage extends StatefulWidget {
+class StudentSectionsScreen extends StatefulWidget {
   final CoursesModel course;
   final bool isPurchased;
-  const CourseDetailPage({
+  const StudentSectionsScreen({
     super.key,
     required this.course,
     required this.isPurchased,
   });
 
   @override
-  State<CourseDetailPage> createState() => _CourseDetailPageState();
+  State<StudentSectionsScreen> createState() => _StudentSectionsScreenState();
 }
 
-class _CourseDetailPageState extends State<CourseDetailPage> {
+class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
   final SectionsService sectionsService = SectionsService();
   final LessonsService lessonsService = LessonsService();
-
+  final EnrollmentService enrollmentService = EnrollmentService();
   late Future<List<SectionsModel>> _futureSections;
   int? _expandedSectionIndex;
   LessonsModel? _selectedLesson;
@@ -311,37 +314,48 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
           // زر الرجوع
           Positioned(
-            top: 40,
-            left: 16,
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.black),
-                onPressed: () => Navigator.pop(context),
+            bottom: 20,
+            left: 20,
+            right: 20,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),
+              // زر التسجيل
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                int userId = prefs.getInt('id') ?? 0;
+
+                if (userId == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Please login first")),
+                  );
+                  return;
+                }
+
+                bool success = await enrollmentService.enrollStudent(userId, widget.course.id!);
+                if (success) {
+                  // ✅ بعد شراء الكورس نضيف الطالب للقروب
+                  final group = await GroupService.getGroupByCourse(widget.course.id!);
+                  if (group != null) {
+                    await GroupService.addUserToGroup(group.id!, userId);
+                  }
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Course added & Joined Group ✅")),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("You are already enrolled")),
+                  );
+                }
+              },
+
+              child: const Text("Register", style: TextStyle(fontSize: 18, color: Colors.white)),
             ),
           ),
-
-          // زر التسجيل
-          if (!widget.isPurchased)
-            Positioned(
-              bottom: 20,
-              left: 20,
-              right: 20,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Register clicked")),
-                  );
-                },
-                child: const Text("Register", style: TextStyle(fontSize: 18, color: Colors.white)),
-              ),
-            ),
         ],
       ),
     );

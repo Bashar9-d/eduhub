@@ -27,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final id = prefs.getInt('id') ?? 0;
     setState(() {
       _teacherId = id;
-      // تحديث الصفحات بعد معرفة teacherId
       _pages.clear();
       _pages.add(const CourseListScreen());
       _pages.add(_teacherId != null ? GroupPage(teacherId: _teacherId!) : const Center(child: Text('No teacher ID')));

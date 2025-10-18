@@ -5,7 +5,7 @@ import '../../model/message_model.dart';
 
 class ChatPage extends StatefulWidget {
   final int groupId;
-  final int userId; // معرف المستخدم لإرسال الرسائل
+  final int userId;
 
   const ChatPage({super.key, required this.groupId, required this.userId});
 
@@ -25,11 +25,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _loadMessagesPeriodically() {
-    // جلب الرسائل أول مرة
     _fetchMessages();
-
-    // تحديث الرسائل كل ثانيتين
-    _timer = Timer.periodic(const Duration(seconds: 2), (_) => _fetchMessages());
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) => _fetchMessages());
   }
 
   void _fetchMessages() async {
@@ -43,14 +40,16 @@ class _ChatPageState extends State<ChatPage> {
     final msg = _controller.text.trim();
     if (msg.isEmpty) return;
 
+    _controller.clear(); // مسح فور الضغط
+    _fetchMessages(); // تحديث فوري للمحادثة قبل إرسال
+
     final success = await GroupService.sendMessage(widget.groupId, widget.userId, msg);
-    if (success) {
-      _controller.clear();
-      _fetchMessages(); // تحديث الرسائل بعد الإرسال مباشرة
-    } else {
+    if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Failed to send message")),
       );
+    } else {
+      _fetchMessages(); // تحديث بعد التأكيد
     }
   }
 
@@ -65,7 +64,12 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Chat")),
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        title: const Text("Course Group Chat"),
+        backgroundColor: Colors.purple,
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           Expanded(
@@ -78,37 +82,94 @@ class _ChatPageState extends State<ChatPage> {
 
                 final messages = snapshot.data!;
                 if (messages.isEmpty) {
-                  return const Center(child: Text("No messages"));
+                  return const Center(child: Text("No messages yet"));
                 }
 
                 return ListView.builder(
-                  reverse: true, // الأحدث يظهر في الأسفل
+                  reverse: true,
+                  padding: const EdgeInsets.all(10),
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     final msg = messages[messages.length - 1 - index];
-                    return ListTile(
-                      title: Text(msg.userName),
-                      subtitle: Text(msg.message),
-                      trailing: Text(msg.time),
+                    final isMe = msg.senderId == widget.userId;
+                    return Align(
+                      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+                        decoration: BoxDecoration(
+                          color: isMe ? Colors.purple : Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(16),
+                            topRight: const Radius.circular(16),
+                            bottomLeft: Radius.circular(isMe ? 16 : 0),
+                            bottomRight: Radius.circular(isMe ? 0 : 16),
+                          ),
+                          boxShadow: const [
+                            BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (!isMe)
+                              Text(
+                                msg.userName,
+                                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+                              ),
+                            Text(
+                              msg.message,
+                              style: TextStyle(color: isMe ? Colors.white : Colors.black87),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Text(
+                                msg.time,
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: isMe ? Colors.white70 : Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   },
                 );
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            color: Colors.white,
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    decoration: const InputDecoration(hintText: "Type a message"),
+                    decoration: InputDecoration(
+                      hintText: "Type a message",
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                    ),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.send),
+                const SizedBox(width: 6),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(14),
+                    backgroundColor: Colors.purple,
+                  ),
                   onPressed: _sendMessage,
+                  child: const Icon(Icons.send, color: Colors.white),
                 ),
               ],
             ),

@@ -8,6 +8,34 @@ import '../model/message_model.dart';
 const String baseUrl = 'https://eduhub44.atwebpages.com/groups.php';
 
 class GroupService {
+// إضافة طالب إلى القروب الخاص بالكورس
+  static Future<bool> addUserToGroup(int groupId, int userId) async {
+    final uri = Uri.parse('$baseUrl?action=join_group');
+    final body = json.encode({
+      'group_id': groupId,
+      'user_id': userId,
+    });
+
+    final res = await http.post(uri, headers: {'Content-Type': 'application/json'}, body: body);
+    if (res.statusCode == 200) {
+      final data = json.decode(res.body);
+      return data['success'] == true;
+    }
+    return false;
+  }
+// جلب القروب الخاص بالكورس
+  static Future<GroupModel?> getGroupByCourse(int courseId) async {
+    final uri = Uri.parse('$baseUrl?action=get_group_by_course&course_id=$courseId');
+    final res = await http.get(uri);
+
+    if (res.statusCode == 200) {
+      final data = json.decode(res.body);
+      if (data['success'] == true && data['data'] != null) {
+        return GroupModel.fromJson(data['data']);
+      }
+    }
+    return null;
+  }
 
   // جلب جميع القروبات الخاصة بمعلم معين
   static Future<List<GroupModel>> getGroupsByTeacher(int teacherId) async {
