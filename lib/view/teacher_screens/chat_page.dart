@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:eduhub/constant/color_manage.dart';
 import 'package:flutter/material.dart';
 import '../../controller/group_service.dart';
 import '../../model/message_model.dart';
@@ -15,7 +16,8 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
-  final StreamController<List<MessageModel>> _streamController = StreamController.broadcast();
+  final StreamController<List<MessageModel>> _streamController =
+      StreamController.broadcast();
   Timer? _timer;
 
   @override
@@ -26,7 +28,10 @@ class _ChatPageState extends State<ChatPage> {
 
   void _loadMessagesPeriodically() {
     _fetchMessages();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) => _fetchMessages());
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => _fetchMessages(),
+    );
   }
 
   void _fetchMessages() async {
@@ -43,11 +48,15 @@ class _ChatPageState extends State<ChatPage> {
     _controller.clear(); // مسح فور الضغط
     _fetchMessages(); // تحديث فوري للمحادثة قبل إرسال
 
-    final success = await GroupService.sendMessage(widget.groupId, widget.userId, msg);
+    final success = await GroupService.sendMessage(
+      widget.groupId,
+      widget.userId,
+      msg,
+    );
     if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Failed to send message")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Failed to send message")));
     } else {
       _fetchMessages(); // تحديث بعد التأكيد
     }
@@ -67,8 +76,9 @@ class _ChatPageState extends State<ChatPage> {
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: const Text("Course Group Chat"),
-        backgroundColor: Colors.purple,
+        backgroundColor: ColorManage.secondPrimary,
         centerTitle: true,
+        foregroundColor: Colors.white,
       ),
       body: Column(
         children: [
@@ -93,46 +103,67 @@ class _ChatPageState extends State<ChatPage> {
                     final msg = messages[messages.length - 1 - index];
                     final isMe = msg.senderId == widget.userId;
                     return Align(
-                      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-                        decoration: BoxDecoration(
-                          color: isMe ? Colors.purple : Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: const Radius.circular(16),
-                            topRight: const Radius.circular(16),
-                            bottomLeft: Radius.circular(isMe ? 16 : 0),
-                            bottomRight: Radius.circular(isMe ? 0 : 16),
+                      alignment: isMe
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: InkWell(
+                        onLongPress: () {},
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 14,
                           ),
-                          boxShadow: const [
-                            BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (!isMe)
-                              Text(
-                                msg.userName,
-                                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
-                              ),
-                            Text(
-                              msg.message,
-                              style: TextStyle(color: isMe ? Colors.white : Colors.black87),
+                          constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.7,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isMe
+                                ? ColorManage.secondPrimary
+                                : Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(16),
+                              topRight: const Radius.circular(16),
+                              bottomLeft: Radius.circular(isMe ? 16 : 0),
+                              bottomRight: Radius.circular(isMe ? 0 : 16),
                             ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Text(
-                                msg.time,
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (!isMe)
+                                Text(
+                                  msg.userName,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              Text(
+                                msg.message,
                                 style: TextStyle(
-                                  fontSize: 10,
-                                  color: isMe ? Colors.white70 : Colors.grey,
+                                  color: isMe ? Colors.white : Colors.black87,
                                 ),
                               ),
-                            ),
-                          ],
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text(
+                                  msg.time,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: isMe ? Colors.white70 : Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -141,9 +172,8 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.all(12),
             child: Row(
               children: [
                 Expanded(
@@ -151,7 +181,10 @@ class _ChatPageState extends State<ChatPage> {
                     controller: _controller,
                     decoration: InputDecoration(
                       hintText: "Type a message",
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25),
                         borderSide: BorderSide.none,
@@ -166,7 +199,7 @@ class _ChatPageState extends State<ChatPage> {
                   style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(14),
-                    backgroundColor: Colors.purple,
+                    backgroundColor: ColorManage.secondPrimary,
                   ),
                   onPressed: _sendMessage,
                   child: const Icon(Icons.send, color: Colors.white),

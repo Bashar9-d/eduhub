@@ -1,5 +1,8 @@
+import 'package:eduhub/constant/color_manage.dart';
+import 'package:eduhub/view/teacher_screens/setting.dart';
 import 'package:flutter/material.dart';
 
+import '../../constant/textstyle_manage.dart';
 import '../../controller/group_service.dart';
 import '../../model/group_model.dart';
 import 'chat_page.dart';
@@ -25,7 +28,15 @@ class _GroupPageState extends State<GroupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("My Groups")),
+      appBar: AppBar(
+        title: const Text(
+          "Groups",
+          style: TextStyle(fontWeight: FontWeight.w400),
+        ),
+        backgroundColor: ColorManage.firstPrimary,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+      ),
       body: FutureBuilder<List<GroupModel>>(
         future: _groupsFuture,
         builder: (context, snapshot) {
@@ -34,20 +45,73 @@ class _GroupPageState extends State<GroupPage> {
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             final groups = snapshot.data!;
             return ListView.builder(
+              padding: EdgeInsets.symmetric(vertical: 10),
               itemCount: groups.length,
               itemBuilder: (context, index) {
                 final group = groups[index];
-                return ListTile(
-                  title: Text(group.name),
-                  subtitle: Text("Course ID: ${group.courseId}"),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ChatPage(groupId: group.id, userId: widget.teacherId),
+                return GestureDetector(
+                  onLongPressStart: (details) async {
+                    final selected = await showMenu<String>(
+                      context: context,
+                      position: RelativeRect.fromLTRB(
+                        details.globalPosition.dx,
+                        details.globalPosition.dy,
+                        details.globalPosition.dx,
+                        details.globalPosition.dy,
                       ),
+                      items: const [
+                        PopupMenuItem(
+                          value: 'Mark',
+                          child: Text('Mark ar read'),
+                        ),
+                        PopupMenuItem(value: 'Remove', child: Text('Remove')),
+                      ],
                     );
+
+                    if (selected == null) {
+                      return;
+                    }
+                    //Future.microtask(() async {
+                    switch (selected) {
+                      case 'Mark':
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SettingScreen(),
+                          ),
+                        );
+                        break;
+                      case 'Remove':
+                        //Remove Chat from user  Method**
+                        break;
+                    }
+                    // });
                   },
+                  child: ListTile(
+                    leading: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: ColorManage.nonActiveIndicator,
+                      ),
+                      width: 50,
+                      height: 50,
+                    ),
+                    title: Text(group.name, style: TextStyle(fontWeight: FontWeight.w500)),
+                    subtitle: Text("Course ID: ${group.courseId}", style: TextStyle(color: Colors.grey)),
+
+                    trailing: Text('Unread Massage Count here'), //Unread count
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ChatPage(
+                            groupId: group.id,
+                            userId: widget.teacherId,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             );
