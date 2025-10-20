@@ -199,12 +199,14 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                     ),
                   ),
                   CircleAvatar(
-                    //ClipOval best
-                     radius: 28,
-                    backgroundImage: AssetImage(
-                      'assets/default person picture.webp', //'assets/images/profile.png'
-                    ), // صورة البروفايل
-                  ),
+                    radius: 28,
+                    backgroundColor: Colors.grey[300],
+                    child: Icon(
+                      Icons.person,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  )
                 ],
               ),
               const SizedBox(height: 20),
@@ -215,7 +217,11 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                   scrollDirection: Axis.horizontal,
                   itemCount: _categories.length,
                   itemBuilder: (ctx, i) {
-                    final category = _categories[i];
+                    final category = _categories.isNotEmpty
+                        ? _categories[i % _categories.length]
+                        : {"name": "General", "color": Colors.grey};
+
+
                     return // داخل ListView.builder للـ categories
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -310,7 +316,9 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                       itemCount: courses.length,
                       itemBuilder: (ctx, i) {
                         final course = courses.toList()[i];
-                        final category = _categories[i];
+                        final category = i < _categories.length
+                            ? _categories[i]
+                            : {"name": "General", "color": Colors.grey};
                         return GestureDetector(
                           onTap: () => _openSections(course),
                           child: Container(
