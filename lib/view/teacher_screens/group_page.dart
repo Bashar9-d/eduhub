@@ -89,11 +89,11 @@ class _GroupPageState extends State<GroupPage> {
                   },
                   child: ListTile(
                     leading: CircleAvatar(
-                      child: Icon(Icons.group),
+                    child: Icon(Icons.group),
                     ),
                     title: Text(group.name, style: TextStyle(fontWeight: FontWeight.w500)),
 
-
+                    
                     onTap: () {
                       Navigator.push(
                         context,
