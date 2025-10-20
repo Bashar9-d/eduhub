@@ -8,7 +8,7 @@ import '../../controller/group_service.dart';
 import '../../model/sections_model.dart';
 import '../../model/lessons_model.dart';
 import '../../model/courses_model.dart';
-import '../teacher_screens/chat_page.dart';
+import '../chat_page.dart';
 
 class CourseDetailPage extends StatefulWidget {
   final CoursesModel course;

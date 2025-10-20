@@ -1,11 +1,11 @@
 import 'package:eduhub/constant/color_manage.dart';
-import 'package:eduhub/view/teacher_screens/setting.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/textstyle_manage.dart';
 import '../../controller/group_service.dart';
 import '../../model/group_model.dart';
-import 'chat_page.dart';
+import '../chat_page.dart';
+import '../setting.dart';
 
 class GroupPage extends StatefulWidget {
   final int teacherId;
@@ -77,7 +77,7 @@ class _GroupPageState extends State<GroupPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SettingScreen(),
+                            builder: (context) => Setting(),
                           ),
                         );
                         break;

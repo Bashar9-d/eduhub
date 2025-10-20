@@ -1,7 +1,8 @@
-import 'package:eduhub/view/teacher_screens/setting.dart';
+
 import 'package:eduhub/view/teacher_screens/teacher_courses.dart';
 import 'package:flutter/material.dart';
 import '../../constant/color_manage.dart';
+import '../setting.dart';
 import 'group_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ? GroupPage(teacherId: _teacherId!)
             : const Center(child: Text('No teacher ID')),
       );
-      _pages.add(const SettingScreen());
+      _pages.add(Setting());
     });
   }
 

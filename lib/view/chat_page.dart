@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:eduhub/constant/color_manage.dart';
 import 'package:flutter/material.dart';
-import '../../controller/group_service.dart';
-import '../../model/message_model.dart';
+import '../controller/group_service.dart';
+import '../model/message_model.dart';
 
 class ChatPage extends StatefulWidget {
   final int groupId;

@@ -1,6 +1,7 @@
 import 'package:eduhub/constant/style_widget_manage.dart';
 import 'package:eduhub/constant/textstyle_manage.dart';
 import 'package:eduhub/view/student_screens/bottom_nav_bar.dart';
+import 'package:eduhub/view/teacher_screens/home_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (result["data"]["role"] == "teacher"){
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const CourseListScreen()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
         );}
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("تم تسجيل الدخول بنجاح ✅")),
