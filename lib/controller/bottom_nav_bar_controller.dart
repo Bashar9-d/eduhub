@@ -10,7 +10,7 @@ import '../view/teacher_screens/teacher_courses.dart';
 
 
 class BottomNavBarController extends ChangeNotifier{
-  final List<Widget> _studentScreens=[CoursesStorePage(),MyLearningScreen(),SettingScreenStudent()];
+  final List<Widget> _studentScreens=[CoursesStorePage(),MyLearningScreen(),Setting()];
 
 
   int _currentIndex=0;

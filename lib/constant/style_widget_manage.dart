@@ -25,7 +25,18 @@ class StyleWidgetManage {
       bottomRight: Radius.circular(40.r),
     ),
   );
-
+  static BoxDecoration settingDecoration=BoxDecoration(
+    gradient: LinearGradient(
+      colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
+      begin: Alignment.centerLeft,
+      end: Alignment.centerRight,
+      stops: ColorManage.stopsColor,
+    ),
+    borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(20.r),
+      bottomRight: Radius.circular(20.r),
+    ),
+  );
   static final nextButtonDecoration =BoxDecoration(
     borderRadius: BorderRadius.circular(20.r),
     gradient:
