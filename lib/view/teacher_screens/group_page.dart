@@ -88,18 +88,12 @@ class _GroupPageState extends State<GroupPage> {
                     // });
                   },
                   child: ListTile(
-                    leading: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: ColorManage.nonActiveIndicator,
-                      ),
-                      width: 50,
-                      height: 50,
+                    leading: CircleAvatar(
+                      child: Icon(Icons.group),
                     ),
                     title: Text(group.name, style: TextStyle(fontWeight: FontWeight.w500)),
-                    subtitle: Text("Course ID: ${group.courseId}", style: TextStyle(color: Colors.grey)),
 
-                    trailing: Text('Unread Massage Count here'), //Unread count
+
                     onTap: () {
                       Navigator.push(
                         context,
