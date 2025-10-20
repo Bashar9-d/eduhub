@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../constant/color_manage.dart';
 import '../../controller/enrollment_service.dart';
 import '../../model/courses_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,16 +39,16 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("My Learning")),
       body: userId == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: ColorManage.firstPrimary,))
           : FutureBuilder<List<CoursesModel>>(
         future: _futureCourses,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: ColorManage.firstPrimary,));
           } else if (snapshot.hasError) {
             print("Error: ${snapshot.error}");
-            print("Stack Trace: ${snapshot}");
-            return Center(child: Text("Error: ${snapshot}"));
+            print("Stack Trace: $snapshot");
+            return Center(child: Text("Error: $snapshot"));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text("You have no courses yet."));
           }

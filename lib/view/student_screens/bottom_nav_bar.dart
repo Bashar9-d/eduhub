@@ -20,15 +20,17 @@ class BottomNavBar extends StatelessWidget {
         builder: (context, bottomNavBarController, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              splashColor: Colors.transparent, // 🔥 يلغي الموجة (splash)
-              highlightColor: Colors.transparent, // 🔥 يلغي اللمعة
-              splashFactory: NoSplash.splashFactory, // 🔥 يلغي التأثير كليًا
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashFactory: NoSplash.splashFactory,
+
             ),
             child: BottomNavigationBar(items: [
               _buildBNBItem(Icons.home_outlined, bottomNavBarController.getCurrentIndex == 0),
-              _buildBNBItem(Icons.abc_outlined, bottomNavBarController.getCurrentIndex == 1),
+              _buildBNBItem(Icons.local_mall_outlined, bottomNavBarController.getCurrentIndex == 1),
               _buildBNBItem(Icons.settings_outlined, bottomNavBarController.getCurrentIndex == 2),
             ],
+              backgroundColor: Colors.white,
               currentIndex: bottomNavBarController.getCurrentIndex,
               selectedItemColor: Colors.black,
               unselectedItemColor: ColorManage.subtitleOnBoarding,
@@ -49,8 +51,8 @@ class BottomNavBar extends StatelessWidget {
           const SizedBox(height: 4),
           if (isSelected)
             Container(
-              width: 6,
-              height: 6,
+              width: 8,
+              height: 8,
               decoration: const BoxDecoration(
                 color: ColorManage.firstPrimary,
                 shape: BoxShape.circle,

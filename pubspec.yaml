@@ -50,6 +50,10 @@ dependencies:
   path: ^1.9.1
   image_picker: ^1.2.0
   video_player: ^2.10.0
+  font_awesome_flutter: ^10.9.1
+  flutter_feather_icons: ^2.0.0
+  line_awesome_flutter: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:
