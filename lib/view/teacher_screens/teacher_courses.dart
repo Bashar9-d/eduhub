@@ -9,8 +9,7 @@ import 'package:http/http.dart' as http;
 import '../../constant/color_manage.dart';
 import '../../controller/courses_service.dart';
 
-import 'sections_screen.dart'; // استيراد شاشة الأقسام
-
+import 'sections_screen.dart';
 class CourseListScreen extends StatefulWidget {
   const CourseListScreen({super.key});
 

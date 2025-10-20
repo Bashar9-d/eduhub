@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ? GroupPage(teacherId: _teacherId!)
             : const Center(child: Text('No teacher ID')),
       );
-      _pages.add(const SettingScreen());
+      _pages.add(const SettingsScreen());
     });
   }
 

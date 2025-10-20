@@ -77,7 +77,7 @@ class _GroupPageState extends State<GroupPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SettingScreen(),
+                            builder: (context) => SettingsScreen(),
                           ),
                         );
                         break;

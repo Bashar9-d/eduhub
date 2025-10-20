@@ -30,7 +30,7 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
   late Future<List<SectionsModel>> _futureSections;
   int? _expandedSectionIndex;
   LessonsModel? _selectedLesson;
-  VideoPlayerController? _videoController;
+Vi deoPlayerController? _videoController;
   bool _isVideoInitialized = false;
 
   @override
@@ -41,7 +41,7 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
 
   @override
   void dispose() {
-    _videoController?.dispose();
+    //_videoController?.dispose();
     super.dispose();
   }
 
@@ -51,7 +51,7 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
     }
 
     // الفيديو قد يكون من السيرفر، لذا نستخدم Network
-    _videoController = VideoPlayerController.networkUrl(Uri.parse(lesson.videoUrl ?? "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"));
+   // _videoController = VideoPlayerController.networkUrl(Uri.parse(lesson.videoUrl ?? "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"));
     await _videoController!.initialize();
     _videoController!.play();
 
@@ -83,8 +83,9 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
               ),
               child: _isVideoInitialized && _videoController != null
                   ? AspectRatio(
-                aspectRatio: _videoController!.value.aspectRatio,
-                child: VideoPlayer(_videoController!),
+                     
+                aspectRatio: _videoController!.value.aspectRatio, 
+               child: VideoPlayer(_videoController!), 
               )
                   : (course.thumbnail != null && course.thumbnail!.isNotEmpty
                   ? Image.network(course.thumbnail!, fit: BoxFit.cover)

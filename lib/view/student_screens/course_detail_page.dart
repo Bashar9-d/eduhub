@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:video_player/video_player.dart';
+//import 'package:video_player/video_player.dart';
 
 import '../../controller/sections_service.dart';
 import '../../controller/lessons_service.dart';
@@ -44,12 +44,12 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       await _videoController!.dispose();
     }
 
-    _videoController = VideoPlayerController.networkUrl(
+    /*_videoController = VideoPlayerController.networkUrl(
       Uri.parse(
         lesson.videoUrl ??
             "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
       ),
-    );
+    );*/
     await _videoController!.initialize();
     _videoController!.play();
 
@@ -155,7 +155,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
               child: _isVideoInitialized && _videoController != null
                   ? AspectRatio(
                       aspectRatio: _videoController!.value.aspectRatio,
-                      child: VideoPlayer(_videoController!),
+                     // child: VideoPlayer(_videoController!),
                     )
                   : (course.thumbnail != null && course.thumbnail!.isNotEmpty
                         ? Image.network(course.thumbnail!, fit: BoxFit.cover)
