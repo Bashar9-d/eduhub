@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../constant/color_manage.dart';
 import '../../controller/courses_service.dart';
 import '../../model/courses_model.dart';
 import '../student_screens/student_sections_screen.dart';
@@ -34,7 +35,8 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("All Courses"),
-        backgroundColor: Colors.purple,
+        backgroundColor: ColorManage.secondPrimary,
+        foregroundColor: Colors.white,
       ),
       body: FutureBuilder<List<CoursesModel>>(
         future: _futureCourses,
@@ -103,7 +105,7 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
-                          "${course.description ?? "Unknown"}",
+                          course.description ?? "Unknown",
                           style: TextStyle(color: Colors.grey[600], fontSize: 12),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

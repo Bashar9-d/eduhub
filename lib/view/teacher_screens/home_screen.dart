@@ -2,7 +2,7 @@
 import 'package:eduhub/view/teacher_screens/teacher_courses.dart';
 import 'package:flutter/material.dart';
 import '../../constant/color_manage.dart';
-import '../setting.dart';
+import '../settings_screens/setting.dart';
 import 'group_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

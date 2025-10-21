@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../controller/group_service.dart';
 import '../../model/group_model.dart';
 import '../chat_page.dart';
-import '../setting.dart';
+import '../settings_screens/setting.dart';
 
 class GroupPage extends StatefulWidget {
   final int teacherId;

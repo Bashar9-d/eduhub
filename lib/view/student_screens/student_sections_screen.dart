@@ -1,3 +1,5 @@
+import 'package:eduhub/constant/color_manage.dart';
+import 'package:eduhub/constant/style_widget_manage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
@@ -13,6 +15,7 @@ import '../../model/courses_model.dart';
 class StudentSectionsScreen extends StatefulWidget {
   final CoursesModel course;
   final bool isPurchased;
+
   const StudentSectionsScreen({
     super.key,
     required this.course,
@@ -51,7 +54,12 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
     }
 
     // الفيديو قد يكون من السيرفر، لذا نستخدم Network
-    _videoController = VideoPlayerController.networkUrl(Uri.parse(lesson.videoUrl ?? "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"));
+    _videoController = VideoPlayerController.networkUrl(
+      Uri.parse(
+        lesson.videoUrl ??
+            "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
+      ),
+    );
     await _videoController!.initialize();
     _videoController!.play();
 
@@ -69,17 +77,18 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
   Widget build(BuildContext context) {
     final course = widget.course;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(course.title ?? ''),
-        centerTitle: true,
-        backgroundColor: Colors.purple,
-        foregroundColor: Colors.white,),
+      // appBar: AppBar(
+      //         title: Text(course.title ?? ''),
+      //         centerTitle: true,
+      //         backgroundColor: Colors.purple,
+      //         foregroundColor: Colors.white,
+      //       ),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
           // صورة أو فيديو الكورس
           SizedBox(
-            height: 260,
+            height: 270,
             width: double.infinity,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
@@ -88,12 +97,12 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
               ),
               child: _isVideoInitialized && _videoController != null
                   ? AspectRatio(
-                aspectRatio: _videoController!.value.aspectRatio,
-                child: VideoPlayer(_videoController!),
-              )
+                      aspectRatio: _videoController!.value.aspectRatio,
+                      child: VideoPlayer(_videoController!),
+                    )
                   : (course.thumbnail != null && course.thumbnail!.isNotEmpty
-                  ? Image.network(course.thumbnail!, fit: BoxFit.cover)
-                  : Container(color: Colors.purple.withOpacity(0.2))),
+                        ? Image.network(course.thumbnail!, fit: BoxFit.cover)
+                        : Container(color: Colors.purple.withOpacity(0.2))),
             ),
           ),
 
@@ -109,7 +118,11 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
                   boxShadow: [
-                    BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, -2)),
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 8,
+                      offset: Offset(0, -2),
+                    ),
                   ],
                 ),
                 child: SingleChildScrollView(
@@ -118,9 +131,27 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // عنوان الكورس
+                      Center(
+                        child: Container(
+                          width: 85,
+                          height: 5,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            color: ColorManage.nonActiveIndicator,
+                          ),
+                        ),
+                      ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          //back button
+                          // IconButton(
+                          //   onPressed: () {
+                          //     Navigator.pop(context);
+                          //   },
+                          //   icon: Icon(Icons.arrow_back_outlined),
+                          // ),
                           Expanded(
                             child: Text(
                               _selectedLesson?.title ?? course.title ?? '',
@@ -131,16 +162,26 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.purple[100],
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: const Row(
                               children: [
-                                Icon(Icons.schedule, color: Colors.purple, size: 16),
+                                Icon(
+                                  Icons.schedule,
+                                  color: Colors.purple,
+                                  size: 16,
+                                ),
                                 SizedBox(width: 4),
-                                Text("13 Min", style: TextStyle(color: Colors.purple)),
+                                Text(
+                                  "13 Min",
+                                  style: TextStyle(color: Colors.purple),
+                                ),
                               ],
                             ),
                           ),
@@ -156,27 +197,43 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
                         children: const [
                           Icon(Icons.star, color: Colors.amber, size: 20),
                           SizedBox(width: 4),
-                          Text("4.8 (2k Reviews)", style: TextStyle(fontWeight: FontWeight.w500)),
+                          Row(
+                            children: [
+                              Text(
+                                "4.8 ",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                "(2k Reviews)",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorManage.subtitleOnBoarding,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                       const SizedBox(height: 16),
                       Text(
                         """
-${widget.course.description}
-
+${widget.course.description}      
 Explore lessons of this course below. The first section is open for all.""",
                         style: TextStyle(color: Colors.grey[700], height: 1.5),
                       ),
                       const SizedBox(height: 20),
 
                       // Tabs
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _tabButton("Playlist", true),
-                          _tabButton("Review", false),
-                          _tabButton("Related", false),
-                        ],
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _tabButton("Playlist", true),
+                            _tabButton("Review", false),
+                            _tabButton("Related", false),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 16),
 
@@ -184,15 +241,20 @@ Explore lessons of this course below. The first section is open for all.""",
                       FutureBuilder<List<SectionsModel>>(
                         future: _futureSections,
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
                           } else if (snapshot.hasError) {
                             return Text("Error: ${snapshot.error}");
-                          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
                             return const Text("No sections available.");
                           }
 
                           final sections = snapshot.data!;
+                          final category = snapshot.data!;
                           return Column(
                             children: sections.asMap().entries.map((entry) {
                               final index = entry.key;
@@ -206,13 +268,16 @@ Explore lessons of this course below. The first section is open for all.""",
                                     onTap: locked
                                         ? null
                                         : () {
-                                      setState(() {
-                                        _expandedSectionIndex =
-                                        isExpanded ? null : index;
-                                      });
-                                    },
+                                            setState(() {
+                                              _expandedSectionIndex = isExpanded
+                                                  ? null
+                                                  : index;
+                                            });
+                                          },
                                     child: Container(
-                                      margin: const EdgeInsets.symmetric(vertical: 8),
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 8,
+                                      ),
                                       padding: const EdgeInsets.all(14),
                                       decoration: BoxDecoration(
                                         color: Colors.grey[100],
@@ -227,28 +292,36 @@ Explore lessons of this course below. The first section is open for all.""",
                                               color: locked
                                                   ? Colors.grey[300]
                                                   : Colors.purple[100],
-                                              borderRadius: BorderRadius.circular(14),
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
                                             ),
                                             child: Icon(
-                                              locked ? Icons.lock : Icons.play_arrow,
-                                              color: locked ? Colors.grey : Colors.purple,
+                                              locked
+                                                  ? Icons.lock
+                                                  : Icons.play_arrow,
+                                              color: locked
+                                                  ? Colors.grey
+                                                  : Colors.purple,
                                             ),
                                           ),
                                           const SizedBox(width: 14),
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   section.title ?? '',
                                                   style: const TextStyle(
-                                                      fontWeight: FontWeight.bold),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                                 const SizedBox(height: 4),
                                                 Text(
                                                   "Section ${index + 1}",
-                                                  style: TextStyle(color: Colors.grey[600]),
+                                                  style: TextStyle(
+                                                    color: Colors.grey[600],
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -259,7 +332,7 @@ Explore lessons of this course below. The first section is open for all.""",
                                                   ? Icons.keyboard_arrow_up
                                                   : Icons.keyboard_arrow_down,
                                               color: Colors.purple,
-                                            )
+                                            ),
                                         ],
                                       ),
                                     ),
@@ -277,12 +350,16 @@ Explore lessons of this course below. The first section is open for all.""",
                                             child: CircularProgressIndicator(),
                                           );
                                         } else if (lessonSnap.hasError) {
-                                          return Text("Error: ${lessonSnap.error}");
+                                          return Text(
+                                            "Error: ${lessonSnap.error}",
+                                          );
                                         } else if (!lessonSnap.hasData ||
                                             lessonSnap.data!.isEmpty) {
                                           return const Padding(
                                             padding: EdgeInsets.all(8.0),
-                                            child: Text("No lessons available."),
+                                            child: Text(
+                                              "No lessons available.",
+                                            ),
                                           );
                                         }
 
@@ -290,13 +367,20 @@ Explore lessons of this course below. The first section is open for all.""",
                                         return Column(
                                           children: lessons.map((lesson) {
                                             return ListTile(
-                                              contentPadding: const EdgeInsets.only(left: 20),
-                                              leading: const Icon(Icons.play_circle_fill,
-                                                  color: Colors.purple),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                    left: 20,
+                                                  ),
+                                              leading: const Icon(
+                                                Icons.play_circle_fill,
+                                                color: Colors.purple,
+                                              ),
                                               title: Text(lesson.title ?? ''),
                                               subtitle: Text(
-                                                "${lesson.duration ?? '10 min'}",
-                                                style: TextStyle(color: Colors.grey[600]),
+                                                lesson.duration ?? '10 min',
+                                                style: TextStyle(
+                                                  color: Colors.grey[600],
+                                                ),
                                               ),
                                               onTap: () {
                                                 _playLesson(lesson);
@@ -325,43 +409,60 @@ Explore lessons of this course below. The first section is open for all.""",
             bottom: 20,
             left: 20,
             right: 20,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              ),
-              // زر التسجيل
-              onPressed: () async {
-                final prefs = await SharedPreferences.getInstance();
-                int userId = prefs.getInt('id') ?? 0;
+            child: Container(
+              decoration: StyleWidgetManage.nextButtonDecoration,
 
-                if (userId == 0) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Please login first")),
-                  );
-                  return;
-                }
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                // زر التسجيل
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  int userId = prefs.getInt('id') ?? 0;
 
-                bool success = await enrollmentService.enrollStudent(userId, widget.course.id!);
-                if (success) {
-                  // ✅ بعد شراء الكورس نضيف الطالب للقروب
-                  final group = await GroupService.getGroupByCourse(widget.course.id!);
-                  if (group != null) {
-                    await GroupService.addUserToGroup(group.id!, userId);
+                  if (userId == 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please login first")),
+                    );
+                    return;
                   }
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Course added & Joined Group ✅")),
+                  bool success = await enrollmentService.enrollStudent(
+                    userId,
+                    widget.course.id!,
                   );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("You are already enrolled")),
-                  );
-                }
-              },
+                  if (success) {
+                    //  بعد شراء الكورس نضيف الطالب للقروب
+                    final group = await GroupService.getGroupByCourse(
+                      widget.course.id!,
+                    );
+                    if (group != null) {
+                      await GroupService.addUserToGroup(group.id!, userId);
+                    }
 
-              child: const Text("Register", style: TextStyle(fontSize: 18, color: Colors.white)),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Course added & Joined Group ✅"),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("You are already enrolled")),
+                    );
+                  }
+                },
+
+                child: const Text(
+                  "Register",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
             ),
           ),
         ],
@@ -371,16 +472,23 @@ Explore lessons of this course below. The first section is open for all.""",
 
   Widget _tabButton(String text, bool active) {
     return Container(
+      width: MediaQuery.of(context).size.width * 0.3,
+      height: MediaQuery.of(context).size.height * 0.05,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-      decoration: BoxDecoration(
-        color: active ? Colors.purple : Colors.grey[200],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: active ? Colors.white : Colors.black,
-          fontWeight: FontWeight.bold,
+      decoration: active
+          ? StyleWidgetManage.nextButtonDecoration
+          : BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(20),
+            ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: active ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

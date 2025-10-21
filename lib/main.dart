@@ -30,7 +30,6 @@ void main() async{
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -38,7 +37,6 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-
         return MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (context) => BottomNavBarController()),

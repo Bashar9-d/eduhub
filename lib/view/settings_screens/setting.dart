@@ -2,8 +2,8 @@ import 'package:eduhub/constant/style_widget_manage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'begin_screens/login_screen.dart';
-import 'begin_screens/toggle_switch_widget.dart';
+import '../begin_screens/login_screen.dart';
+import '../begin_screens/toggle_switch_widget.dart';
 
 class Setting extends StatelessWidget {
   const Setting({super.key});
