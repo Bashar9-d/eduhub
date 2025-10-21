@@ -69,6 +69,11 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
   Widget build(BuildContext context) {
     final course = widget.course;
     return Scaffold(
+      appBar: AppBar(
+        title: Text(course.title ?? ''),
+        centerTitle: true,
+        backgroundColor: Colors.purple,
+        foregroundColor: Colors.white,),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -156,7 +161,10 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        "Explore lessons of this course below. The first section is open for all.",
+                        """
+${widget.course.description}
+
+Explore lessons of this course below. The first section is open for all.""",
                         style: TextStyle(color: Colors.grey[700], height: 1.5),
                       ),
                       const SizedBox(height: 20),

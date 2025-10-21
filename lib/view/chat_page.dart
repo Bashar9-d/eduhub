@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:eduhub/constant/color_manage.dart';
 import 'package:flutter/material.dart';
 import '../controller/group_service.dart';
 import '../model/message_model.dart';
+import '../constant/color_manage.dart';
 
 class ChatPage extends StatefulWidget {
   final int groupId;
@@ -17,7 +17,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
   final StreamController<List<MessageModel>> _streamController =
-      StreamController.broadcast();
+  StreamController.broadcast();
   Timer? _timer;
 
   @override
@@ -30,7 +30,7 @@ class _ChatPageState extends State<ChatPage> {
     _fetchMessages();
     _timer = Timer.periodic(
       const Duration(seconds: 1),
-      (_) => _fetchMessages(),
+          (_) => _fetchMessages(),
     );
   }
 
@@ -45,20 +45,21 @@ class _ChatPageState extends State<ChatPage> {
     final msg = _controller.text.trim();
     if (msg.isEmpty) return;
 
-    _controller.clear(); // مسح فور الضغط
-    _fetchMessages(); // تحديث فوري للمحادثة قبل إرسال
+    _controller.clear();
+    _fetchMessages();
 
     final success = await GroupService.sendMessage(
       widget.groupId,
       widget.userId,
       msg,
     );
+
     if (!success) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Failed to send message")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to send message")),
+      );
     } else {
-      _fetchMessages(); // تحديث بعد التأكيد
+      _fetchMessages();
     }
   }
 
@@ -73,12 +74,16 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: const Color(0xFFF4E1FF),
       appBar: AppBar(
-        title: const Text("Course Group Chat"),
         backgroundColor: ColorManage.secondPrimary,
         centerTitle: true,
+        title: const Text(
+          "Courses Group  Chat",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+        ),
         foregroundColor: Colors.white,
+
       ),
       body: Column(
         children: [
@@ -97,73 +102,80 @@ class _ChatPageState extends State<ChatPage> {
 
                 return ListView.builder(
                   reverse: true,
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(12),
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     final msg = messages[messages.length - 1 - index];
                     final isMe = msg.senderId == widget.userId;
+
                     return Align(
                       alignment: isMe
                           ? Alignment.centerRight
                           : Alignment.centerLeft,
-                      child: InkWell(
-                        onLongPress: () {},
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 4),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 14,
-                          ),
-                          constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * 0.7,
-                          ),
-                          decoration: BoxDecoration(
-                            color: isMe
-                                ? ColorManage.secondPrimary
-                                : Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(16),
-                              topRight: const Radius.circular(16),
-                              bottomLeft: Radius.circular(isMe ? 16 : 0),
-                              bottomRight: Radius.circular(isMe ? 0 : 16),
-                            ),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (!isMe)
-                                Text(
-                                  msg.userName,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              Text(
-                                msg.message,
-                                style: TextStyle(
-                                  color: isMe ? Colors.white : Colors.black87,
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomRight,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        child: Column(
+                          crossAxisAlignment: isMe
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
+                          children: [
+                            if (!isMe) // عرض اسم المرسل فقط إذا لم يكن المستخدم الحالي
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(left: 8, bottom: 3),
                                 child: Text(
-                                  msg.time,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: isMe ? Colors.white70 : Colors.grey,
+                                  msg.userName,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black54,
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 10,
+                              ),
+                              constraints: BoxConstraints(
+                                maxWidth:
+                                MediaQuery.of(context).size.width * 0.7,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isMe
+                                    ? ColorManage.secondPrimary
+                                    : const Color(0xFFE39EFF),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: const Radius.circular(16),
+                                  topRight: const Radius.circular(16),
+                                  bottomLeft:
+                                  Radius.circular(isMe ? 16 : 0),
+                                  bottomRight:
+                                  Radius.circular(isMe ? 0 : 16),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    msg.message,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 3),
+                                  Text(
+                                    msg.time,
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -172,37 +184,38 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
+          // حقل كتابة الرسائل
           Padding(
             padding: const EdgeInsets.all(12),
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: "Type a message",
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: TextField(
+                      controller: _controller,
+                      decoration: const InputDecoration(
+                        hintText: "Type a message",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 18,
+                          vertical: 14,
+                        ),
                       ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200],
                     ),
                   ),
                 ),
-                const SizedBox(width: 6),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(14),
-                    backgroundColor: ColorManage.secondPrimary,
+                const SizedBox(width: 8),
+                CircleAvatar(
+                  backgroundColor: ColorManage.secondPrimary,
+                  radius: 24,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_forward, color: Colors.white),
+                    onPressed: _sendMessage,
                   ),
-                  onPressed: _sendMessage,
-                  child: const Icon(Icons.send, color: Colors.white),
                 ),
               ],
             ),
