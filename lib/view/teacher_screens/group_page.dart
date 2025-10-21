@@ -1,7 +1,5 @@
 import 'package:eduhub/constant/color_manage.dart';
 import 'package:flutter/material.dart';
-
-import '../../constant/textstyle_manage.dart';
 import '../../controller/group_service.dart';
 import '../../model/group_model.dart';
 import '../chat_page.dart';
@@ -29,11 +27,12 @@ class _GroupPageState extends State<GroupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorManage.secondPrimary,
         title: const Text(
           "Groups",
           style: TextStyle(fontWeight: FontWeight.w400),
         ),
-        backgroundColor: ColorManage.firstPrimary,
+
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
