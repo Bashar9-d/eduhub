@@ -1,7 +1,9 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../constant/color_manage.dart';
 import '../../controller/sections_service.dart';
 import '../../controller/lessons_service.dart';
 import '../../controller/group_service.dart';
@@ -22,9 +24,11 @@ class CourseDetailPage extends StatefulWidget {
 class _CourseDetailPageState extends State<CourseDetailPage> {
   final SectionsService sectionsService = SectionsService();
   final LessonsService lessonsService = LessonsService();
+  int? _expandedSectionIndex;
   late Future<List<SectionsModel>> _futureSections;
   LessonsModel? _selectedLesson;
   VideoPlayerController? _videoController;
+  ChewieController? _chewieController;
   bool _isVideoInitialized = false;
 
   @override
@@ -41,7 +45,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
   Future<void> _playLesson(LessonsModel lesson) async {
     if (_videoController != null) {
-      await _videoController!.dispose();
+      _videoController?.dispose();
+      _chewieController?.dispose();
     }
 
     _videoController = VideoPlayerController.networkUrl(
@@ -50,14 +55,31 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
             "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
       ),
     );
+
     await _videoController!.initialize();
-    _videoController!.play();
+
+    _chewieController = ChewieController(
+      videoPlayerController: _videoController!,
+      autoPlay: true,
+      looping: false,
+      allowFullScreen: true,
+      allowMuting: true,
+      showControls: true,
+      allowPlaybackSpeedChanging: true,
+      materialProgressColors: ChewieProgressColors(
+        playedColor: Colors.purple,
+        handleColor: Colors.purpleAccent,
+        bufferedColor: Colors.purple[200]!,
+        backgroundColor: Colors.grey[300]!,
+      ),
+    );
 
     setState(() {
-      _selectedLesson = lesson;
       _isVideoInitialized = true;
+      _selectedLesson = lesson;
     });
   }
+
 
   Future<List<LessonsModel>> _fetchLessons(int sectionId) async {
     return await lessonsService.getLessonsBySection(sectionId);
@@ -99,17 +121,19 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       appBar: // AppBar داخل CourseDetailPage
       AppBar(
         title: Text(course.title ?? ''),
+        centerTitle: true,
+        backgroundColor:  ColorManage.secondPrimary,
+        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: Row(
               children: const [
                 Icon(Icons.group, size: 20),
                 SizedBox(width: 4),
-                Text("Group"),
               ],
             ),
             onPressed: () async {
-              // جلب معرف المستخدم
+
               final prefs = await SharedPreferences.getInstance();
               int userId = prefs.getInt('id') ?? 0;
               if (userId == 0) {
@@ -145,92 +169,259 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       ),
 
       backgroundColor: Colors.white,
-      body: Column(
+      body: Stack(
         children: [
-          // فيديو الكورس أو صورة
+
           SizedBox(
-            height: 220,
+            height: 260,
             width: double.infinity,
             child: ClipRRect(
-              child: _isVideoInitialized && _videoController != null
-                  ? AspectRatio(
-                      aspectRatio: _videoController!.value.aspectRatio,
-                      child: VideoPlayer(_videoController!),
-                    )
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
+              child: _isVideoInitialized && _chewieController != null
+                  ? Chewie(controller: _chewieController!)
+
                   : (course.thumbnail != null && course.thumbnail!.isNotEmpty
-                        ? Image.network(course.thumbnail!, fit: BoxFit.cover)
-                        : Container(color: Colors.purple.withOpacity(0.2))),
+                  ? Image.network(course.thumbnail!, fit: BoxFit.cover)
+                  : Container(color: Colors.purple.withOpacity(0.2))),
             ),
           ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: FutureBuilder<List<SectionsModel>>(
-              future: _futureSections,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text("Error: ${snapshot.error}"));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text("No sections available."));
-                }
 
-                final sections = snapshot.data!;
-                return ListView.builder(
-                  itemCount: sections.length,
-                  itemBuilder: (context, i) {
-                    final section = sections[i];
-                    return ExpansionTile(
-                      title: Text(section.title ?? "Section ${i + 1}"),
-                      children: [
-                        FutureBuilder<List<LessonsModel>>(
-                          future: _fetchLessons(section.id!),
-                          builder: (context, lessonSnap) {
-                            if (lessonSnap.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (lessonSnap.hasError) {
-                              return Text("Error: ${lessonSnap.error}");
-                            } else if (!lessonSnap.hasData ||
-                                lessonSnap.data!.isEmpty) {
-                              return const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text("No lessons available."),
-                              );
-                            }
+          // المحتوى
+          DraggableScrollableSheet(
+            initialChildSize: 0.65,
+            minChildSize: 0.65,
+            maxChildSize: 0.95,
+            builder: (context, scrollController) {
+              return Container(
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, -2)),
+                  ],
+                ),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // عنوان الكورس
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              _selectedLesson?.title ?? course.title ?? '',
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.purple[100],
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Row(
+                              children: [
+                                Icon(Icons.schedule, color: Colors.purple, size: 16),
+                                SizedBox(width: 4),
+                                Text("13 Min", style: TextStyle(color: Colors.purple)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        "Art Course",
+                        style: TextStyle(color: Colors.grey[600], fontSize: 15),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: const [
+                          Icon(Icons.star, color: Colors.amber, size: 20),
+                          SizedBox(width: 4),
+                          Text("4.8 (2k Reviews)", style: TextStyle(fontWeight: FontWeight.w500)),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        "${widget.course.description}",
+                        style: TextStyle(color: Colors.grey[700], height: 1.5),
+                      ),
+                      const SizedBox(height: 20),
 
-                            final lessons = lessonSnap.data!;
-                            return Column(
-                              children: lessons.map((lesson) {
-                                return ListTile(
-                                  leading: const Icon(
-                                    Icons.play_circle_fill,
-                                    color: Colors.purple,
+                      // Tabs
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _tabButton("Playlist", true),
+                          _tabButton("Review", false),
+                          _tabButton("Related", false),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // عرض الأقسام
+                      FutureBuilder<List<SectionsModel>>(
+                        future: _futureSections,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Text("Error: ${snapshot.error}");
+                          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                            return const Text("No sections available.");
+                          }
+
+                          final sections = snapshot.data!;
+                          return Column(
+                            children: sections.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final section = entry.value;
+                              final isExpanded = _expandedSectionIndex == index;
+
+                              return Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _expandedSectionIndex =
+                                        isExpanded ? null : index;
+                                      });
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(vertical: 8),
+                                      padding: const EdgeInsets.all(14),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[100],
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 50,
+                                            width: 50,
+                                            decoration: BoxDecoration(
+                                              color:
+                                              Colors.purple[100],
+                                              borderRadius: BorderRadius.circular(14),
+                                            ),
+                                            child: Icon(
+                                              Icons.play_arrow,
+                                              color:  Colors.purple,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 14),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  section.title ?? '',
+                                                  style: const TextStyle(
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  "Section ${index + 1}",
+                                                  style: TextStyle(color: Colors.grey[600]),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Icon(
+                                            isExpanded
+                                                ? Icons.keyboard_arrow_up
+                                                : Icons.keyboard_arrow_down,
+                                            color: Colors.purple,
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                  title: Text(lesson.title ?? ''),
-                                  subtitle: Text(
-                                    lesson.duration ?? '10 min',
-                                    style: const TextStyle(color: Colors.grey),
-                                  ),
-                                  onTap: () {
-                                    _playLesson(lesson);
-                                  },
-                                );
-                              }).toList(),
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
+
+                                  // عرض الدروس عند الفتح
+                                  if (isExpanded)
+                                    FutureBuilder<List<LessonsModel>>(
+                                      future: _fetchLessons(section.id!),
+                                      builder: (context, lessonSnap) {
+                                        if (lessonSnap.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        } else if (lessonSnap.hasError) {
+                                          return Text("Error: ${lessonSnap.error}");
+                                        } else if (!lessonSnap.hasData ||
+                                            lessonSnap.data!.isEmpty) {
+                                          return const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Text("No lessons available."),
+                                          );
+                                        }
+
+                                        final lessons = lessonSnap.data!;
+                                        return Column(
+                                          children: lessons.map((lesson) {
+                                            return ListTile(
+                                              contentPadding: const EdgeInsets.only(left: 20),
+                                              leading: const Icon(Icons.play_circle_fill,
+                                                  color: Colors.purple),
+                                              title: Text(lesson.title ?? ''),
+                                              subtitle: Text(
+                                                "${lesson.duration ?? '10 min'}",
+                                                style: TextStyle(color: Colors.grey[600]),
+                                              ),
+                                              onTap: () {
+                                                _playLesson(lesson);
+                                              },
+                                            );
+                                          }).toList(),
+                                        );
+                                      },
+                                    ),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 90),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
+
         ],
+      ),
+    );
+  }
+
+  Widget _tabButton(String text, bool active) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+      decoration: BoxDecoration(
+        color: active ? Colors.purple : Colors.grey[200],
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: active ? Colors.white : Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

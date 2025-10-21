@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../controller/courses_service.dart';
 import '../../model/courses_model.dart';
 import '../teacher_screens/sections_screen.dart';
+import 'all_gourses_page.dart';
 import 'courses_by_category_page.dart';
 
 class CoursesStorePage extends StatefulWidget {
@@ -273,15 +274,19 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                       highlightColor: Colors.transparent,
                       splashFactory: NoSplash.splashFactory,
                     ),
-                    child: TextButton(
-                      onPressed: () {},
+                    child:TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const AllCoursesPage()),
+                        );
+                      },
                       child: Text(
                         'View All',
                         style: TextStyle(
                           color: ColorManage.firstPrimary,
                           fontWeight: FontWeight.w600,
                           fontSize: 16,
-
                         ),
                       ),
                     ),
@@ -313,7 +318,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                     height: 250,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: courses.length,
+                      itemCount: 4,
                       itemBuilder: (ctx, i) {
                         final course = courses.toList()[i];
                         final category = i < _categories.length
