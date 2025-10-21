@@ -67,7 +67,7 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => CourseDetailPage(
-                        course: course
+                          course: course
                       ),
                     ),
                   );

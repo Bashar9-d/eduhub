@@ -7,8 +7,6 @@ import 'begin_screens/toggle_switch_widget.dart';
 
 class Setting extends StatelessWidget {
   const Setting({super.key});
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,17 +20,18 @@ class Setting extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: MediaQuery
                   .of(context)
                   .size
-                  .width * 0.05, vertical:12),
-              // width: MediaQuery.of(context).size.width * 0.9,
+                  .width * 0.05),
+              padding: EdgeInsets.only(bottom: 38),
+
               child: Row(
                 spacing: 10,
                 children: [
-                  Icon(Icons.settings, size: 35, color: Colors.white),
+                  Icon(Icons.settings, size: 40, color: Colors.white),
                   Text(
                     'Setting',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
