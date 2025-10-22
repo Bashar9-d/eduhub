@@ -14,7 +14,7 @@ class StyleWidgetManage {
   );
 
   static  BoxDecoration toggleDecoration = BoxDecoration(
-    gradient: LinearGradient(//  OR   onBoardingIndicatorTrue
+    gradient: LinearGradient(
       colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,

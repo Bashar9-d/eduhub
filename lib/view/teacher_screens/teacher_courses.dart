@@ -22,13 +22,13 @@ class _CourseListScreenState extends State<CourseListScreen> {
   late Future<List<CoursesModel>> _futureCourses;
   String userName = 'User';
 
-
   @override
   void initState() {
     super.initState();
     _futureCourses = _load();
     _loadUserName();
   }
+
   void _openForm({CoursesModel? course}) async {
     final result = await Navigator.push(
       context,
@@ -46,11 +46,12 @@ class _CourseListScreenState extends State<CourseListScreen> {
       ),
     );
   }
+
   void _loadUserName() async {
-SharedPreferences prefs = await SharedPreferences.getInstance();
-setState(() {
-  userName = prefs.getString('name') ?? 'User';
-});
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('name') ?? 'User';
+    });
   }
 
   Future<List<CoursesModel>> _load() async {
@@ -58,8 +59,6 @@ setState(() {
     final teacherId = prefs.getInt('id') ?? 0;
     return coursesService.getCoursesByTeacher(teacherId);
   }
-
-
 
   void _showCourseOptions(CoursesModel course) async {
     showModalBottomSheet(
@@ -84,7 +83,7 @@ setState(() {
             ),
             ListTile(
               leading: const Icon(Icons.edit, color: Colors.purple),
-              title: const Text('تعديل الكورس'),
+              title: const Text('Update Course'),
               onTap: () {
                 Navigator.pop(context);
                 _openForm(course: course);
@@ -92,21 +91,23 @@ setState(() {
             ),
             ListTile(
               leading: const Icon(Icons.delete, color: Colors.red),
-              title: const Text('حذف الكورس'),
+              title: const Text('Remove Course'),
               onTap: () async {
                 Navigator.pop(context);
                 final ok = await showDialog<bool>(
                   context: context,
                   builder: (_) => AlertDialog(
-                    title: const Text('تأكيد الحذف'),
-                    content: const Text('هل أنت متأكد من حذف هذا الكورس؟'),
+                    title: const Text('Confirm deletion'),
+                    content: const Text('Are you sure you want to delete this course?'),
                     actions: [
                       TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const Text('إلغاء')),
+                        onPressed: () => Navigator.pop(context, false),
+                        child: const Text('No'),
+                      ),
                       TextButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: const Text('نعم')),
+                        onPressed: () => Navigator.pop(context, true),
+                        child: const Text('Yes'),
+                      ),
                     ],
                   ),
                 );
@@ -147,14 +148,13 @@ setState(() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF3E8FF), // بنفسجي فاتح
+      backgroundColor: const Color(0xFFF3E8FF),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ================== Header ==================
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -181,28 +181,25 @@ setState(() {
                   CircleAvatar(
                     radius: 28,
                     backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      Icons.person,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  )
+                    child: Icon(Icons.person, size: 30, color: Colors.white),
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
-
-              // ================== Stats ==================
               Container(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3))
+                      color: Colors.black12,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
                   ],
                 ),
                 child: Row(
@@ -216,20 +213,14 @@ setState(() {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // ================== Courses ==================
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
                   Text(
                     "Courses",
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text(
-                    "View All",
-                    style: TextStyle(color: Colors.purple),
-                  ),
+                  Text("View All", style: TextStyle(color: Colors.purple)),
                 ],
               ),
               const SizedBox(height: 10),
@@ -250,12 +241,12 @@ setState(() {
                     return GridView.builder(
                       padding: const EdgeInsets.only(bottom: 80),
                       gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.82,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                      ),
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.82,
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
+                          ),
                       itemCount: courses.length,
                       itemBuilder: (ctx, i) {
                         final c = courses[i];
@@ -263,7 +254,7 @@ setState(() {
                           Colors.orange,
                           Colors.blue,
                           Colors.green,
-                          Colors.purple
+                          Colors.purple,
                         ];
                         final bg = colors[i % colors.length].withOpacity(0.15);
 
@@ -287,30 +278,34 @@ setState(() {
                               children: [
                                 ClipRRect(
                                   borderRadius: const BorderRadius.vertical(
-                                      top: Radius.circular(18)),
-                                  child: c.thumbnail != null &&
-                                      c.thumbnail!.isNotEmpty
-                                      ? Image.network(
-                                    c.thumbnail!,
-                                    height: 110,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  )
-                                      : Container(
-                                    height: 110,
-                                    color: bg,
-                                    child: const Center(
-                                      child: Icon(Icons.image_outlined,
-                                          size: 40,
-                                          color: Colors.grey),
-                                    ),
+                                    top: Radius.circular(18),
                                   ),
+                                  child:
+                                      c.thumbnail != null &&
+                                          c.thumbnail!.isNotEmpty
+                                      ? Image.network(
+                                          c.thumbnail!,
+                                          height: 110,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(
+                                          height: 110,
+                                          color: bg,
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.image_outlined,
+                                              size: 40,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Art Course",
@@ -345,21 +340,14 @@ setState(() {
           ),
         ),
       ),
-
-      // ================== Floating Button ==================
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.purple,
         onPressed: () => _openForm(),
         child: const Icon(Icons.add, color: Colors.white),
       ),
-
-
-
     );
   }
 }
-
-
 
 class CourseFormScreen extends StatefulWidget {
   final CoursesModel? course;
@@ -418,15 +406,17 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
 
     try {
       await Supabase.instance.client.storage.from('uploads').upload(path, file);
-      final publicURL = Supabase.instance.client.storage.from('uploads').getPublicUrl(path);
+      final publicURL = Supabase.instance.client.storage
+          .from('uploads')
+          .getPublicUrl(path);
       setState(() => _thumb.text = publicURL);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم رفع الصورة بنجاح ✅')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('The image has been uploaded successfully')));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('فشل رفع الصورة: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Image upload failed:$e')));
     }
   }
 
@@ -437,7 +427,10 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
     final teacherId = prefs.getInt('id');
     if (teacherId == null) return;
 
-    final selectedCats = _selected.entries.where((e) => e.value).map((e) => e.key).toList();
+    final selectedCats = _selected.entries
+        .where((e) => e.value)
+        .map((e) => e.key)
+        .toList();
 
     final course = CoursesModel(
       id: widget.course?.id,
@@ -452,9 +445,9 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
     if (ok) {
       Navigator.pop(context, true);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('فشل حفظ الكورس')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Failed to save course')));
     }
   }
 
@@ -498,13 +491,17 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
                 _buildTextField(_thumb, "Image URL", readOnly: true),
                 const SizedBox(height: 20),
 
-                // Upload Button
                 Center(
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 14,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                       elevation: 3,
                     ),
                     onPressed: _pickAndUploadImage,
@@ -532,27 +529,27 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
                 _loadingCategories
                     ? const Center(child: CircularProgressIndicator())
                     : Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: _categories.map((cat) {
-                    final id = int.parse(cat['id']);
-                    final selected = _selected[id] ?? false;
-                    return ChoiceChip(
-                      label: Text(cat['name'] ?? ''),
-                      selected: selected,
-                      selectedColor: const Color(0xFFB583F0),
-                      labelStyle: TextStyle(
-                        color: selected ? Colors.white : Colors.purple,
-                        fontWeight: FontWeight.w600,
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: _categories.map((cat) {
+                          final id = int.parse(cat['id']);
+                          final selected = _selected[id] ?? false;
+                          return ChoiceChip(
+                            label: Text(cat['name'] ?? ''),
+                            selected: selected,
+                            selectedColor: const Color(0xFFB583F0),
+                            labelStyle: TextStyle(
+                              color: selected ? Colors.white : Colors.purple,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            backgroundColor: Colors.white,
+                            side: const BorderSide(color: Colors.purpleAccent),
+                            onSelected: (val) {
+                              setState(() => _selected[id] = val);
+                            },
+                          );
+                        }).toList(),
                       ),
-                      backgroundColor: Colors.white,
-                      side: const BorderSide(color: Colors.purpleAccent),
-                      onSelected: (val) {
-                        setState(() => _selected[id] = val);
-                      },
-                    );
-                  }).toList(),
-                ),
 
                 const SizedBox(height: 40),
 
@@ -578,7 +575,11 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
                     onPressed: _save,
                     child: Text(
                       isEdit ? "Update" : "Create",
-                      style: const TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -590,8 +591,12 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String hint,
-      {int maxLines = 1, bool readOnly = false}) {
+  Widget _buildTextField(
+    TextEditingController controller,
+    String hint, {
+    int maxLines = 1,
+    bool readOnly = false,
+  }) {
     return TextFormField(
       controller: controller,
       readOnly: readOnly,
@@ -601,7 +606,10 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
         hintText: hint,
         filled: true,
         fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: const BorderSide(color: Colors.purpleAccent),

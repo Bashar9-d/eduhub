@@ -70,7 +70,6 @@ class _GroupPageState extends State<GroupPage> {
                     if (selected == null) {
                       return;
                     }
-                    //Future.microtask(() async {
                     switch (selected) {
                       case 'Mark':
                         Navigator.push(
@@ -81,18 +80,14 @@ class _GroupPageState extends State<GroupPage> {
                         );
                         break;
                       case 'Remove':
-                        //Remove Chat from user  Method**
                         break;
                     }
-                    // });
                   },
                   child: ListTile(
                     leading: CircleAvatar(
                     child: Icon(Icons.group),
                     ),
                     title: Text(group.name, style: TextStyle(fontWeight: FontWeight.w500)),
-
-                    
                     onTap: () {
                       Navigator.push(
                         context,

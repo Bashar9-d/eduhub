@@ -119,7 +119,7 @@ class _ChatPageState extends State<ChatPage> {
                               ? CrossAxisAlignment.end
                               : CrossAxisAlignment.start,
                           children: [
-                            if (!isMe) // عرض اسم المرسل فقط إذا لم يكن المستخدم الحالي
+                            if (!isMe)
                               Padding(
                                 padding:
                                 const EdgeInsets.only(left: 8, bottom: 3),
@@ -184,7 +184,6 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
-          // حقل كتابة الرسائل
           Padding(
             padding: const EdgeInsets.all(12),
             child: Row(

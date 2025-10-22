@@ -3,11 +3,12 @@ import 'package:http/http.dart' as http;
 import '../model/lessons_model.dart';
 
 class LessonsService {
-  final String baseUrl = 'https://eduhub44.atwebpages.com/lessons.php'; // رابط PHP
+  final String baseUrl = 'https://eduhub44.atwebpages.com/lessons.php';
 
-  // ✅ جلب كل الدروس لقسم معين
   Future<List<LessonsModel>> getLessonsBySection(int sectionId) async {
-    final url = Uri.parse('$baseUrl?action=get_by_section&section_id=$sectionId');
+    final url = Uri.parse(
+      '$baseUrl?action=get_by_section&section_id=$sectionId',
+    );
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -23,7 +24,6 @@ class LessonsService {
     }
   }
 
-  // ✅ جلب درس محدد
   Future<LessonsModel?> getLesson(int id) async {
     final url = Uri.parse('$baseUrl?action=get&id=$id');
     final response = await http.get(url);
@@ -40,7 +40,6 @@ class LessonsService {
     }
   }
 
-  // ✅ إنشاء درس جديد
   Future<bool> createLesson(LessonsModel lesson) async {
     final url = Uri.parse('$baseUrl?action=create');
     final response = await http.post(
@@ -57,7 +56,6 @@ class LessonsService {
     }
   }
 
-// تحديث درس موجود
   Future<bool> updateLesson(LessonsModel lesson) async {
     final url = Uri.parse('$baseUrl?action=update&id=${lesson.id}');
     final response = await http.post(
@@ -74,10 +72,9 @@ class LessonsService {
     }
   }
 
-  // حذف درس
   Future<bool> deleteLesson(int id) async {
     final url = Uri.parse('$baseUrl?action=delete&id=$id');
-    final response = await http.get(url); // عادة حذف عبر GET أو POST حسب PHP
+    final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

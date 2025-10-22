@@ -17,7 +17,7 @@ static  double horizontalLoginAndRegister2=34.0.w;
 static  double verticalLoginAndRegister2=90.0.h;
 
 //Toggle Widget
-//static const double heightToggle=0.35; //no Used
+
 static  double toolbarToggleHeight  =0.3.h;
 
 

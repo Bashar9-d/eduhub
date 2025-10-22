@@ -5,9 +5,6 @@ import '../view/student_screens/home.dart';
 import '../view/student_screens/my_learning.dart';
 import '../view/settings_screens/setting.dart';
 import '../view/teacher_screens/teacher_courses.dart';
-//final List<Widget> _student=[A(),B(),C()];
-
-
 
 class BottomNavBarController extends ChangeNotifier{
   final List<Widget> _studentScreens=[CoursesStorePage(),MyLearningScreen(),Setting()];

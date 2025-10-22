@@ -53,7 +53,7 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
       await _videoController!.dispose();
     }
 
-    // الفيديو قد يكون من السيرفر، لذا نستخدم Network
+
     _videoController = VideoPlayerController.networkUrl(
       Uri.parse(
         lesson.videoUrl ??
@@ -77,16 +77,10 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
   Widget build(BuildContext context) {
     final course = widget.course;
     return Scaffold(
-      // appBar: AppBar(
-      //         title: Text(course.title ?? ''),
-      //         centerTitle: true,
-      //         backgroundColor: Colors.purple,
-      //         foregroundColor: Colors.white,
-      //       ),
+
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // صورة أو فيديو الكورس
           SizedBox(
             height: 270,
             width: double.infinity,
@@ -106,7 +100,6 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
             ),
           ),
 
-          // المحتوى
           DraggableScrollableSheet(
             initialChildSize: 0.65,
             minChildSize: 0.65,
@@ -130,7 +123,6 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // عنوان الكورس
                       Center(
                         child: Container(
                           width: 85,
@@ -145,13 +137,6 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          //back button
-                          // IconButton(
-                          //   onPressed: () {
-                          //     Navigator.pop(context);
-                          //   },
-                          //   icon: Icon(Icons.arrow_back_outlined),
-                          // ),
                           Expanded(
                             child: Text(
                               _selectedLesson?.title ?? course.title ?? '',
@@ -236,8 +221,6 @@ Explore lessons of this course below. The first section is open for all.""",
                         ),
                       ),
                       const SizedBox(height: 16),
-
-                      // عرض الأقسام
                       FutureBuilder<List<SectionsModel>>(
                         future: _futureSections,
                         builder: (context, snapshot) {
@@ -338,7 +321,6 @@ Explore lessons of this course below. The first section is open for all.""",
                                     ),
                                   ),
 
-                                  // عرض الدروس عند الفتح
                                   if (isExpanded)
                                     FutureBuilder<List<LessonsModel>>(
                                       future: _fetchLessons(section.id!),
@@ -404,7 +386,6 @@ Explore lessons of this course below. The first section is open for all.""",
             },
           ),
 
-          // زر الرجوع
           Positioned(
             bottom: 20,
             left: 20,
@@ -421,7 +402,6 @@ Explore lessons of this course below. The first section is open for all.""",
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                // زر التسجيل
                 onPressed: () async {
                   final prefs = await SharedPreferences.getInstance();
                   int userId = prefs.getInt('id') ?? 0;
@@ -438,7 +418,6 @@ Explore lessons of this course below. The first section is open for all.""",
                     widget.course.id!,
                   );
                   if (success) {
-                    //  بعد شراء الكورس نضيف الطالب للقروب
                     final group = await GroupService.getGroupByCourse(
                       widget.course.id!,
                     );
@@ -448,7 +427,7 @@ Explore lessons of this course below. The first section is open for all.""",
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text("Course added & Joined Group ✅"),
+                        content: Text("Course added & Joined Group "),
                       ),
                     );
                   } else {

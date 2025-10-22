@@ -49,7 +49,6 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           width: double.infinity,
-          //height: MediaQuery.of(context).size.height * 0.35,
           decoration: StyleWidgetManage.toggleDecoration,
           child: Column(
             spacing: 5.h,

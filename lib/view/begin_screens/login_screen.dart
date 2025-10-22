@@ -74,21 +74,22 @@ class _LoginScreenState extends State<LoginScreen> {
         if (result["data"]["role"] == "student") {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) =>  BottomNavBar()),
+            MaterialPageRoute(builder: (context) => BottomNavBar()),
           );
         }
-        if (result["data"]["role"] == "teacher"){
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );}
+        if (result["data"]["role"] == "teacher") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        }
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("تم تسجيل الدخول بنجاح ✅")),
+          const SnackBar(content: Text("Register successfully")),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(result["message"] ?? "فشل تسجيل الدخول ❌"),
+            content: Text(result["message"] ?? "Login failed"),
             backgroundColor: Colors.red,
           ),
         );

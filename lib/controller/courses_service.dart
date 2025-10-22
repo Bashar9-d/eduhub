@@ -22,7 +22,6 @@ class CoursesService {
       throw Exception('Failed to load courses by category');
     }
   }
-  // GET all
   Future<List<CoursesModel>> getAllCourses() async {
     final uri = Uri.parse('$baseUrl?action=get_all');
     final res = await http.get(uri);
@@ -61,7 +60,7 @@ class CoursesService {
     }
   }
 
-  // GET by id
+
   Future<CoursesModel> getCourse(int id) async {
     final uri = Uri.parse('$baseUrl?action=get&id=$id');
     final res = await http.get(uri);
@@ -83,8 +82,8 @@ class CoursesService {
   // CREATE
   Future<bool> createCourseWithGroup(CoursesModel courseModel, List<int> categoryIds) async {
     try {
-      // 1️⃣ إنشاء الكورس
-      final courseUri = Uri.parse('$baseUrl?action=create'); // ✅ تم التصحيح
+
+      final courseUri = Uri.parse('$baseUrl?action=create');
       final courseBody = json.encode(courseModel.toJson());
       final courseRes = await http.post(
         courseUri,
@@ -114,7 +113,7 @@ class CoursesService {
       }
 
       print('✅ Course created with ID: $courseId');
-      // 2️⃣ إنشاء القروب
+
       final groupName = '${courseModel.title}_Group';
       final teacherId = courseModel.teacherId;
       if (teacherId == null) throw Exception('Teacher ID is required to create group');
@@ -124,10 +123,10 @@ class CoursesService {
 
       print('👥 Group created successfully with ID: $groupId');
 
-      // 3️⃣ ربط الكورس بالتصنيفات
+
       if (categoryIds.isNotEmpty) {
         final assignResponse = await http.post(
-          Uri.parse('$baseUrl?action=assign_categories'), // ✅ بدون تكرار
+          Uri.parse('$baseUrl?action=assign_categories'),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({
             'course_id': courseId,
@@ -153,7 +152,7 @@ class CoursesService {
   }
 
 
-  // UPDATE (requires PHP endpoint to support action=update)
+
   Future<bool> updateCourse(CoursesModel course,
       {required List<int> categoryIds}) async {
     try {
@@ -166,7 +165,7 @@ class CoursesService {
 
       final body = jsonDecode(res.body);
       if (body['success'] == true) {
-        // تحديث التصنيفات
+
         await http.post(
           Uri.parse('$baseUrl/courses.php?action=assign_categories'),
           headers: {'Content-Type': 'application/json'},
@@ -186,7 +185,7 @@ class CoursesService {
     }
   }
 
-  // DELETE (requires PHP endpoint to support action=delete)
+
   Future<bool> deleteCourse(int id) async {
     final uri = Uri.parse('$baseUrl?action=delete');
     final body = json.encode({'id': id});
@@ -200,7 +199,6 @@ class CoursesService {
     }
   }
 
-// 🔹 Get categories assigned to a specific course
 Future<List<int>> getCourseCategories(int courseId) async {
   try {
     final uri = Uri.parse('$baseUrl?action=get_categories&course_id=$courseId');
@@ -210,7 +208,7 @@ Future<List<int>> getCourseCategories(int courseId) async {
       final data = json.decode(res.body);
 
       if (data is Map && data['success'] == true && data['data'] != null) {
-        // نفترض أن السيرفر يرجع قائمة IDs فقط أو كائنات فيها id
+
         final categories = List.from(data['data']);
         if (categories.isNotEmpty && categories.first is Map) {
           return categories.map<int>((c) => int.tryParse(c['id'].toString()) ?? 0).toList();
@@ -229,7 +227,7 @@ Future<List<int>> getCourseCategories(int courseId) async {
     return [];
   }
 }
-  // دالة لجلب كل التصنيفات
+
   Future<List<Map<String, dynamic>>> getCategories() async {
     try {
       final uri = Uri.parse("https://eduhub44.atwebpages.com/categories.php?action=get_all");
@@ -239,7 +237,7 @@ Future<List<int>> getCourseCategories(int courseId) async {
         final data = json.decode(res.body);
 
         if (data is Map && data['data'] != null) {
-          // رجع قائمة التصنيفات
+
           return List<Map<String, dynamic>>.from(data['data']);
         } else if (data is List) {
           return List<Map<String, dynamic>>.from(data);

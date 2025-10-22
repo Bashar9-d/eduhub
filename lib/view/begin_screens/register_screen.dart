@@ -79,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result["message"] ?? "حدث خطأ ما")),
+          SnackBar(content: Text(result["message"] ?? "Something went wrong")),
         );
       }
     }
@@ -116,7 +116,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SizedBox(
               width: double.infinity,
               child: DropdownButtonFormField<String>(
-                //OR    DropdownButton
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: ColorManage.field,

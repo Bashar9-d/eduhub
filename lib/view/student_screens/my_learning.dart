@@ -81,16 +81,6 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
                           children: [
                             Expanded(
                               child: TextField(
-                                //focusNode: _focusNode,
-                                //controller: _controller,
-                                //onChanged: _onSearchChanged,
-                                // onTap: () {
-                                //   if (_controller.text.isNotEmpty &&
-                                //       _filtered.isNotEmpty) {
-                                //     _animController.forward();
-                                //   }
-                                // },//textAlign: TextAlign.start,
-
                                 decoration: const InputDecoration(
                                   hintText: "Search Topic here",
                                   contentPadding: EdgeInsets.symmetric(horizontal: 12),
@@ -100,14 +90,7 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
                               ),
                             ),
                             GestureDetector(
-                              // onTap: () {
-                              //   if (_controller.text.isNotEmpty) {
-                              //     _closeSuggestions();
-                              //     _controller.clear();
-                              //   } else {
-                              //     _closeSuggestions();
-                              //   }
-                              // },
+
                               child: Container(
                                 decoration: const BoxDecoration(
                                   gradient:  LinearGradient(
@@ -120,10 +103,7 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
                                 ),
                                 padding: const EdgeInsets.all(10),
                                 child: Icon(
-                                  // _controller.text.isEmpty
-                                  //      ?
                                   Icons.search,
-                                  //    : Icons.close,
                                   color: Colors.white,
                                   size: 20,
                                 ),

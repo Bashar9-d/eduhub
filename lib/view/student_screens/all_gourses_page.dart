@@ -25,7 +25,8 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => StudentSectionsScreen(course: course, isPurchased: false),
+        builder: (_) =>
+            StudentSectionsScreen(course: course, isPurchased: false),
       ),
     );
   }
@@ -54,7 +55,7 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
           return GridView.builder(
             padding: const EdgeInsets.all(16),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // عمودين
+              crossAxisCount: 2,
               childAspectRatio: 0.75,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
@@ -80,14 +81,18 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                        child: course.thumbnail != null && course.thumbnail!.isNotEmpty
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(16),
+                        ),
+                        child:
+                            course.thumbnail != null &&
+                                course.thumbnail!.isNotEmpty
                             ? Image.network(
-                          course.thumbnail!,
-                          height: 120,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        )
+                                course.thumbnail!,
+                                height: 120,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              )
                             : Container(height: 120, color: Colors.grey[300]),
                       ),
                       Padding(
@@ -106,7 +111,10 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
                           course.description ?? "Unknown",
-                          style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

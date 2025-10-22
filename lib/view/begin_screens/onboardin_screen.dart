@@ -59,13 +59,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 16.h),
-                //padding: EdgeInsets.all(16.h),
 
                 child: Column(
                   spacing: 30.h,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    //Spacer(),
+
                     Center(child: Image.asset(pages[index].image)),
                     Column(
                       spacing: 10.h,
@@ -82,17 +81,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           textAlign: TextAlign.center,
                         ),
 
-                        // Container(
-                        //               width: double.infinity,
-                        //              constraints: const BoxConstraints(
-                        //                maxHeight: 80,minHeight: 80
-                        //              ),
-                        //               child: Text(
-                        //                 pages[index].subtitle,maxLines: 3,overflow: TextOverflow.ellipsis,
-                        //                 style: TextStyleManage.subtitleOnBoarding,
-                        //                 textAlign: TextAlign.center,
-                        //               ),
-                        //             ),
                       ],
                     ),
                     Column(
@@ -188,7 +176,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ],
                     ),
 
-                    //Spacer(),
                   ],
                 ),
               );

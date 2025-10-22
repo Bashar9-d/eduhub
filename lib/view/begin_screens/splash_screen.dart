@@ -17,7 +17,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  //int y=Random().nextInt((3500-1)-2600)+2600;
+
   Widget? nextPage;
 
   @override
@@ -56,30 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
         duration: 2300,
         pageTransitionType: PageTransitionType.rightToLeft,
         splashTransition: SplashTransition.fadeTransition,
-        // animationDuration: Duration(seconds: 1),
       ),
     );
   }
 }
-
-// @override
-//   void initState() {
-//     super.initState();
-//     _navigateNext();
-//   }
-//   Future<void> _navigateNext() async {
-//     await Future.delayed(const Duration(seconds: 2)); // وقت العرض
-//     final prefs = await SharedPreferences.getInstance();
-//     final seenOnBoarding = prefs.getBool('onBoardingDone') ?? false;
-//
-//     if (mounted) {
-//       Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(
-//           builder: (_) => seenOnBoarding
-//               ?  LoginScreen()
-//               :  OnboardinScreen(),//const
-//         ),
-//       );
-//     }
-//   }

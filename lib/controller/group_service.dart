@@ -4,28 +4,29 @@ import 'package:http/http.dart' as http;
 import '../model/group_model.dart';
 import '../model/message_model.dart';
 
-
 const String baseUrl = 'https://eduhub44.atwebpages.com/groups.php';
 
 class GroupService {
-// إضافة طالب إلى القروب الخاص بالكورس
   static Future<bool> addUserToGroup(int groupId, int userId) async {
     final uri = Uri.parse('$baseUrl?action=join_group');
-    final body = json.encode({
-      'group_id': groupId,
-      'user_id': userId,
-    });
+    final body = json.encode({'group_id': groupId, 'user_id': userId});
 
-    final res = await http.post(uri, headers: {'Content-Type': 'application/json'}, body: body);
+    final res = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
     if (res.statusCode == 200) {
       final data = json.decode(res.body);
       return data['success'] == true;
     }
     return false;
   }
-// جلب القروب الخاص بالكورس
+
   static Future<GroupModel?> getGroupByCourse(int courseId) async {
-    final uri = Uri.parse('$baseUrl?action=get_group_by_course&course_id=$courseId');
+    final uri = Uri.parse(
+      '$baseUrl?action=get_group_by_course&course_id=$courseId',
+    );
     final res = await http.get(uri);
 
     if (res.statusCode == 200) {
@@ -37,7 +38,6 @@ class GroupService {
     return null;
   }
 
-  // جلب جميع القروبات الخاصة بمعلم معين
   static Future<List<GroupModel>> getGroupsByTeacher(int teacherId) async {
     final uri = Uri.parse('$baseUrl?action=my_groups&teacher_id=$teacherId');
     final res = await http.get(uri);
@@ -53,37 +53,50 @@ class GroupService {
 
   static Future<List<MessageModel>> getMessages(int groupId) async {
     final uri = Uri.parse(
-        'https://eduhub44.atwebpages.com/messages.php?action=get&group_id=$groupId'); // تأكد من استخدام action=get
+      'https://eduhub44.atwebpages.com/messages.php?action=get&group_id=$groupId',
+    );
     final res = await http.get(uri);
     if (res.statusCode == 200) {
       final data = json.decode(res.body);
       if (data['success'] == true) {
         List messages = data['data'] ?? [];
         print('Messages: $messages');
-        return messages.map((e) => MessageModel.fromJson({
-          'message_id': int.tryParse(e['message_id'].toString()) ?? 0,
-          'group_id': int.tryParse(e['group_id'].toString()) ?? 0,
-          'sender_id': int.tryParse(e['sender_id'].toString()) ?? 0,
-          'message': e['message'] ?? '',
-          'sent_at': e['sent_at'] ?? '',
-          'sender_name': e['sender_name'] ?? '',
-        })).toList();
+        return messages
+            .map(
+              (e) => MessageModel.fromJson({
+                'message_id': int.tryParse(e['message_id'].toString()) ?? 0,
+                'group_id': int.tryParse(e['group_id'].toString()) ?? 0,
+                'sender_id': int.tryParse(e['sender_id'].toString()) ?? 0,
+                'message': e['message'] ?? '',
+                'sent_at': e['sent_at'] ?? '',
+                'sender_name': e['sender_name'] ?? '',
+              }),
+            )
+            .toList();
       }
     }
     return [];
   }
 
-
-// إرسال رسالة لقروب
-  static Future<bool> sendMessage(int groupId, int senderId, String message) async {
-    final uri = Uri.parse('https://eduhub44.atwebpages.com/messages.php?action=send'); // action=send كما في PHP
+  static Future<bool> sendMessage(
+    int groupId,
+    int senderId,
+    String message,
+  ) async {
+    final uri = Uri.parse(
+      'https://eduhub44.atwebpages.com/messages.php?action=send',
+    );
     final body = json.encode({
       'group_id': groupId,
-      'sender_id': senderId, // مطابق للـ PHP
+      'sender_id': senderId,
       'message': message,
     });
 
-    final res = await http.post(uri, headers: {'Content-Type': 'application/json'}, body: body);
+    final res = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
     if (res.statusCode == 200) {
       final data = json.decode(res.body);
       return data['success'] == true;
@@ -91,10 +104,12 @@ class GroupService {
     return false;
   }
 
-//Create
-  static Future<bool> createGroup(int courseId, int teacherId, String groupName) async {
+  static Future<bool> createGroup(
+    int courseId,
+    int teacherId,
+    String groupName,
+  ) async {
     try {
-
       final groupUri = Uri.parse('$baseUrl?action=create_group');
       final groupBody = json.encode({
         'course_id': courseId,
@@ -116,8 +131,9 @@ class GroupService {
 
       final groupData = json.decode(groupRes.body);
 
-      if ((groupData is Map && groupData['success'] == true) || groupRes.body.contains('created')) {
-        return true; // القروب تم إنشاؤه بنجاح
+      if ((groupData is Map && groupData['success'] == true) ||
+          groupRes.body.contains('created')) {
+        return true;
       } else {
         throw Exception('Group creation failed: ${groupRes.body}');
       }
@@ -126,6 +142,4 @@ class GroupService {
       return false;
     }
   }
-
-
 }

@@ -3,7 +3,7 @@ class MessageModel {
   final int groupId;
   final int senderId;
   final String message;
-  final String userName; // نستخدم نفس الاسم الذي في السيرفر
+  final String userName;
   final String time;
 
   MessageModel({
@@ -21,8 +21,8 @@ class MessageModel {
       groupId: json['group_id'],
       senderId: json['sender_id'],
       message: json['message'],
-      userName: json['sender_name'], // هنا
-      time: json['sent_at'], // أو تحويل التاريخ لوقت محلي إذا أردت
+      userName: json['sender_name'],
+      time: json['sent_at'],
     );
   }
 }

@@ -15,18 +15,12 @@ class TextStyleManage {
     fontWeight: FontWeight.w400,
   );
 
-  // static const TextStyle nextButtonOnBoarding = TextStyle(
-  //   color: Colors.white,
-  //   fontSize: 16,
-  //   fontWeight: FontWeight.w600,
-  // );
   static TextStyle skipButtonOnBoarding = TextStyle(
     color: Colors.white,
     fontSize: 16.sp,
     fontWeight: FontWeight.w600,
   );
 
-  //
   static TextStyle listTileHomeStudentName = TextStyle(
     color: Colors.white,
     fontSize: 32.sp,

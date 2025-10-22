@@ -1,15 +1,17 @@
-
 import 'package:eduhub/view/student_screens/student_sections_screen.dart';
 import 'package:flutter/material.dart';
 import '../../controller/courses_service.dart';
 import '../../model/courses_model.dart';
 
-
 class CoursesByCategoryPage extends StatefulWidget {
   final int categoryId;
   final String categoryName;
 
-  const CoursesByCategoryPage({super.key, required this.categoryId, required this.categoryName});
+  const CoursesByCategoryPage({
+    super.key,
+    required this.categoryId,
+    required this.categoryName,
+  });
 
   @override
   State<CoursesByCategoryPage> createState() => _CoursesByCategoryPageState();
@@ -29,7 +31,8 @@ class _CoursesByCategoryPageState extends State<CoursesByCategoryPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => StudentSectionsScreen(course: course, isPurchased: false),
+        builder: (_) =>
+            StudentSectionsScreen(course: course, isPurchased: false),
       ),
     );
   }
@@ -55,8 +58,13 @@ class _CoursesByCategoryPageState extends State<CoursesByCategoryPage> {
             itemBuilder: (ctx, i) {
               final course = courses[i];
               return ListTile(
-                leading: course.thumbnail != null && course.thumbnail!.isNotEmpty
-                    ? Image.network(course.thumbnail!, width: 50, fit: BoxFit.cover)
+                leading:
+                    course.thumbnail != null && course.thumbnail!.isNotEmpty
+                    ? Image.network(
+                        course.thumbnail!,
+                        width: 50,
+                        fit: BoxFit.cover,
+                      )
                     : const SizedBox(width: 50),
                 title: Text(course.title ?? ''),
                 subtitle: Text('Art Course · 18 Min'),

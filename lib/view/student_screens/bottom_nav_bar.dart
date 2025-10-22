@@ -23,25 +23,36 @@ class BottomNavBar extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               splashFactory: NoSplash.splashFactory,
-
             ),
-            child: BottomNavigationBar(items: [
-              _buildBNBItem(Icons.home_outlined, bottomNavBarController.getCurrentIndex == 0),
-              _buildBNBItem(Icons.local_mall_outlined, bottomNavBarController.getCurrentIndex == 1),
-              _buildBNBItem(Icons.settings_outlined, bottomNavBarController.getCurrentIndex == 2),
-            ],
+            child: BottomNavigationBar(
+              items: [
+                _buildBNBItem(
+                  Icons.home_outlined,
+                  bottomNavBarController.getCurrentIndex == 0,
+                ),
+                _buildBNBItem(
+                  Icons.local_mall_outlined,
+                  bottomNavBarController.getCurrentIndex == 1,
+                ),
+                _buildBNBItem(
+                  Icons.settings_outlined,
+                  bottomNavBarController.getCurrentIndex == 2,
+                ),
+              ],
               backgroundColor: Colors.white,
               currentIndex: bottomNavBarController.getCurrentIndex,
               selectedItemColor: Colors.black,
               unselectedItemColor: ColorManage.subtitleOnBoarding,
-              showSelectedLabels:false ,showUnselectedLabels: false,
-              onTap:(value) => bottomNavBarController.onPageChanged(value),
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              onTap: (value) => bottomNavBarController.onPageChanged(value),
             ),
           );
         },
       ),
     );
   }
+
   BottomNavigationBarItem _buildBNBItem(IconData icon, bool isSelected) {
     return BottomNavigationBarItem(
       icon: Column(
@@ -65,5 +76,4 @@ class BottomNavBar extends StatelessWidget {
       label: '',
     );
   }
-
 }

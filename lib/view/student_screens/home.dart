@@ -40,7 +40,6 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
         "id": categoriesFromApi[i]["id"],
         "name": categoriesFromApi[i]["name"],
         "color": colorPalette[i % colorPalette.length],
-        // إعادة استخدام الألوان إذا انتهت
       });
     }
     return result;
@@ -50,7 +49,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
   Future<void> _fetchCategories() async {
     try {
       final catsFromApi = await coursesService
-          .getCategories(); // جلب من السيرفر
+          .getCategories();
       setState(() {
         _categories = categoriesWithColors(catsFromApi);
       });
@@ -93,21 +92,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-              // شريط البحث     القديم
-              // TextField(
-              //   decoration: InputDecoration(
-              //     prefixIcon: const Icon(Icons.search),
-              //     hintText: 'Search Topic here',
-              //     filled: true,
-              //     fillColor: Colors.grey[200],
-              //     border: OutlineInputBorder(
-              //       borderRadius: BorderRadius.circular(12),
-              //       borderSide: BorderSide.none,
-              //     ),
-              //   ),
-              // ),
 
-              // الجديد
               Padding(
                 padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -123,15 +108,6 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                       children: [
                         Expanded(
                           child: TextField(
-                            //focusNode: _focusNode,
-                            //controller: _controller,
-                            //onChanged: _onSearchChanged,
-                           // onTap: () {
-                            //   if (_controller.text.isNotEmpty &&
-                            //       _filtered.isNotEmpty) {
-                            //     _animController.forward();
-                            //   }
-                            // },//textAlign: TextAlign.start,
 
                             decoration: const InputDecoration(
                               hintText: "Search Topic here",
@@ -142,14 +118,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                           ),
                         ),
                         GestureDetector(
-                          // onTap: () {
-                          //   if (_controller.text.isNotEmpty) {
-                          //     _closeSuggestions();
-                          //     _controller.clear();
-                          //   } else {
-                          //     _closeSuggestions();
-                          //   }
-                          // },
+
                           child: Container(
                             decoration: const BoxDecoration(
                               gradient:  LinearGradient(
@@ -162,10 +131,9 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                             ),
                             padding: const EdgeInsets.all(10),
                             child: Icon(
-                              // _controller.text.isEmpty
-                            //      ?
+
                             Icons.search,
-                              //    : Icons.close,
+
                               color: Colors.white,
                               size: 20,
                             ),
@@ -177,7 +145,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                 ),
               ),
               const SizedBox(height: 20),
-              // رسالة الترحيب
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -211,7 +179,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                 ],
               ),
               const SizedBox(height: 20),
-              // التصنيفات
+
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.15,
                 child: ListView.builder(
@@ -223,7 +191,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                         : {"name": "General", "color": Colors.grey};
 
 
-                    return // داخل ListView.builder للـ categories
+                    return
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: GestureDetector(
