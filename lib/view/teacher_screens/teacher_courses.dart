@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:eduhub/constant/setting_constants/gesture_and_row.dart';
+import 'package:eduhub/view/settings_screens/edit_profile.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../constant/color_manage.dart';
+import '../../constant/otherwise/color_manage.dart';
 import '../../controller/courses_service.dart';
 import '../../model/courses_model.dart';
 import 'sections_screen.dart';
@@ -21,18 +23,25 @@ class _CourseListScreenState extends State<CourseListScreen> {
   final CoursesService coursesService = CoursesService();
   late Future<List<CoursesModel>> _futureCourses;
   String userName = 'User';
+  String? _thumb;
 
   @override
   void initState() {
     super.initState();
     _futureCourses = _load();
     _loadUserName();
+    _loadImage();
+  }
+
+  void _loadImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _thumb = prefs.getString('image') ?? 'assets/default person picture.webp';
   }
 
   void _openForm({CoursesModel? course}) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => CourseFormScreen(course: course)),
+      navigatorFunction(nextScreen: CourseFormScreen(course: course)),
     );
     if (result == true) _load();
   }
@@ -40,9 +49,11 @@ class _CourseListScreenState extends State<CourseListScreen> {
   void _openSections(CoursesModel course) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) =>
-            SectionsScreen(courseId: course.id!, courseTitle: course.title!),
+      navigatorFunction(
+        nextScreen: SectionsScreen(
+          courseId: course.id!,
+          courseTitle: course.title!,
+        ),
       ),
     );
   }
@@ -98,7 +109,9 @@ class _CourseListScreenState extends State<CourseListScreen> {
                   context: context,
                   builder: (_) => AlertDialog(
                     title: const Text('Confirm deletion'),
-                    content: const Text('Are you sure you want to delete this course?'),
+                    content: const Text(
+                      'Are you sure you want to delete this course?',
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context, false),
@@ -155,35 +168,44 @@ class _CourseListScreenState extends State<CourseListScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Hello 👋",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w500,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    navigatorFunction(nextScreen: EditProfile()),
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Hello 👋",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      Text(
-                        userName,
-                        style: const TextStyle(
-                          color: Colors.purple,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22,
+                        Text(
+                          userName,
+                          style: const TextStyle(
+                            color: Colors.purple,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  CircleAvatar(
-                    radius: 28,
-                    backgroundColor: Colors.grey[300],
-                    child: Icon(Icons.person, size: 30, color: Colors.white),
-                  ),
-                ],
+                      ],
+                    ),
+                    CircleAvatar(
+                      radius: 28,
+                      backgroundImage: _thumb == null
+                          ? AssetImage('assets/default person picture.webp')
+                          : NetworkImage(_thumb!),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
               Container(
@@ -410,9 +432,11 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
           .from('uploads')
           .getPublicUrl(path);
       setState(() => _thumb.text = publicURL);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('The image has been uploaded successfully')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('The image has been uploaded successfully'),
+        ),
+      );
     } catch (e) {
       ScaffoldMessenger.of(
         context,
@@ -458,7 +482,8 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F5FF),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFFF3D1F9),
+        foregroundColor: Colors.white,
         elevation: 0,
         leading: const BackButton(color: Colors.black),
         title: Text(
@@ -612,11 +637,14 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: Colors.purpleAccent),
+          borderSide: const BorderSide(color: ColorManage.firstPrimary),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: Colors.deepPurple, width: 2),
+          borderSide: const BorderSide(
+            color: ColorManage.secondPrimary,
+            width: 2,
+          ),
         ),
       ),
     );

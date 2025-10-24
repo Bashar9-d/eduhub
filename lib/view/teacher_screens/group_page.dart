@@ -1,4 +1,4 @@
-import 'package:eduhub/constant/color_manage.dart';
+import 'package:eduhub/constant/otherwise/color_manage.dart';
 import 'package:flutter/material.dart';
 import '../../controller/group_service.dart';
 import '../../model/group_model.dart';

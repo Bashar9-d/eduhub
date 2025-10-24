@@ -1,12 +1,12 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:eduhub/constant/color_manage.dart';
+import 'package:eduhub/constant/otherwise/color_manage.dart';
 import 'package:eduhub/view/begin_screens/register_screen.dart';
 import 'package:eduhub/view/teacher_screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../constant/image_manage.dart';
-import '../../constant/style_widget_manage.dart';
+import '../../constant/otherwise/image_manage.dart';
+import '../../constant/widgets/style_widget_manage.dart';
 import '../student_screens/bottom_nav_bar.dart';
 import 'login_screen.dart';
 

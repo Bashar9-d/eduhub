@@ -1,5 +1,5 @@
-import 'package:eduhub/constant/color_manage.dart';
-import 'package:eduhub/constant/style_widget_manage.dart';
+import 'package:eduhub/constant/otherwise/color_manage.dart';
+import 'package:eduhub/constant/widgets/style_widget_manage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';

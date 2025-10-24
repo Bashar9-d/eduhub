@@ -1,12 +1,12 @@
-import 'package:eduhub/constant/image_manage.dart';
-import 'package:eduhub/constant/numbers_manage.dart';
-import 'package:eduhub/constant/style_widget_manage.dart';
+import 'package:eduhub/constant/widgets/style_widget_manage.dart';
 import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../constant/textstyle_manage.dart';
+import '../../constant/otherwise/image_manage.dart';
+import '../../constant/otherwise/numbers_manage.dart';
+import '../../constant/otherwise/textstyle_manage.dart';
 import '../../controller/begin_controller/onboarding_controller.dart';
 
 class OnboardingScreen extends StatefulWidget {

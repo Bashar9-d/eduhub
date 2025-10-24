@@ -1,11 +1,10 @@
-import 'package:eduhub/constant/color_manage.dart';
-import 'package:eduhub/constant/style_widget_manage.dart';
-import 'package:eduhub/constant/textstyle_manage.dart';
+import 'package:eduhub/constant/otherwise/color_manage.dart';
+import 'package:eduhub/constant/widgets/style_widget_manage.dart';
 import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
-
-import '../../constant/numbers_manage.dart';
-import '../../constant/text_field_manage.dart';
+import '../../constant/otherwise/numbers_manage.dart';
+import '../../constant/otherwise/textstyle_manage.dart';
+import '../../constant/widgets/text_field_manage.dart';
 import '../../controller/begin_controller/auth_service.dart';
 import '../../model/users_model.dart';
 

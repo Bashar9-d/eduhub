@@ -1,8 +1,8 @@
 
-import 'package:eduhub/constant/color_manage.dart';
+import 'package:eduhub/constant/otherwise/color_manage.dart';
 import 'package:flutter/material.dart';
 
-import 'numbers_manage.dart';
+import '../otherwise/numbers_manage.dart';
 
 Widget buildTextField({
   required TextEditingController controller,
@@ -11,6 +11,7 @@ Widget buildTextField({
   TextInputType keyboardType = TextInputType.text,
   bool obscure = false,
   String? errorText,
+  Color? fillColor
 }) {
   return  Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +24,7 @@ Widget buildTextField({
           obscureText: obscure,
           decoration: InputDecoration(
             filled: true,
-            fillColor: ColorManage.field,
+            fillColor: fillColor??ColorManage.field,
             errorText: errorText,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: hint,

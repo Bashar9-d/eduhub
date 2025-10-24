@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:eduhub/constant/otherwise/color_manage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -29,7 +30,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
 
   late Future<List<SectionsModel>> _futureSections;
   final Map<int, List<LessonsModel>> _lessonsMap = {};
-  final Map<int, bool> _lessonsLoaded = {}; // ✅ لمعرفة هل تم التحميل أم لا
+  final Map<int, bool> _lessonsLoaded = {};
 
   @override
   void initState() {
@@ -73,7 +74,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                 Navigator.pop(context);
                 _loadSections();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Section added ✅')),
+                  const SnackBar(content: Text('Section added ')),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -90,14 +91,14 @@ class _SectionsScreenState extends State<SectionsScreen> {
 
   Future<void> _loadLessons(int sectionId) async {
     setState(() {
-      _lessonsLoaded[sectionId] = false; // جاري التحميل
+      _lessonsLoaded[sectionId] = false;
     });
 
     final lessons = await lessonsService.getLessonsBySection(sectionId);
 
     setState(() {
       _lessonsMap[sectionId] = lessons;
-      _lessonsLoaded[sectionId] = true; // ✅ تم التحميل
+      _lessonsLoaded[sectionId] = true;
     });
   }
 
@@ -128,7 +129,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                 if (video != null) {
                   pickedVideo = video;
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Video selected ✅')),
+                    const SnackBar(content: Text('Video selected ')),
                   );
                 }
               },
@@ -203,7 +204,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                   Navigator.pop(context);
                   await _loadLessons(sectionId);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Lesson added ✅')),
+                    const SnackBar(content: Text('Lesson added ')),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -249,7 +250,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                 if (video != null) {
                   pickedVideo = video;
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Video selected ✅')),
+                    const SnackBar(content: Text('Video selected ')),
                   );
                 }
               },
@@ -325,7 +326,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                   Navigator.pop(context);
                   await _loadLessons(lesson.sectionId!);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Lesson updated ✅')),
+                    const SnackBar(content: Text('Lesson updated ')),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -352,7 +353,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
       _loadSections();
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Section deleted ✅')));
+      ).showSnackBar(const SnackBar(content: Text('Section deleted ')));
     } else {
       ScaffoldMessenger.of(
         context,
@@ -390,7 +391,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                 Navigator.pop(context);
                 _loadSections();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Section updated ✅')),
+                  const SnackBar(content: Text('Section updated ')),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -410,18 +411,17 @@ class _SectionsScreenState extends State<SectionsScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F4FB),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF9C27B0),
+        backgroundColor:ColorManage.secondPrimary,
         elevation: 0,
         centerTitle: true,
         title: Text(
           'Sections of ${widget.courseTitle}',
-          style: const TextStyle(fontWeight: FontWeight.bold,),
-
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         foregroundColor: Colors.white,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFF9C27B0),
+        backgroundColor:  ColorManage.secondPrimary,
         onPressed: _openAddSectionDialog,
         tooltip: 'Add Section',
         child: const Icon(Icons.add, color: Colors.white),
@@ -478,7 +478,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.edit, color: Colors.deepPurple),
+                        icon:  Icon(Icons.edit, color: ColorManage.secondPrimary),
                         onPressed: () => _editSection(section),
                       ),
                       IconButton(
@@ -515,7 +515,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                           section.title ?? '',
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF9C27B0),
+                          backgroundColor:  ColorManage.secondPrimary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -538,14 +538,14 @@ class _SectionsScreenState extends State<SectionsScreen> {
     );
   }
 
-  /// 🔹 تصميم الكارت الخاص بالدرس
+
   Widget _buildLessonCard(SectionsModel section, LessonsModel lesson) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF9C27B0), Color(0xFF7B1FA2)],
+          colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -607,7 +607,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
               if (ok) {
                 _loadLessons(section.id!);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Lesson deleted ✅')),
+                  const SnackBar(content: Text('Lesson deleted ')),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(

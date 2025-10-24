@@ -8,3 +8,4 @@ Widget buildText({
 }) {
   return Text(text, style: style, overflow: overflow, maxLines: maxLines);
 }
+

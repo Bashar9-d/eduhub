@@ -2,7 +2,7 @@ import 'package:eduhub/controller/bottom_nav_bar_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../constant/color_manage.dart';
+import '../../constant/otherwise/color_manage.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({super.key});

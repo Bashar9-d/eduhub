@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'color_manage.dart';
+import '../otherwise/color_manage.dart';
 
 class StyleWidgetManage {
   static const gradiantDecoration = BoxDecoration(
@@ -13,6 +13,14 @@ class StyleWidgetManage {
     ),
   );
 
+  // static const gradiantDecoration = BoxDecoration(
+  //   gradient: LinearGradient(
+  //     colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
+  //     begin: Alignment.centerLeft,
+  //     end: Alignment.centerRight,
+  //     stops: ColorManage.stopsColor,
+  //   ),
+  // );
   static  BoxDecoration toggleDecoration = BoxDecoration(
     gradient: LinearGradient(
       colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],

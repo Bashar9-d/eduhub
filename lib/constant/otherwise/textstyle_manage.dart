@@ -32,6 +32,7 @@ class TextStyleManage {
     fontSize: 32.sp,
     fontWeight: FontWeight.w600,
   );
+  //////;
   static TextStyle nextButton = TextStyle(
     color: Colors.white,
     fontSize: 16.sp,
@@ -56,4 +57,19 @@ class TextStyleManage {
   );
 
   static const textInDropDown = TextStyle(color: Color(0xFF616161));
+  static const TextStyle settingTextStyle=TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 17,
+  );
+
+  static const TextStyle settingTextStyleRed=TextStyle(
+    fontWeight: FontWeight.w400,
+    color: Color(0xFFCD0505),
+    fontSize: 17,
+  );
+  static const TextStyle settingTextStyleGrey=TextStyle(
+    color: Colors.grey,
+    fontWeight: FontWeight.w400,
+    fontSize: 17,
+  );
 }

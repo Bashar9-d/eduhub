@@ -1,12 +1,46 @@
-import 'package:eduhub/constant/style_widget_manage.dart';
+import 'package:eduhub/constant/widgets/style_widget_manage.dart';
+import 'package:eduhub/constant/widgets/text_widget_manage.dart';
+import 'package:eduhub/view/settings_screens/about_us.dart';
+import 'package:eduhub/view/settings_screens/contact_us.dart';
+import 'package:eduhub/view/settings_screens/edit_profile.dart';
+import 'package:eduhub/view/settings_screens/privacy_policy.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../begin_screens/login_screen.dart';
+import '../../constant/otherwise/textstyle_manage.dart';
+import '../../constant/setting_constants/gesture_and_row.dart';
 import '../begin_screens/toggle_switch_widget.dart';
-
-class Setting extends StatelessWidget {
+import 'change_password.dart';
+class Setting extends StatefulWidget {
   const Setting({super.key});
+  @override
+  State<Setting> createState() => _SettingState();
+}
+class _SettingState extends State<Setting> {
+  String? _thumb ;
+  bool isDarkMode = false;
+  bool isPushNotifications = false;
+  String userName = 'User';
+
+  void _loadUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('name') ?? 'User';
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+    _loadImage();
+  }
+
+  _loadImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    _thumb = prefs.getString('image')??'assets/default person picture.webp';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,18 +51,17 @@ class Setting extends StatelessWidget {
             width: double.infinity,
             decoration: StyleWidgetManage.settingDecoration,
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.05),
+              margin: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.05,
+              ),
               padding: EdgeInsets.only(bottom: 38),
 
               child: Row(
                 spacing: 10,
                 children: [
                   Icon(Icons.settings, size: 40, color: Colors.white),
-                  Text(
-                    'Setting',
+                  buildText(
+                    text: 'Setting',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -44,10 +77,7 @@ class Setting extends StatelessWidget {
             child: Center(
               child: Container(
                 height: double.infinity,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.9,
+                width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
@@ -61,15 +91,15 @@ class Setting extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             radius: 28,
-                            backgroundColor: Colors.grey[300],
-                            child: Icon(
-                              Icons.person,
-                              size: 30,
-                              color: Colors.white,
-                            ),
+                            backgroundImage:
+                                _thumb == null
+                                ? AssetImage(
+                                    'assets/default person picture.webp',
+                                  )
+                                : NetworkImage(_thumb!),
                           ),
-                          Text(
-                            'User Name',
+                          buildText(
+                            text: userName,
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
@@ -85,95 +115,89 @@ class Setting extends StatelessWidget {
                         vertical: 8,
                       ),
                       child: Column(
-                        spacing: 20,
+                        spacing: 25,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Account Settings',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
+                          buildText(
+                            text: 'Account settings',
+                            style: TextStyleManage.settingTextStyleGrey,
+                          ),
+                          inkWellBuilder(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                navigatorFunction(nextScreen: EditProfile()),
+                              );
+                            },
+                            child: rowWidget(
+                              text: buildText(
+                                text: 'Edit Profile',
+                                style: TextStyleManage.settingTextStyle,
+                              ),
+                              trailing: Icon(
+                                Icons.keyboard_arrow_right_rounded,
+                              ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Edit Profile',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Icon(Icons.keyboard_arrow_right_rounded),
-                              ],
+                          inkWellBuilder(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                navigatorFunction(nextScreen: Verifying()),
+                              );
+                            },
+                            child: rowWidget(
+                              text: buildText(
+                                text: 'Change password',
+                                style: TextStyleManage.settingTextStyle,
+                              ),
+                              trailing: Icon(
+                                Icons.keyboard_arrow_right_rounded,
+                              ),
                             ),
                           ),
-                          GestureDetector(
+                          inkWellBuilder(
                             onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Change password',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Icon(Icons.keyboard_arrow_right_rounded),
-                              ],
+                            child: rowWidget(
+                              text: buildText(
+                                text: 'Add a payment method',
+                                style: TextStyleManage.settingTextStyle,
+                              ),
+                              trailing: Icon(Icons.add),
                             ),
                           ),
-                          GestureDetector(
+                          inkWellBuilder(
                             onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Add a payment method',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Icon(Icons.add),
-                              ],
+                            child: rowWidget(
+                              text: buildText(
+                                text: 'Push notifications',
+                                style: TextStyleManage.settingTextStyle,
+                              ),
+                              trailing: cupertinoWidget(
+                                value: isPushNotifications,
+                                onChange: (bool? value) {
+                                  setState(() {
+                                    isPushNotifications = value ?? false;
+                                  });
+                                },
+                              ),
                             ),
                           ),
-                          GestureDetector(
+                          inkWellBuilder(
                             onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Push notifications',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Icon(Icons.keyboard_arrow_right_rounded),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Dark mode',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Icon(Icons.keyboard_arrow_right_rounded),
-                              ],
+                            child: rowWidget(
+                              text: buildText(
+                                text: 'Dark mode',
+                                style: TextStyleManage.settingTextStyle,
+                              ),
+                              trailing: cupertinoWidget(
+                                value: isDarkMode,
+                                onChange: (bool? value) {
+                                  setState(() {
+                                    isDarkMode = value ?? false;
+                                  });
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -186,125 +210,111 @@ class Setting extends StatelessWidget {
                         vertical: 8,
                       ),
                       child: Column(
-                        spacing: 20,
+                        spacing: 25,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'More',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
+                          buildText(
+                            text: 'More',
+                            style: TextStyleManage.settingTextStyleGrey,
+                          ),
+                          inkWellBuilder(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                navigatorFunction(nextScreen: AboutUs()),
+                              );
+                            },
+                            child: rowWidget(
+                              text: buildText(
+                                text: 'About us',
+                                style: TextStyleManage.settingTextStyle,
+                              ),
+                              trailing: Icon(
+                                Icons.keyboard_arrow_right_rounded,
+                              ),
                             ),
                           ),
-                          GestureDetector(
+                          inkWellBuilder(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                navigatorFunction(nextScreen: PrivacyPolicy()),
+                              );
+                            },
+                            child: rowWidget(
+                              text: buildText(
+                                text: 'Privacy policy',
+                                style: TextStyleManage.settingTextStyle,
+                              ),
+                              trailing: Icon(
+                                Icons.keyboard_arrow_right_rounded,
+                              ),
+                            ),
+                          ),
+                          inkWellBuilder(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                navigatorFunction(nextScreen: ContactUs()),
+                              );
+                            },
+                            child: rowWidget(
+                              text: buildText(
+                                text: 'Contact Us',
+                                style: TextStyleManage.settingTextStyle,
+                              ),
+                              trailing: Icon(
+                                Icons.keyboard_arrow_right_rounded,
+                              ),
+                            ),
+                          ),
+                          inkWellBuilder(
                             onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'About us',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Icon(Icons.keyboard_arrow_right_rounded),
-                              ],
+                            child: rowWidget(
+                              text: buildText(
+                                text: 'Language Setting',
+                                style: TextStyleManage.settingTextStyle,
+                              ),
+                              trailing: Icon(
+                                Icons.keyboard_arrow_right_rounded,
+                              ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Privacy policy',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                  ),
+                          inkWellBuilder(
+                            onTap: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                navigatorFunction(
+                                  nextScreen: ToggleSwitchWidget(),
                                 ),
-                                Icon(Icons.keyboard_arrow_right_rounded),
-                              ],
+                                (route) => false,
+                              );
+                            },
+                            child: buildText(
+                              text: 'Login out',
+                              style: TextStyleManage.settingTextStyleRed,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Contact Us',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Icon(Icons.keyboard_arrow_right_rounded),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Language Setting',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Icon(Icons.keyboard_arrow_right_rounded),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () async{
+                          inkWellBuilder(
+                            onTap: () async {
                               SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
+                                  await SharedPreferences.getInstance();
                               prefs.remove('id');
                               prefs.remove('name');
                               prefs.remove('email');
                               prefs.remove('role');
-                              Navigator.pushReplacement(
+                              prefs.remove('image');
+                              Navigator.pushAndRemoveUntil(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) =>  ToggleSwitchWidget(),
-                                ));
+                                navigatorFunction(
+                                  nextScreen: ToggleSwitchWidget(),
+                                ),
+                                (route) => false,
+                              );
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Login out',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                Icon(Icons.keyboard_arrow_right_rounded),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Remove Account',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                Icon(Icons.keyboard_arrow_right_rounded),
-                              ],
+                            child: buildText(
+                              text: 'Remove Account',
+                              style: TextStyleManage.settingTextStyleRed,
                             ),
                           ),
                         ],

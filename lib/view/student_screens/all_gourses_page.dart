@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constant/color_manage.dart';
+import '../../constant/otherwise/color_manage.dart';
 import '../../controller/courses_service.dart';
 import '../../model/courses_model.dart';
 import '../student_screens/student_sections_screen.dart';

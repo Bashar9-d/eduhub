@@ -1,7 +1,8 @@
-
 import 'package:eduhub/view/teacher_screens/teacher_courses.dart';
 import 'package:flutter/material.dart';
-import '../../constant/color_manage.dart';
+import 'package:provider/provider.dart';
+import '../../constant/otherwise/color_manage.dart';
+import '../../controller/bottom_nav_bar_controller.dart';
 import '../settings_screens/setting.dart';
 import 'group_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,11 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+  // void _onTabTapped(int index) {
+  //   setState(() {
+  //     _currentIndex = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,24 +55,51 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          splashFactory: NoSplash.splashFactory,
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: _onTabTapped,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey,
-          items: [
-            _buildBNBItem(Icons.menu_book, _currentIndex == 0),
-            _buildBNBItem(Icons.group, _currentIndex == 1),
-            _buildBNBItem(Icons.settings_outlined, _currentIndex == 2),
-          ],
-        ),
+      body: Consumer<BottomNavBarController>(
+        builder: (context, bottomNavBarController, child) {
+          return _pages[bottomNavBarController.getCurrentIndex];
+        },
+      //  child: _pages[_currentIndex],
+      ),
+      bottomNavigationBar:  Consumer<BottomNavBarController>(
+        builder: (context, bottomNavBarController, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashFactory: NoSplash.splashFactory,
+            ),
+            child: BottomNavigationBar(
+              currentIndex: bottomNavBarController.getCurrentIndex,
+              onTap: (value) => bottomNavBarController.onPageChanged(value),//????
+              selectedItemColor: Colors.black,
+              unselectedItemColor: Colors.grey,
+              items: [
+                _buildBNBItem(Icons.menu_book, bottomNavBarController.getCurrentIndex == 0),
+                _buildBNBItem(Icons.group, bottomNavBarController.getCurrentIndex == 1),
+                _buildBNBItem(Icons.settings_outlined, bottomNavBarController.getCurrentIndex == 2),
+              ],
+            ),
+          );
+        },
+        // child: Theme(
+        //   data: Theme.of(context).copyWith(
+        //     splashColor: Colors.transparent,
+        //     highlightColor: Colors.transparent,
+        //     splashFactory: NoSplash.splashFactory,
+        //   ),
+        //   child: BottomNavigationBar(
+        //     currentIndex: _currentIndex,
+        //     onTap: _onTabTapped,
+        //     selectedItemColor: Colors.black,
+        //     unselectedItemColor: Colors.grey,
+        //     items: [
+        //       _buildBNBItem(Icons.menu_book, _currentIndex == 0),
+        //       _buildBNBItem(Icons.group, _currentIndex == 1),
+        //       _buildBNBItem(Icons.settings_outlined, _currentIndex == 2),
+        //     ],
+        //   ),
+        // ),
       ),
     );
   }

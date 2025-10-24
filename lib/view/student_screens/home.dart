@@ -1,4 +1,6 @@
-import 'package:eduhub/constant/color_manage.dart';
+import 'package:eduhub/constant/otherwise/color_manage.dart';
+import 'package:eduhub/constant/setting_constants/gesture_and_row.dart';
+import 'package:eduhub/view/settings_screens/edit_profile.dart';
 import 'package:eduhub/view/student_screens/student_sections_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -16,8 +18,8 @@ class CoursesStorePage extends StatefulWidget {
   @override
   State<CoursesStorePage> createState() => _CoursesStorePageState();
 }
-
 class _CoursesStorePageState extends State<CoursesStorePage> {
+  String? _thumb ;
   final CoursesService coursesService = CoursesService();
   late Future<List<CoursesModel>> _futureCourses;
   String userName = 'User';
@@ -30,7 +32,6 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
     Colors.teal,
     Colors.amber,
   ];
-
   List<Map<String, dynamic>> categoriesWithColors(
     List<Map<String, dynamic>> categoriesFromApi,
   ) {
@@ -44,12 +45,12 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
     }
     return result;
   }
+
   List<Map<String, dynamic>> _categories = [];
 
   Future<void> _fetchCategories() async {
     try {
-      final catsFromApi = await coursesService
-          .getCategories();
+      final catsFromApi = await coursesService.getCategories();
       setState(() {
         _categories = categoriesWithColors(catsFromApi);
       });
@@ -64,8 +65,18 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
     _futureCourses = coursesService.getAllCourses();
     _fetchCategories();
     _loadUserName();
+    _loadImage(); //New
   }
 
+  ////
+  void _loadImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _thumb = prefs.getString('image')??'assets/default person picture.webp';
+    });
+  }
+
+  ////
   void _loadUserName() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -92,10 +103,11 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-
               Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 child: Material(
                   elevation: 3,
                   borderRadius: BorderRadius.circular(40),
@@ -104,24 +116,23 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     height: 55,
                     child: Row(
-
                       children: [
                         Expanded(
                           child: TextField(
-
                             decoration: const InputDecoration(
                               hintText: "Search Topic here",
-                              contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
                               border: InputBorder.none,
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
                           ),
                         ),
                         GestureDetector(
-
                           child: Container(
                             decoration: const BoxDecoration(
-                              gradient:  LinearGradient(
+                              gradient: LinearGradient(
                                 colors: [Color(0xFFE27BF5), Color(0xFF7C5EF1)],
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
@@ -131,8 +142,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                             ),
                             padding: const EdgeInsets.all(10),
                             child: Icon(
-
-                            Icons.search,
+                              Icons.search,
 
                               color: Colors.white,
                               size: 20,
@@ -145,38 +155,47 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                 ),
               ),
               const SizedBox(height: 20),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Hello👋\n',
-                          style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,),
-                        ),
-                        TextSpan(
-                          text: userName,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.purple,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    navigatorFunction(nextScreen: EditProfile()),
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'Hello👋\n',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                      ],
+                          TextSpan(
+                            text: userName,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.purple,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  CircleAvatar(
-                    radius: 28,
-                    backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      Icons.person,
-                      size: 30,
-                      color: Colors.white,
+                    CircleAvatar(
+                      radius: 28,
+                      backgroundImage:
+                          _thumb == null ||
+                              _thumb == 'assets/default person picture.webp'
+                          ? AssetImage('assets/default person picture.webp')
+                          : NetworkImage(_thumb!),
                     ),
-                  )
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
 
@@ -190,9 +209,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                         ? _categories[i % _categories.length]
                         : {"name": "General", "color": Colors.grey};
 
-
-                    return
-                    Padding(
+                    return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: GestureDetector(
                         onTap: () {
@@ -200,7 +217,9 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                             context,
                             MaterialPageRoute(
                               builder: (_) => CoursesByCategoryPage(
-                                categoryId: int.parse(category['id'].toString()),
+                                categoryId: int.parse(
+                                  category['id'].toString(),
+                                ),
                                 categoryName: category['name'],
                               ),
                             ),
@@ -242,11 +261,13 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                       highlightColor: Colors.transparent,
                       splashFactory: NoSplash.splashFactory,
                     ),
-                    child:TextButton(
+                    child: TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const AllCoursesPage()),
+                          MaterialPageRoute(
+                            builder: (_) => const AllCoursesPage(),
+                          ),
                         );
                       },
                       child: Text(
@@ -275,9 +296,9 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                   }
 
                   final coursesFirst = snapshot.data!.reversed;
-                  List  courses=[];
-                  for(int x=0; x<coursesFirst.length; x++){
-                    if(x==6) {
+                  List courses = [];
+                  for (int x = 0; x < coursesFirst.length; x++) {
+                    if (x == 6) {
                       break;
                     }
                     courses.add(coursesFirst.toList()[x]);
@@ -332,7 +353,8 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         course.title ?? '',
@@ -348,9 +370,6 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                                           fontSize: 12,
                                         ),
                                       ),
-
-
-                                      
                                     ],
                                   ),
                                 ),
@@ -363,7 +382,6 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                   );
                 },
               ),
-
             ],
           ),
         ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../constant/color_manage.dart';
+import '../../constant/otherwise/color_manage.dart';
 import '../../controller/sections_service.dart';
 import '../../controller/lessons_service.dart';
 import '../../controller/group_service.dart';

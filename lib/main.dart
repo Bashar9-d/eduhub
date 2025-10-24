@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Edu hub',
-            home: BottomNavBar(),
+            home: SplashScreen(),
           ),
         );
       },

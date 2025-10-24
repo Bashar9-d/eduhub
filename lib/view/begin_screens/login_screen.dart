@@ -1,16 +1,14 @@
-import 'package:eduhub/constant/style_widget_manage.dart';
-import 'package:eduhub/constant/textstyle_manage.dart';
+import 'package:eduhub/constant/widgets/style_widget_manage.dart';
 import 'package:eduhub/view/student_screens/bottom_nav_bar.dart';
 import 'package:eduhub/view/teacher_screens/home_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../constant/color_manage.dart';
-import '../../constant/numbers_manage.dart';
-import '../../constant/text_field_manage.dart';
+import '../../constant/otherwise/numbers_manage.dart';
+import '../../constant/otherwise/textstyle_manage.dart';
+import '../../constant/widgets/text_field_manage.dart';
 import '../../controller/begin_controller/auth_service.dart';
-import '../teacher_screens/teacher_courses.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -67,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print(result);
       if (result["success"] == true) {
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString("email", result["data"]["name"]);
+        await prefs.setString("email", result["data"]["email"]);////
         await prefs.setString("name", result["data"]["name"]);
         await prefs.setInt("id", result["data"]["id"]);
         await prefs.setString("role", result["data"]["role"]);
