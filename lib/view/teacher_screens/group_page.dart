@@ -1,5 +1,6 @@
 import 'package:eduhub/constant/otherwise/color_manage.dart';
 import 'package:flutter/material.dart';
+import '../../constant/widgets/circular_progress.dart';
 import '../../controller/group_service.dart';
 import '../../model/group_model.dart';
 import '../chat_page.dart';
@@ -40,7 +41,7 @@ class _GroupPageState extends State<GroupPage> {
         future: _groupsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return  Center(child: CircularProgress.circular);
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             final groups = snapshot.data!;
             return ListView.builder(

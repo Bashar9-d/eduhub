@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constant/otherwise/color_manage.dart';
+import '../../constant/widgets/circular_progress.dart';
 import '../../controller/enrollment_service.dart';
 import '../../model/courses_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,18 +38,12 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("My Learning")),
       body: userId == null
-          ? const Center(
-              child: CircularProgressIndicator(color: ColorManage.firstPrimary),
-            )
+          ? Center(child: CircularProgress.circular)
           : FutureBuilder<List<CoursesModel>>(
               future: _futureCourses,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: ColorManage.firstPrimary,
-                    ),
-                  );
+                  return Center(child: CircularProgress.circular);
                 } else if (snapshot.hasError) {
                   return Center(
                     child: Text("Error: ${snapshot.error.toString()}"),

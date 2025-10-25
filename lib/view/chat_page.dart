@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../constant/widgets/circular_progress.dart';
 import '../controller/group_service.dart';
 import '../model/message_model.dart';
 import '../constant/otherwise/color_manage.dart';
@@ -92,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
               stream: _streamController.stream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
+                  return  Center(child: CircularProgress.circular);
                 }
 
                 final messages = snapshot.data!;

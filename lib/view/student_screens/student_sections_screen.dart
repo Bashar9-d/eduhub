@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../constant/widgets/circular_progress.dart';
 import '../../controller/enrollment_service.dart';
 import '../../controller/group_service.dart';
 import '../../controller/sections_service.dart';
@@ -226,8 +227,8 @@ Explore lessons of this course below. The first section is open for all.""",
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
+                            return  Center(
+                              child: CircularProgress.circular,
                             );
                           } else if (snapshot.hasError) {
                             return Text("Error: ${snapshot.error}");
@@ -327,9 +328,9 @@ Explore lessons of this course below. The first section is open for all.""",
                                       builder: (context, lessonSnap) {
                                         if (lessonSnap.connectionState ==
                                             ConnectionState.waiting) {
-                                          return const Padding(
+                                          return  Padding(
                                             padding: EdgeInsets.all(8.0),
-                                            child: CircularProgressIndicator(),
+                                            child: CircularProgress.circular,
                                           );
                                         } else if (lessonSnap.hasError) {
                                           return Text(

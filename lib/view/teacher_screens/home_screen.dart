@@ -2,6 +2,7 @@ import 'package:eduhub/view/teacher_screens/teacher_courses.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../constant/otherwise/color_manage.dart';
+import '../../constant/widgets/circular_progress.dart';
 import '../../controller/bottom_nav_bar_controller.dart';
 import '../settings_screens/setting.dart';
 import 'group_page.dart';
@@ -51,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (_pages.isEmpty) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(body: Center(child:CircularProgress.circular));
     }
 
     return Scaffold(

@@ -3,6 +3,7 @@ import 'package:eduhub/constant/otherwise/color_manage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../constant/widgets/circular_progress.dart';
 import '../../controller/sections_service.dart';
 import '../../controller/lessons_service.dart';
 import '../../model/sections_model.dart';
@@ -179,7 +180,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                   context: context,
                   barrierDismissible: false,
                   builder: (_) =>
-                      const Center(child: CircularProgressIndicator()),
+                       Center(child: CircularProgress.circular),
                 );
 
                 await supabase.storage
@@ -301,7 +302,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
                     context: context,
                     barrierDismissible: false,
                     builder: (_) =>
-                        const Center(child: CircularProgressIndicator()),
+                         Center(child: CircularProgress.circular),
                   );
 
                   await supabase.storage
@@ -430,7 +431,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
         future: _futureSections,
         builder: (context, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return  Center(child: CircularProgress.circular);
           }
           if (snap.hasError) {
             return Center(child: Text('Error: ${snap.error}'));
@@ -493,9 +494,9 @@ class _SectionsScreenState extends State<SectionsScreen> {
                   ),
                   children: [
                     if (!_lessonsLoaded.containsKey(section.id))
-                      const Padding(
+                       Padding(
                         padding: EdgeInsets.all(10),
-                        child: Center(child: CircularProgressIndicator()),
+                        child: Center(child: CircularProgress.circular),
                       )
                     else if ((_lessonsMap[section.id] ?? []).isEmpty)
                       const Padding(

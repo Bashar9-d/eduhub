@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/otherwise/numbers_manage.dart';
 import '../../constant/otherwise/textstyle_manage.dart';
+import '../../constant/widgets/circular_progress.dart';
 import '../../constant/widgets/text_field_manage.dart';
 import '../../controller/begin_controller/auth_service.dart';
 
@@ -53,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const Center(child: CircularProgressIndicator()),
+        builder: (context) =>  Center(child: CircularProgress.circular),
       );
 
       final authService = AuthService();

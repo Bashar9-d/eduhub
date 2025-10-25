@@ -17,12 +17,14 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
-
+  TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   bool showErrorEmail = false;
   bool showErrorPassword = false;
   bool showErrorName = false;
+  bool obsecureText = true;
+  bool obsecureText2 = true;
 
   bool isEmail({required String email}) {
     String p =
@@ -49,7 +51,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       showErrorDropDown = selectedItem == null ? true : false;
       showErrorPassword =
           passwordController.text.isEmpty ||
-          (!validatePassword(password: passwordController.text));
+          (!validatePassword(password: passwordController.text)) ||
+          confirmPasswordController.text != passwordController.text;
       showErrorEmail =
           emailController.text.isEmpty ||
           (!isEmail(email: emailController.text));
@@ -95,7 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: NumbersManage.horizontalLoginAndRegister,
@@ -152,14 +155,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
               label: 'Email',
             ),
             buildTextField(
-              obscure: true,
+              obscure: obsecureText,
               controller: passwordController,
               keyboardType: TextInputType.visiblePassword,
               errorText: showErrorPassword ? 'Enter stronger password' : null,
+              suffix: IconButton(
+                onPressed: () => setState(() {
+                  obsecureText = !obsecureText;
+                }),
+                icon: Icon(
+                  color: Colors.black,
+                  obsecureText
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                ),
+              ),
               hint: 'Enter Password here',
               label: 'Password',
             ),
-
+            buildTextField(
+              obscure: obsecureText2,
+              controller: confirmPasswordController,
+              keyboardType: TextInputType.visiblePassword,
+              errorText: showErrorPassword ? 'Enter stronger password' : null,
+              suffix: IconButton(
+                onPressed: () => setState(() {
+                  obsecureText2 = !obsecureText2;
+                }),
+                icon: Icon(
+                  color: Colors.black,
+                  obsecureText2
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                ),
+              ),
+              hint: 'Enter Password here',
+              label: 'Password',
+            ),
             InkWell(
               onTap: register,
               child: Container(

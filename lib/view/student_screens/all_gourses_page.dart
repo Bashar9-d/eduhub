@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constant/otherwise/color_manage.dart';
+import '../../constant/widgets/circular_progress.dart';
 import '../../controller/courses_service.dart';
 import '../../model/courses_model.dart';
 import '../student_screens/student_sections_screen.dart';
@@ -43,7 +44,7 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
         future: _futureCourses,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return  Center(child: CircularProgress.circular);
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

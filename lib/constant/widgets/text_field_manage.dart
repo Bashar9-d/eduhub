@@ -8,9 +8,11 @@ Widget buildTextField({
   required TextEditingController controller,
   required String label,
   required String hint,
+
   TextInputType keyboardType = TextInputType.text,
   bool obscure = false,
   String? errorText,
+  Widget? suffix,
   Color? fillColor
 }) {
   return  Column(
@@ -26,6 +28,7 @@ Widget buildTextField({
             filled: true,
             fillColor: fillColor??ColorManage.field,
             errorText: errorText,
+            suffixIcon: suffix,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: hint,
             hintStyle: TextStyle(color: Colors.grey),

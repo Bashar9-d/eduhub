@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:eduhub/controller/bottom_nav_bar_controller.dart';
 import 'package:eduhub/view/begin_screens/splash_screen.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Edu hub',
-            home: SplashScreen(),
+            home: ToggleSwitchWidget(),
           ),
         );
       },

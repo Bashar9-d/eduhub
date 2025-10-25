@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../constant/widgets/circular_progress.dart';
 import '../../controller/courses_service.dart';
 import '../../model/courses_model.dart';
 import '../teacher_screens/sections_screen.dart';
@@ -18,8 +19,10 @@ class CoursesStorePage extends StatefulWidget {
   @override
   State<CoursesStorePage> createState() => _CoursesStorePageState();
 }
+
 class _CoursesStorePageState extends State<CoursesStorePage> {
-  String? _thumb ;
+  String? _thumb;
+
   final CoursesService coursesService = CoursesService();
   late Future<List<CoursesModel>> _futureCourses;
   String userName = 'User';
@@ -32,6 +35,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
     Colors.teal,
     Colors.amber,
   ];
+
   List<Map<String, dynamic>> categoriesWithColors(
     List<Map<String, dynamic>> categoriesFromApi,
   ) {
@@ -72,7 +76,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
   void _loadImage() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _thumb = prefs.getString('image')??'assets/default person picture.webp';
+      _thumb = prefs.getString('image') ?? 'assets/default person picture.webp';
     });
   }
 
@@ -288,7 +292,9 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                 future: _futureCourses,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: CircularProgress.circular,
+                    );
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

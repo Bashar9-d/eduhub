@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../constant/otherwise/color_manage.dart';
+import '../../constant/widgets/circular_progress.dart';
 import '../../controller/courses_service.dart';
 import '../../model/courses_model.dart';
 import 'sections_screen.dart';
@@ -252,7 +253,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
                   future: _futureCourses,
                   builder: (context, snap) {
                     if (snap.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                      return  Center(child: CircularProgress.circular);
                     } else if (snap.hasError) {
                       return Center(child: Text('Error: ${snap.error}'));
                     } else if (!snap.hasData || snap.data!.isEmpty) {
@@ -552,7 +553,7 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
                 const SizedBox(height: 10),
 
                 _loadingCategories
-                    ? const Center(child: CircularProgressIndicator())
+                    ?  Center(child: CircularProgress.circular)
                     : Wrap(
                         spacing: 8,
                         runSpacing: 8,

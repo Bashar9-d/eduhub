@@ -4,6 +4,7 @@ import 'package:eduhub/view/settings_screens/about_us.dart';
 import 'package:eduhub/view/settings_screens/contact_us.dart';
 import 'package:eduhub/view/settings_screens/edit_profile.dart';
 import 'package:eduhub/view/settings_screens/privacy_policy.dart';
+import 'package:eduhub/view/settings_screens/videos.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -160,33 +161,6 @@ class _SettingState extends State<Setting> {
                             onTap: () {},
                             child: rowWidget(
                               text: buildText(
-                                text: 'Add a payment method',
-                                style: TextStyleManage.settingTextStyle,
-                              ),
-                              trailing: Icon(Icons.add),
-                            ),
-                          ),
-                          inkWellBuilder(
-                            onTap: () {},
-                            child: rowWidget(
-                              text: buildText(
-                                text: 'Push notifications',
-                                style: TextStyleManage.settingTextStyle,
-                              ),
-                              trailing: cupertinoWidget(
-                                value: isPushNotifications,
-                                onChange: (bool? value) {
-                                  setState(() {
-                                    isPushNotifications = value ?? false;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          inkWellBuilder(
-                            onTap: () {},
-                            child: rowWidget(
-                              text: buildText(
                                 text: 'Dark mode',
                                 style: TextStyleManage.settingTextStyle,
                               ),
@@ -216,6 +190,23 @@ class _SettingState extends State<Setting> {
                           buildText(
                             text: 'More',
                             style: TextStyleManage.settingTextStyleGrey,
+                          ),
+                          inkWellBuilder(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                navigatorFunction(nextScreen: Videos()),
+                              );
+                            },
+                            child: rowWidget(
+                              text: buildText(
+                                text: 'Videos',
+                                style: TextStyleManage.settingTextStyle,
+                              ),
+                              trailing: Icon(
+                                Icons.keyboard_arrow_right_rounded,
+                              ),
+                            ),
                           ),
                           inkWellBuilder(
                             onTap: () {

@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../constant/otherwise/color_manage.dart';
+import '../../constant/widgets/circular_progress.dart';
 import '../../controller/sections_service.dart';
 import '../../controller/lessons_service.dart';
 import '../../controller/group_service.dart';
@@ -258,6 +259,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                         ],
                       ),
                       const SizedBox(height: 16),
+
                       Text(
                         "${widget.course.description}",
                         style: TextStyle(color: Colors.grey[700], height: 1.5),
@@ -279,8 +281,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
+                            return  Center(
+                              child: CircularProgress.circular,
                             );
                           } else if (snapshot.hasError) {
                             return Text("Error: ${snapshot.error}");
@@ -363,16 +365,15 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                     ),
                                   ),
 
-                                  // عرض الدروس عند الفتح
                                   if (isExpanded)
                                     FutureBuilder<List<LessonsModel>>(
                                       future: _fetchLessons(section.id!),
                                       builder: (context, lessonSnap) {
                                         if (lessonSnap.connectionState ==
                                             ConnectionState.waiting) {
-                                          return const Padding(
+                                          return  Padding(
                                             padding: EdgeInsets.all(8.0),
-                                            child: CircularProgressIndicator(),
+                                            child: CircularProgress.circular,
                                           );
                                         } else if (lessonSnap.hasError) {
                                           return Text(
