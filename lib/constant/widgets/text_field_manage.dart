@@ -28,7 +28,7 @@ Widget buildTextField({
             filled: true,
             fillColor: fillColor??ColorManage.field,
             errorText: errorText,
-            suffixIcon: suffix,
+            suffixIcon: controller.text.isNotEmpty?suffix:null,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: hint,
             hintStyle: TextStyle(color: Colors.grey),

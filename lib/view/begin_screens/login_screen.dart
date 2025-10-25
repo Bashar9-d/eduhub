@@ -23,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   bool showErrorEmail = false;
   bool showErrorPassword = false;
+  bool obsecureText = true;
 
   bool isEmail({required String email}) {
     String p =
@@ -54,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) =>  Center(child: CircularProgress.circular),
+        builder: (context) => Center(child: CircularProgress.circular),
       );
 
       final authService = AuthService();
@@ -66,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print(result);
       if (result["success"] == true) {
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString("email", result["data"]["email"]);////
+        await prefs.setString("email", result["data"]["email"]); ////
         await prefs.setString("name", result["data"]["name"]);
         await prefs.setInt("id", result["data"]["id"]);
         await prefs.setString("role", result["data"]["role"]);
@@ -82,9 +83,9 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(builder: (context) => const HomeScreen()),
           );
         }
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Register successfully")),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Register successfully")));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -127,10 +128,17 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
 
             buildTextField(
-              obscure: true,
+              obscure: obsecureText,
               controller: passwordController,
               keyboardType: TextInputType.visiblePassword,
-
+              suffix: IconButton(
+                onPressed: () => setState(() => obsecureText = !obsecureText),
+                icon: Icon(color: Colors.black,
+                  obsecureText
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                ),
+              ),
               errorText: showErrorPassword ? 'Enter stronger password' : null,
 
               hint: 'Enter Password here',
