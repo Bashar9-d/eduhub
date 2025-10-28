@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../model/group_model.dart';
-import '../model/message_model.dart';
+import '../../model/group_model.dart';
+import '../../model/message_model.dart';
 
 const String baseUrl = 'https://eduhub44.atwebpages.com/groups.php';
 

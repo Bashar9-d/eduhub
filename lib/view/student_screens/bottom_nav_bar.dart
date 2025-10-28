@@ -1,8 +1,8 @@
-import 'package:eduhub/controller/bottom_nav_bar_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../constant/otherwise/color_manage.dart';
+import '../../controller/screens_controller/bottom_nav_bar_controller.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({super.key});
@@ -12,8 +12,10 @@ class BottomNavBar extends StatelessWidget {
     return Scaffold(
       body: Consumer<BottomNavBarController>(
         builder: (context, bottomNavBarController, child) {
-          return bottomNavBarController.getScreens[bottomNavBarController
-              .getCurrentIndex];
+          return IndexedStack(
+            index: bottomNavBarController.getCurrentIndex,
+            children: bottomNavBarController.getScreens,
+          );
         },
       ),
       bottomNavigationBar: Consumer<BottomNavBarController>(

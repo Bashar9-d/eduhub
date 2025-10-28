@@ -5,10 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../constant/widgets/circular_progress.dart';
-import '../../controller/enrollment_service.dart';
-import '../../controller/group_service.dart';
-import '../../controller/sections_service.dart';
-import '../../controller/lessons_service.dart';
+import '../../controller/otherwise/enrollment_service.dart';
+import '../../controller/otherwise/group_service.dart';
+import '../../controller/otherwise/lessons_service.dart';
+import '../../controller/otherwise/sections_service.dart';
 import '../../model/sections_model.dart';
 import '../../model/lessons_model.dart';
 import '../../model/courses_model.dart';

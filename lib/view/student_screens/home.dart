@@ -3,14 +3,12 @@ import 'package:eduhub/constant/setting_constants/gesture_and_row.dart';
 import 'package:eduhub/view/settings_screens/edit_profile.dart';
 import 'package:eduhub/view/student_screens/student_sections_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import '../../constant/widgets/circular_progress.dart';
-import '../../controller/courses_service.dart';
+import '../../controller/screens_controller/student_controller.dart';
 import '../../model/courses_model.dart';
-import '../teacher_screens/sections_screen.dart';
 import 'all_gourses_page.dart';
+import '../../constant/widgets/course_search_field.dart';
 import 'courses_by_category_page.dart';
 
 class CoursesStorePage extends StatefulWidget {
@@ -21,73 +19,37 @@ class CoursesStorePage extends StatefulWidget {
 }
 
 class _CoursesStorePageState extends State<CoursesStorePage> {
-  String? _thumb;
 
-  final CoursesService coursesService = CoursesService();
-  late Future<List<CoursesModel>> _futureCourses;
-  String userName = 'User';
-  List<Color> colorPalette = [
-    Colors.purple,
-    Colors.green,
-    Colors.orange,
-    Colors.blue,
-    Colors.red,
-    Colors.teal,
-    Colors.amber,
-  ];
+  // ✅ إضافات البحث
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  List<CoursesModel> _filteredCourses = [];
+  late StController stProvider;
 
-  List<Map<String, dynamic>> categoriesWithColors(
-    List<Map<String, dynamic>> categoriesFromApi,
-  ) {
-    List<Map<String, dynamic>> result = [];
-    for (int i = 0; i < categoriesFromApi.length; i++) {
-      result.add({
-        "id": categoriesFromApi[i]["id"],
-        "name": categoriesFromApi[i]["name"],
-        "color": colorPalette[i % colorPalette.length],
-      });
-    }
-    return result;
-  }
-
-  List<Map<String, dynamic>> _categories = [];
-
-  Future<void> _fetchCategories() async {
-    try {
-      final catsFromApi = await coursesService.getCategories();
-      setState(() {
-        _categories = categoriesWithColors(catsFromApi);
-      });
-    } catch (e) {
-      print("Error fetching categories: $e");
-    }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    stProvider = Provider.of<StController>(context, listen: false);
   }
 
   @override
   void initState() {
     super.initState();
-    _futureCourses = coursesService.getAllCourses();
-    _fetchCategories();
-    _loadUserName();
-    _loadImage(); //New
-  }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      stProvider.futureCourses = stProvider.coursesService.getAllCourses().then((courses) {
+        stProvider.allCourses = courses; // هنا نخزن كل الكورسات
+        return courses;
+      });
 
-  ////
-  void _loadImage() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _thumb = prefs.getString('image') ?? 'assets/default person picture.webp';
+      stProvider.fetchCategories();
+      stProvider.loadUserName();
+      stProvider.loadImage();
     });
   }
+  String searchText = '';
+  List<CoursesModel> searchResults = [];
 
-  ////
-  void _loadUserName() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userName = prefs.getString('name') ?? 'User';
-    });
-  }
-
+  // ✅ دالة فتح كورسات القسم
   void _openSections(CoursesModel course) {
     Navigator.push(
       context,
@@ -98,299 +60,303 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
     );
   }
 
+  // ✅ دالة فلترة الكورسات عند البحث
+  void _onSearchChanged(String value, List<CoursesModel> courses) {
+    setState(() {
+      if (value.trim().isEmpty) {
+        _filteredCourses.clear();
+        return;
+      }
+      _filteredCourses = courses
+          .where((c) =>
+          (c.title ?? '')
+              .toLowerCase()
+              .contains(value.trim().toLowerCase()))
+          .toList();
+    });
+  }
+
+  void _clearSearch() {
+    setState(() {
+      _filteredCourses.clear();
+      _searchController.clear();
+      _focusNode.unfocus();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
-                child: Material(
-                  elevation: 3,
-                  borderRadius: BorderRadius.circular(40),
-                  color: Colors.white,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    height: 55,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            decoration: const InputDecoration(
-                              hintText: "Search Topic here",
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                              ),
-                              border: InputBorder.none,
-                              hintStyle: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xFFE27BF5), Color(0xFF7C5EF1)],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                stops: [0.0, 0.75],
-                              ),
-                              shape: BoxShape.circle,
-                            ),
-                            padding: const EdgeInsets.all(10),
-                            child: Icon(
-                              Icons.search,
+      body: Consumer<StController>(
+        builder: (context, stController, child) {
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: FutureBuilder<List<CoursesModel>>(
+                future: stController.futureCourses,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgress.circular);
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                      child: Text('No courses available.'),
+                    );
+                  }
 
-                              color: Colors.white,
-                              size: 20,
+                  final courses = snapshot.data!;
+
+                  final displayCourses =
+                  _filteredCourses.isNotEmpty ? _filteredCourses : courses;
+
+                  return ListView(
+                    children: [
+
+                      CourseSearchField(
+                        controller: _searchController,
+                        focusNode: _focusNode,
+                        courses: courses,
+                        onChanged: (value) => _onSearchChanged(value, courses),
+                        onClear: _clearSearch,
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            navigatorFunction(nextScreen: EditProfile()),
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  const TextSpan(
+                                    text: 'Hello👋\n',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: stController.userName,
+                                    style: const TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.purple,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                            CircleAvatar(
+                              radius: 28,
+                              backgroundImage:
+                              stController.thumb == null ||
+                                  stController.thumb ==
+                                      'assets/default person picture.webp'
+                                  ? AssetImage(
+                                  'assets/default person picture.webp')
+                                  : NetworkImage(stController.thumb!)
+                              as ImageProvider,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    navigatorFunction(nextScreen: EditProfile()),
-                  );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text.rich(
-                      TextSpan(
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: stController.categories.length,
+                          itemBuilder: (ctx, i) {
+                            final category = stController.categories.isNotEmpty
+                                ? stController
+                                .categories[i % stController.categories.length]
+                                : {"name": "General", "color": Colors.grey};
+
+                            return Padding(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => CoursesByCategoryPage(
+                                        categoryId: int.parse(
+                                          category['id'].toString(),
+                                        ),
+                                        categoryName: category['name'],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width:
+                                  MediaQuery.of(context).size.width * 0.4,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: category['color'],
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    category['name'],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      Row(
                         children: [
-                          const TextSpan(
-                            text: 'Hello👋\n',
+                          const Text(
+                            'Courses',
                             style: TextStyle(
                               fontSize: 20,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          TextSpan(
-                            text: userName,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.purple,
+                          const Spacer(),
+                          Theme(
+                            data: Theme.of(context).copyWith(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              splashFactory: NoSplash.splashFactory,
+                            ),
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const AllCoursesPage(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'View All',
+                                style: TextStyle(
+                                  color: ColorManage.firstPrimary,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    CircleAvatar(
-                      radius: 28,
-                      backgroundImage:
-                          _thumb == null ||
-                              _thumb == 'assets/default person picture.webp'
-                          ? AssetImage('assets/default person picture.webp')
-                          : NetworkImage(_thumb!),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
+                      const SizedBox(height: 12),
 
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _categories.length,
-                  itemBuilder: (ctx, i) {
-                    final category = _categories.isNotEmpty
-                        ? _categories[i % _categories.length]
-                        : {"name": "General", "color": Colors.grey};
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => CoursesByCategoryPage(
-                                categoryId: int.parse(
-                                  category['id'].toString(),
+                      SizedBox(
+                        height: 250,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount:displayCourses.length >= 4 ?4: displayCourses.length,
+                          itemBuilder: (ctx, i) {
+                            final course = displayCourses[i];
+                            final category = i < stController.categories.length
+                                ? stController.categories[i]
+                                : {"name": "General", "color": Colors.grey};
+                            return GestureDetector(
+                              onTap: () => _openSections(course),
+                              child: Container(
+                                width: 180,
+                                margin: const EdgeInsets.only(right: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
                                 ),
-                                categoryName: category['name'],
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            color: category['color'],
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            category['name'],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  const Text(
-                    'Courses',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  Theme(
-                    data: Theme.of(context).copyWith(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      splashFactory: NoSplash.splashFactory,
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const AllCoursesPage(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'View All',
-                        style: TextStyle(
-                          color: ColorManage.firstPrimary,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-
-              FutureBuilder<List<CoursesModel>>(
-                future: _futureCourses,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgress.circular,
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No courses available.'));
-                  }
-
-                  final coursesFirst = snapshot.data!.reversed;
-                  List courses = [];
-                  for (int x = 0; x < coursesFirst.length; x++) {
-                    if (x == 6) {
-                      break;
-                    }
-                    courses.add(coursesFirst.toList()[x]);
-                  }
-                  return SizedBox(
-                    height: 250,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 4,
-                      itemBuilder: (ctx, i) {
-                        final course = courses.toList()[i];
-                        final category = i < _categories.length
-                            ? _categories[i]
-                            : {"name": "General", "color": Colors.grey};
-                        return GestureDetector(
-                          onTap: () => _openSections(course),
-                          child: Container(
-                            width: 180,
-                            margin: const EdgeInsets.only(right: 12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: const BorderRadius.vertical(
-                                    top: Radius.circular(16),
-                                  ),
-                                  child:
-                                      course.thumbnail != null &&
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.vertical(
+                                        top: Radius.circular(16),
+                                      ),
+                                      child: course.thumbnail != null &&
                                           course.thumbnail!.isNotEmpty
-                                      ? Image.network(
-                                          course.thumbnail!,
-                                          height: 120,
-                                          width: 180,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Container(
-                                          height: 120,
-                                          color: Colors.grey[300],
-                                        ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
+                                          ? Image.network(
+                                        course.thumbnail!,
+                                        height: 120,
+                                        width: 180,
+                                        fit: BoxFit.cover,
+                                      )
+                                          : Container(
+                                        height: 120,
+                                        color: Colors.grey[300],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        course.title ?? '',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        children: [
+                                          Text(
+                                            course.title ?? '',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            '${category['name']} · 18 Min',
+                                            style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        '${category['name']} · 18 Min',
-                                        style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

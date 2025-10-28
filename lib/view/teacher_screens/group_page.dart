@@ -1,7 +1,7 @@
 import 'package:eduhub/constant/otherwise/color_manage.dart';
 import 'package:flutter/material.dart';
 import '../../constant/widgets/circular_progress.dart';
-import '../../controller/group_service.dart';
+import '../../controller/otherwise/group_service.dart';
 import '../../model/group_model.dart';
 import '../chat_page.dart';
 import '../settings_screens/setting.dart';

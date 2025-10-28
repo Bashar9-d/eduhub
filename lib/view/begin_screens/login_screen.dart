@@ -1,6 +1,6 @@
 import 'package:eduhub/constant/widgets/style_widget_manage.dart';
 import 'package:eduhub/view/student_screens/bottom_nav_bar.dart';
-import 'package:eduhub/view/teacher_screens/home_screen.dart';
+import 'package:eduhub/view/teacher_screens/bnb_teacher.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

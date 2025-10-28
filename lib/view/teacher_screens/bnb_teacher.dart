@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../constant/otherwise/color_manage.dart';
 import '../../constant/widgets/circular_progress.dart';
-import '../../controller/bottom_nav_bar_controller.dart';
+import '../../controller/screens_controller/bottom_nav_bar_controller.dart';
 import '../settings_screens/setting.dart';
 import 'group_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,53 +16,41 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
-  int? _teacherId;
+  late BottomNavBarController bnbProvider;
 
-  final List<Widget> _pages = [];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    bnbProvider = Provider.of<BottomNavBarController>(context, listen: false);
+  }
 
   @override
   void initState() {
     super.initState();
-    _loadTeacherId();
-  }
-
-  Future<void> _loadTeacherId() async {
-    final prefs = await SharedPreferences.getInstance();
-    final id = prefs.getInt('id') ?? 0;
-    setState(() {
-      _teacherId = id;
-      _pages.clear();
-      _pages.add(const CourseListScreen());
-      _pages.add(
-        _teacherId != null
-            ? GroupPage(teacherId: _teacherId!)
-            : const Center(child: Text('No teacher ID')),
-      );
-      _pages.add(Setting());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bnbProvider.loadTeacherId();
     });
   }
 
-  // void _onTabTapped(int index) {
-  //   setState(() {
-  //     _currentIndex = index;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
-    if (_pages.isEmpty) {
-      return Scaffold(body: Center(child:CircularProgress.circular));
+    if (Provider.of<BottomNavBarController>(
+      context,
+      listen: true,
+    ).pages.isEmpty) {
+      return Scaffold(body: Center(child: CircularProgress.circular));
     }
 
     return Scaffold(
       body: Consumer<BottomNavBarController>(
         builder: (context, bottomNavBarController, child) {
-          return _pages[bottomNavBarController.getCurrentIndex];
+          return IndexedStack(
+            index: bottomNavBarController.getCurrentIndex,
+            children: bottomNavBarController.pages,
+          );
         },
-      //  child: _pages[_currentIndex],
       ),
-      bottomNavigationBar:  Consumer<BottomNavBarController>(
+      bottomNavigationBar: Consumer<BottomNavBarController>(
         builder: (context, bottomNavBarController, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -72,13 +60,23 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: BottomNavigationBar(
               currentIndex: bottomNavBarController.getCurrentIndex,
-              onTap: (value) => bottomNavBarController.onPageChanged(value),//????
+              onTap: (value) => bottomNavBarController.onPageChanged(value),
+              //????
               selectedItemColor: Colors.black,
               unselectedItemColor: Colors.grey,
               items: [
-                _buildBNBItem(Icons.menu_book, bottomNavBarController.getCurrentIndex == 0),
-                _buildBNBItem(Icons.group, bottomNavBarController.getCurrentIndex == 1),
-                _buildBNBItem(Icons.settings_outlined, bottomNavBarController.getCurrentIndex == 2),
+                _buildBNBItem(
+                  Icons.menu_book,
+                  bottomNavBarController.getCurrentIndex == 0,
+                ),
+                _buildBNBItem(
+                  Icons.group,
+                  bottomNavBarController.getCurrentIndex == 1,
+                ),
+                _buildBNBItem(
+                  Icons.settings_outlined,
+                  bottomNavBarController.getCurrentIndex == 2,
+                ),
               ],
             ),
           );

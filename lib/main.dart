@@ -1,11 +1,14 @@
 import 'dart:io';
+import 'package:eduhub/controller/screens_controller/teacher_controller.dart';
+import 'package:eduhub/view/teacher_screens/bnb_teacher.dart';
 import 'package:flutter/material.dart';
-import 'package:eduhub/controller/bottom_nav_bar_controller.dart';
-import 'package:eduhub/view/begin_screens/splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'controller/screens_controller/bottom_nav_bar_controller.dart';
+import 'controller/screens_controller/setting_controller.dart';
+import 'controller/screens_controller/student_controller.dart';
 import 'l10n/app_localizations.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -43,11 +46,19 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (context) => BottomNavBarController(),
             ),
+            ChangeNotifierProvider(
+              create: (context) => TeacherController(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => StController(),
+            ),ChangeNotifierProvider(
+              create: (context) => SettingController(),
+            ),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Edu hub',
-            home: SplashScreen(),
+            home: HomeScreen(),
           ),
         );
       },

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../model/courses_model.dart';
+import '../../model/courses_model.dart';
 import 'group_service.dart';
 
 

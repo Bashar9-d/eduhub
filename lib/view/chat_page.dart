@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../constant/widgets/circular_progress.dart';
-import '../controller/group_service.dart';
+import '../controller/otherwise/group_service.dart';
 import '../model/message_model.dart';
 import '../constant/otherwise/color_manage.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../model/lessons_model.dart';
+import '../../model/lessons_model.dart';
 
 class LessonsService {
   final String baseUrl = 'https://eduhub44.atwebpages.com/lessons.php';

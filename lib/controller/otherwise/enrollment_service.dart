@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../model/courses_model.dart';
+import '../../model/courses_model.dart';
 
 class EnrollmentService {
   static const String baseUrl = 'http://eduhub44.atwebpages.com/enrollments.php';
