@@ -6,6 +6,7 @@ import 'package:eduhub/view/settings_screens/contact_us.dart';
 import 'package:eduhub/view/settings_screens/edit_profile.dart';
 import 'package:eduhub/view/settings_screens/privacy_policy.dart';
 import 'package:eduhub/view/settings_screens/videos.dart';
+import 'package:eduhub/view/student_screens/downloaded_videos_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -221,7 +222,7 @@ class _SettingState extends State<Setting> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    navigatorFunction(nextScreen: Videos()),
+                                    navigatorFunction(nextScreen: DownloadedVideosPage()),
                                   );
                                 },
                                 child: rowWidget(
