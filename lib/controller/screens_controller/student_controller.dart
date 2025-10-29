@@ -10,7 +10,7 @@ class StController extends ChangeNotifier{
   List<CoursesModel> allCourses = [];
 
   final CoursesService coursesService = CoursesService();
-  Future<List<CoursesModel>> futureCourses= Future.value([]);//هذا يعني أن الـ Future موجود دائمًا، حتى لو كانت البيانات لم تُحمّل بعد.
+  Future<List<CoursesModel>> futureCourses= Future.value([]);
   String userName = 'User';
   List<Color> colorPalette = [
     Colors.purple,

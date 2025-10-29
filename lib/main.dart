@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:eduhub/controller/screens_controller/teacher_controller.dart';
+import 'package:eduhub/view/begin_screens/splash_screen.dart';
 import 'package:eduhub/view/teacher_screens/bnb_teacher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,10 +59,11 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Edu hub',
-            home: HomeScreen(),
+            home: SplashScreen(),
           ),
         );
       },
     );
   }
+
 }

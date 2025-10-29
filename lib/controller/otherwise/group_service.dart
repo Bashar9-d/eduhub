@@ -38,7 +38,7 @@ class GroupService {
     return null;
   }
 
-  static Future<List<GroupModel>> getGroupsByTeacher(int teacherId) async {
+   Future<List<GroupModel>> getGroupsByTeacher(int teacherId) async {
     final uri = Uri.parse('$baseUrl?action=my_groups&teacher_id=$teacherId');
     final res = await http.get(uri);
     if (res.statusCode == 200) {

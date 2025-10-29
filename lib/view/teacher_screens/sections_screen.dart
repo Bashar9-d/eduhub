@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:eduhub/constant/otherwise/color_manage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../constant/widgets/circular_progress.dart';
 import '../../controller/otherwise/sections_service.dart';
 import '../../controller/otherwise/lessons_service.dart';
+import '../../controller/screens_controller/teacher_controller.dart';
 import '../../model/sections_model.dart';
 import '../../model/lessons_model.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,25 +27,22 @@ class SectionsScreen extends StatefulWidget {
 }
 
 class _SectionsScreenState extends State<SectionsScreen> {
-  final SectionsService sectionsService = SectionsService();
-  final LessonsService lessonsService = LessonsService();
-  final supabase = Supabase.instance.client;
+  late TeacherController teachProvider;
 
-  late Future<List<SectionsModel>> _futureSections;
-  final Map<int, List<LessonsModel>> _lessonsMap = {};
-  final Map<int, bool> _lessonsLoaded = {};
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    teachProvider = Provider.of<TeacherController>(context, listen: false);
+  }
 
   @override
   void initState() {
     super.initState();
-    _loadSections();
-  }
-
-  void _loadSections() {
-    setState(() {
-      _futureSections = sectionsService.getSectionsByCourse(widget.courseId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      teachProvider.loadSections(widget.courseId);
     });
   }
+
 
   void _openAddSectionDialog() {
     final titleController = TextEditingController();
@@ -70,10 +69,10 @@ class _SectionsScreenState extends State<SectionsScreen> {
                 courseId: widget.courseId,
                 title: title,
               );
-              final ok = await sectionsService.createSection(newSection);
+              final ok = await teachProvider.sectionsService.createSection(newSection);
               if (ok) {
                 Navigator.pop(context);
-                _loadSections();
+                teachProvider.loadSections(widget.courseId);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Section added ')),
                 );
@@ -88,19 +87,6 @@ class _SectionsScreenState extends State<SectionsScreen> {
         ],
       ),
     );
-  }
-
-  Future<void> _loadLessons(int sectionId) async {
-    setState(() {
-      _lessonsLoaded[sectionId] = false;
-    });
-
-    final lessons = await lessonsService.getLessonsBySection(sectionId);
-
-    setState(() {
-      _lessonsMap[sectionId] = lessons;
-      _lessonsLoaded[sectionId] = true;
-    });
   }
 
   void _openAddLessonDialog(int sectionId, String sectionTitle) async {
@@ -183,13 +169,13 @@ class _SectionsScreenState extends State<SectionsScreen> {
                        Center(child: CircularProgress.circular),
                 );
 
-                await supabase.storage
+                await teachProvider.supabase.storage
                     .from('uploads')
                     .uploadBinary(path, await file.readAsBytes());
 
                 Navigator.pop(context);
 
-                final videoUrl = supabase.storage
+                final videoUrl = teachProvider.supabase.storage
                     .from('uploads')
                     .getPublicUrl(path);
 
@@ -203,7 +189,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
 
                 if (ok) {
                   Navigator.pop(context);
-                  await _loadLessons(sectionId);
+                  await teachProvider.loadLessons(sectionId);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Lesson added ')),
                   );
@@ -305,11 +291,11 @@ class _SectionsScreenState extends State<SectionsScreen> {
                          Center(child: CircularProgress.circular),
                   );
 
-                  await supabase.storage
+                  await teachProvider.supabase.storage
                       .from('uploads')
                       .uploadBinary(path, await file.readAsBytes());
                   Navigator.pop(context);
-                  videoUrl = supabase.storage
+                  videoUrl = teachProvider.supabase.storage
                       .from('uploads')
                       .getPublicUrl(path);
                 }
@@ -321,11 +307,11 @@ class _SectionsScreenState extends State<SectionsScreen> {
                   videoUrl: videoUrl,
                 );
 
-                final ok = await lessonsService.updateLesson(updatedLesson);
+                final ok = await teachProvider.lessonsService.updateLesson(updatedLesson);
 
                 if (ok) {
                   Navigator.pop(context);
-                  await _loadLessons(lesson.sectionId!);
+                  await teachProvider.loadLessons(lesson.sectionId!);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Lesson updated ')),
                   );
@@ -349,9 +335,9 @@ class _SectionsScreenState extends State<SectionsScreen> {
   }
 
   void _deleteSection(int sectionId) async {
-    final ok = await sectionsService.deleteSection(sectionId);
+    final ok = await teachProvider.sectionsService.deleteSection(sectionId);
     if (ok) {
-      _loadSections();
+      teachProvider.loadSections(widget.courseId);
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Section deleted ')));
@@ -387,10 +373,10 @@ class _SectionsScreenState extends State<SectionsScreen> {
                 courseId: section.courseId,
                 title: title,
               );
-              final ok = await sectionsService.updateSection(updatedSection);
+              final ok = await teachProvider.sectionsService.updateSection(updatedSection);
               if (ok) {
                 Navigator.pop(context);
-                _loadSections();
+                teachProvider.loadSections(widget.courseId);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Section updated ')),
                 );
@@ -427,198 +413,207 @@ class _SectionsScreenState extends State<SectionsScreen> {
         tooltip: 'Add Section',
         child: const Icon(Icons.add, color: Colors.white),
       ),
-      body: FutureBuilder<List<SectionsModel>>(
-        future: _futureSections,
-        builder: (context, snap) {
-          if (snap.connectionState == ConnectionState.waiting) {
-            return  Center(child: CircularProgress.circular);
-          }
-          if (snap.hasError) {
-            return Center(child: Text('Error: ${snap.error}'));
-          }
-          final sections = snap.data ?? [];
-          if (sections.isEmpty) {
-            return const Center(child: Text('No sections yet.'));
-          }
+      body: Consumer<TeacherController>(
+        builder: (context, teacherController, child) {
+          return FutureBuilder<List<SectionsModel>>(
+            future: teacherController.futureSections,
+            builder: (context, snap) {
+              if (snap.connectionState == ConnectionState.waiting) {
+                return  Center(child: CircularProgress.circular);
+              }
+              if (snap.hasError) {
+                return Center(child: Text('Error: ${snap.error}'));
+              }
+              final sections = snap.data ?? [];
+              if (sections.isEmpty) {
+                return const Center(child: Text('No sections yet.'));
+              }
 
-          return ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            itemCount: sections.length,
-            itemBuilder: (context, index) {
-              final section = sections[index];
-              final lessons = _lessonsMap[section.id] ?? [];
+              return ListView.builder(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                itemCount: sections.length,
+                itemBuilder: (context, index) {
+                  final section = sections[index];
+                  final lessons = teacherController.lessonsMap[section.id] ?? [];
 
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 6,
-                      offset: const Offset(2, 3),
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(18),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 6,
+                          offset: const Offset(2, 3),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: ExpansionTile(
-                  key: ValueKey(section.id),
-                  initiallyExpanded: false,
-                  onExpansionChanged: (expanded) {
-                    if (expanded) _loadLessons(section.id!);
-                  },
-                  title: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          section.title ?? 'Section',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                    child: ExpansionTile(
+                      key: ValueKey(section.id),
+                      initiallyExpanded: false,
+                      onExpansionChanged: (expanded) {
+                        if (expanded) teacherController.loadLessons(section.id!);
+                      },
+                      title: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              section.title ?? 'Section',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon:  Icon(Icons.edit, color: ColorManage.secondPrimary),
+                            onPressed: () => _editSection(section),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.redAccent),
+                            onPressed: () => _deleteSection(section.id!),
+                          ),
+                        ],
+                      ),
+                      childrenPadding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 8,
+                      ),
+                      children: [
+                        if (!teacherController.lessonsLoaded.containsKey(section.id))
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Center(child: CircularProgress.circular),
+                          )
+                        else if ((teacherController.lessonsMap[section.id] ?? []).isEmpty)
+                          const Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Center(child: Text('No lessons yet')),
+                          )
+                        else
+                          ...lessons
+                              .map((lesson) => _buildLessonCard(section, lesson))
+                              .toList(),
+                        const SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton.icon(
+                            onPressed: () => _openAddLessonDialog(
+                              section.id!,
+                              section.title ?? '',
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:  ColorManage.secondPrimary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            icon: const Icon(Icons.add, color: Colors.white),
+                            label: const Text(
+                              "Add Lesson",
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        icon:  Icon(Icons.edit, color: ColorManage.secondPrimary),
-                        onPressed: () => _editSection(section),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.redAccent),
-                        onPressed: () => _deleteSection(section.id!),
-                      ),
-                    ],
-                  ),
-                  childrenPadding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 8,
-                  ),
-                  children: [
-                    if (!_lessonsLoaded.containsKey(section.id))
-                       Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Center(child: CircularProgress.circular),
-                      )
-                    else if ((_lessonsMap[section.id] ?? []).isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Center(child: Text('No lessons yet')),
-                      )
-                    else
-                      ...lessons
-                          .map((lesson) => _buildLessonCard(section, lesson))
-                          .toList(),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton.icon(
-                        onPressed: () => _openAddLessonDialog(
-                          section.id!,
-                          section.title ?? '',
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:  ColorManage.secondPrimary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        icon: const Icon(Icons.add, color: Colors.white),
-                        label: const Text(
-                          "Add Lesson",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                        const SizedBox(height: 12),
+                      ],
                     ),
-                    const SizedBox(height: 12),
-                  ],
-                ),
+                  );
+                },
               );
             },
           );
         },
+        //child:
       ),
     );
   }
 
 
   Widget _buildLessonCard(SectionsModel section, LessonsModel lesson) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 5,
-            offset: const Offset(2, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.25),
-              borderRadius: BorderRadius.circular(12),
+    return Consumer<TeacherController>(
+      builder: (context, teacherController, child) {
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [ColorManage.firstPrimary, ColorManage.secondPrimary],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            child: const Icon(
-              Icons.play_arrow_rounded,
-              color: Colors.white,
-              size: 28,
-            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 5,
+                offset: const Offset(2, 2),
+              ),
+            ],
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  lesson.title ?? '',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+          child: Row(
+            children: [
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.25),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(height: 3),
-                Text(
-                  lesson.videoUrl ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+                child: const Icon(
+                  Icons.play_arrow_rounded,
+                  color: Colors.white,
+                  size: 28,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lesson.title ?? '',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      lesson.videoUrl ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(color: Colors.white70, fontSize: 13),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.edit, color: Colors.white),
+                onPressed: () => _openEditLessonDialog(lesson),
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete, color: Colors.white),
+                onPressed: () async {
+                  final ok = await teacherController.lessonsService.deleteLesson(lesson.id!);
+                  if (ok) {
+                    teacherController.loadLessons(section.id!);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Lesson deleted ')),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Failed to delete lesson')),
+                    );
+                  }
+                },
+              ),
+            ],
           ),
-          IconButton(
-            icon: const Icon(Icons.edit, color: Colors.white),
-            onPressed: () => _openEditLessonDialog(lesson),
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete, color: Colors.white),
-            onPressed: () async {
-              final ok = await lessonsService.deleteLesson(lesson.id!);
-              if (ok) {
-                _loadLessons(section.id!);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Lesson deleted ')),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Failed to delete lesson')),
-                );
-              }
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

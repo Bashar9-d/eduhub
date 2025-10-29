@@ -12,6 +12,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../constant/otherwise/color_manage.dart';
 import '../../constant/widgets/circular_progress.dart';
 import '../../controller/otherwise/courses_service.dart';
+import '../../controller/otherwise/group_service.dart';
 import '../../model/courses_model.dart';
 import 'sections_screen.dart';
 import 'dart:math' as math;
@@ -24,18 +25,6 @@ class CourseListScreen extends StatefulWidget {
 }
 
 class _CourseListScreenState extends State<CourseListScreen> {
-  // final CoursesService coursesService = CoursesService();
-  // late Future<List<CoursesModel>> _futureCourses;
-  // String userName = 'User';
-  // String? _thumb;
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _futureCourses = _load();
-  //   _loadUserName();
-  //   _loadImage();
-  // }
   late TeacherController teachProvider;
 
   @override
@@ -54,12 +43,6 @@ class _CourseListScreenState extends State<CourseListScreen> {
     });
   }
 
-  //
-  // void _loadImage() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   _thumb = prefs.getString('image') ?? 'assets/default person picture.webp';
-  // }
-  //
   void _openForm({CoursesModel? course}) async {
     final result = await Navigator.push(
       context,
@@ -68,7 +51,6 @@ class _CourseListScreenState extends State<CourseListScreen> {
     if (result == true) teachProvider.load();
   }
 
-  //
   void _openSections(CoursesModel course) {
     Navigator.push(
       context,
@@ -81,20 +63,6 @@ class _CourseListScreenState extends State<CourseListScreen> {
     );
   }
 
-  //
-  // void _loadUserName() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     userName = prefs.getString('name') ?? 'User';
-  //   });
-  // }
-  //
-  // Future<List<CoursesModel>> _load() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final teacherId = prefs.getInt('id') ?? 0;
-  //   return coursesService.getCoursesByTeacher(teacherId);
-  // }
-  //
   void _showCourseOptions(CoursesModel course) async {
     showModalBottomSheet(
       context: context,
@@ -149,7 +117,10 @@ class _CourseListScreenState extends State<CourseListScreen> {
                   ),
                 );
                 if (ok == true) {
+                  final prefs = await SharedPreferences.getInstance();
                   await teachProvider.coursesService.deleteCourse(course.id!);
+                  teachProvider.groupsFuture = GroupService()
+                      .getGroupsByTeacher(prefs.getInt('id')!);
                   setState(() {
                     teachProvider.futureCourses = teachProvider.load();
                   });
@@ -161,27 +132,6 @@ class _CourseListScreenState extends State<CourseListScreen> {
       ),
     );
   }
-
-  //
-  // Widget _buildStatItem(String title, String value, IconData icon) {
-  //   return Expanded(
-  //     child: Column(
-  //       children: [
-  //         Icon(icon, color: Colors.black87),
-  //         const SizedBox(height: 4),
-  //         Text(
-  //           title,
-  //           style: const TextStyle(fontSize: 12, color: Colors.black54),
-  //         ),
-  //         const SizedBox(height: 4),
-  //         Text(
-  //           value,
-  //           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -298,7 +248,9 @@ class _CourseListScreenState extends State<CourseListScreen> {
 
                   Expanded(
                     child: FutureBuilder<List<CoursesModel>>(
-                      future: teacherController.futureCourses ?? teacherController.load(),
+                      future:
+                          teacherController.futureCourses ??
+                          teacherController.load(),
                       builder: (context, snap) {
                         if (snap.connectionState == ConnectionState.waiting) {
                           return Center(child: CircularProgress.circular);
@@ -414,7 +366,6 @@ class _CourseListScreenState extends State<CourseListScreen> {
             ),
           );
         },
-        //child:
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.purple,
@@ -435,36 +386,17 @@ class CourseFormScreen extends StatefulWidget {
 }
 
 class _CourseFormScreenState extends State<CourseFormScreen> {
-  // final _formKey = GlobalKey<FormState>();
-  // final CoursesService coursesService = CoursesService();
-  //
-  // late TextEditingController _title;
-  // late TextEditingController _desc;
-  // late TextEditingController _thumb;
-  //
-  // List<Map<String, dynamic>> _categories = [];
-  // Map<int, bool> _selected = {};
-  // bool _loadingCategories = true;
-  //
   late TeacherController teachProvider = Provider.of<TeacherController>(
     context,
     listen: false,
-  );
+  );////
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     teachProvider = Provider.of<TeacherController>(context, listen: false);
   }
 
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     teachProvider.futureCourses=teachProvider.load();
-  //     teachProvider.loadUserName();
-  //     teachProvider.loadImage();
-  //   });}
   @override
   void initState() {
     super.initState();
@@ -476,52 +408,8 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
     });
   }
 
-  //
-  // Future<void> _fetchCategories() async {
-  //   try {
-  //     final cats = await coursesService.getCategories();
-  //     setState(() {
-  //       _categories = cats;
-  //       _selected = {for (var c in _categories) int.parse(c['id']): false};
-  //       _loadingCategories = false;
-  //     });
-  //   } catch (e) {
-  //     setState(() => _loadingCategories = false);
-  //   }
-  // }
-  //
-  // Future<void> _pickAndUploadImage() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final username = prefs.getString('name') ?? 'user';
-  //   final folderPath = '$username/image_course';
-  //
-  //   final result = await FilePicker.platform.pickFiles(type: FileType.image);
-  //   if (result == null) return;
-  //
-  //   final file = File(result.files.single.path!);
-  //   final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-  //   final path = '$folderPath/$fileName';
-  //
-  //   try {
-  //     await Supabase.instance.client.storage.from('uploads').upload(path, file);
-  //     final publicURL = Supabase.instance.client.storage
-  //         .from('uploads')
-  //         .getPublicUrl(path);
-  //     setState(() => _thumb.text = publicURL);
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Text('The image has been uploaded successfully'),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(
-  //       context,
-  //     ).showSnackBar(SnackBar(content: Text('Image upload failed:$e')));
-  //   }
-  // }
-
   Future<void> _save() async {
-    if (!teachProvider.formKey.currentState!.validate()) return; ////
+    if (!teachProvider.formKey.currentState!.validate()) return;
 
     final prefs = await SharedPreferences.getInstance();
     final teacherId = prefs.getInt('id');
@@ -546,7 +434,9 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
     );
 
     if (ok) {
-      Provider.of<TeacherController>(context,listen:false).futureCourses;
+      Provider.of<TeacherController>(context, listen: false).futureCourses;
+      Provider.of<TeacherController>(context, listen: false).groupsFuture =
+          GroupService().getGroupsByTeacher(teacherId);
       Navigator.pop(context, true);
     } else {
       ScaffoldMessenger.of(
@@ -713,7 +603,6 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
               ),
             );
           },
-          //child:
         ),
       ),
     );
