@@ -61,36 +61,45 @@ class _DownloadedVideosPageState extends State<DownloadedVideosPage> {
         title: const Text("الفيديوهات المحمّلة"),
         backgroundColor: Colors.purple,
       ),
-      body: _downloads.isEmpty
-          ? const Center(child: Text("لا يوجد فيديوهات محمّلة بعد."))
-          : ListView.builder(
-        itemCount: _downloads.length,
-        itemBuilder: (context, index) {
-          final video = _downloads[index];
-          return Card(
-            margin: const EdgeInsets.all(8),
-            child: ListTile(
-              leading:
-              const Icon(Icons.video_library, color: Colors.purple),
-              title: Text(video['title'] ?? 'بدون عنوان'),
-              subtitle: Text(video['localPath']),
-              onTap: () => _playVideo(video['localPath']),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: () async {
-                  await DownloadsDB.deleteDownload(video['id']);
-                  setState(() {
-                    _downloads.removeAt(index);
-                  });
-                },
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ?_chewie != null
+                ? SizedBox(height: 250, child: Chewie(controller: _chewie!))
+                : null,
+
+            _downloads.isEmpty
+                ? const Center(child: Text("لا يوجد فيديوهات محمّلة بعد."))
+                : ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: _downloads.length,
+              itemBuilder: (context, index) {
+                final video = _downloads[index];
+                return Card(
+                  margin: const EdgeInsets.all(8),
+                  child: ListTile(
+                    leading:
+                    const Icon(Icons.video_library, color: Colors.purple),
+                    title: Text(video['title'] ?? 'بدون عنوان'),
+                    subtitle: Text(video['localPath']),
+                    onTap: () => _playVideo(video['localPath']),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () async {
+                        await DownloadsDB.deleteDownload(video['id']);
+                        setState(() {
+                          _downloads.removeAt(index);
+                        });
+                      },
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ],
+        ),
       ),
-      bottomNavigationBar: _chewie != null
-          ? SizedBox(height: 250, child: Chewie(controller: _chewie!))
-          : null,
     );
   }
 }
