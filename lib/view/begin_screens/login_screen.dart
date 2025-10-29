@@ -25,20 +25,20 @@ class _LoginScreenState extends State<LoginScreen> {
   bool showErrorPassword = false;
   bool obsecureText = true;
 
-  bool isEmail({required String email}) {
-    String p =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regExp = RegExp(p);
-
-    return regExp.hasMatch(email);
-  }
-
-  bool validatePassword({required String password}) {
-    String pattern =
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-    RegExp regExp = RegExp(pattern);
-    return regExp.hasMatch(password);
-  }
+  // bool isEmail({required String email}) {
+  //   String p =
+  //       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  //   RegExp regExp = RegExp(p);
+  //
+  //   return regExp.hasMatch(email);
+  // }
+  //
+  // bool validatePassword({required String password}) {
+  //   String pattern =
+  //       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+  //   RegExp regExp = RegExp(pattern);
+  //   return regExp.hasMatch(password);
+  // }
 
   @override
   void initState() {
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print(result);
       if (result["success"] == true) {
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString("email", result["data"]["email"]); ////
+        await prefs.setString("email", result["data"]["email"]);
         await prefs.setString("name", result["data"]["name"]);
         await prefs.setInt("id", result["data"]["id"]);
         await prefs.setString("role", result["data"]["role"]);

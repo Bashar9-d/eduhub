@@ -60,6 +60,7 @@ class _DownloadedVideosPageState extends State<DownloadedVideosPage> {
       appBar: AppBar(
         title: const Text("الفيديوهات المحمّلة"),
         backgroundColor: Colors.purple,
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(
