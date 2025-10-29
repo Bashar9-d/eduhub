@@ -1,8 +1,8 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
-
 import '../../constant/otherwise/color_manage.dart';
 import '../../constant/widgets/circular_progress.dart';
 import '../../controller/otherwise/group_service.dart';
@@ -12,6 +12,9 @@ import '../../model/sections_model.dart';
 import '../../model/lessons_model.dart';
 import '../../model/courses_model.dart';
 import '../chat_page.dart';
+import 'package:dio/dio.dart';
+import 'package:path/path.dart' as path;
+import '../../controller/downloads_db.dart';
 
 class CourseDetailPage extends StatefulWidget {
   final CoursesModel course;
@@ -110,6 +113,29 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("No group found for this course")),
+      );
+    }
+  }
+  Future<void> _downloadLesson(LessonsModel lesson) async {
+    try {
+      final appDir = await getApplicationDocumentsDirectory();
+      final filePath = path.join(appDir.path, '${lesson.id}.mp4');
+
+      Dio dio = Dio();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("جاري تحميل ${lesson.title} ...")),
+      );
+
+      await dio.download(lesson.videoUrl!, filePath);
+
+      await DownloadsDB.insertDownload(lesson.id!, lesson.title ?? '', filePath);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("تم تحميل ${lesson.title} بنجاح ✅")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("حدث خطأ أثناء التحميل: $e")),
       );
     }
   }
@@ -393,25 +419,19 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                         return Column(
                                           children: lessons.map((lesson) {
                                             return ListTile(
-                                              contentPadding:
-                                                  const EdgeInsets.only(
-                                                    left: 20,
-                                                  ),
-                                              leading: const Icon(
-                                                Icons.play_circle_fill,
-                                                color: Colors.purple,
-                                              ),
+                                              leading: const Icon(Icons.play_circle_fill, color: Colors.purple),
                                               title: Text(lesson.title ?? ''),
-                                              subtitle: Text(
-                                                lesson.duration ?? '10 min',
-                                                style: TextStyle(
-                                                  color: Colors.grey[600],
-                                                ),
+                                              trailing: IconButton(
+                                                icon: const Icon(Icons.download, color: Colors.purple),
+                                                onPressed: () {
+                                                  _downloadLesson(lesson);
+                                                },
                                               ),
                                               onTap: () {
                                                 _playLesson(lesson);
                                               },
                                             );
+
                                           }).toList(),
                                         );
                                       },
