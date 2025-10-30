@@ -35,6 +35,16 @@ class StController extends ChangeNotifier{
     }
     return result;
   }
+  StController() {
+    loadCourses();
+  }
+
+  Future<void> loadCourses() async {
+    allCourses = await coursesService.getAllCourses();
+    futureCourses = Future.value(allCourses);
+    notifyListeners();
+  }
+
 
   List<Map<String, dynamic>> _categories = [];
 
@@ -44,10 +54,8 @@ class StController extends ChangeNotifier{
   Future<void> fetchCategories() async {
     try {
       final catsFromApi = await coursesService.getCategories();
-      //setState(() {
         _categories = categoriesWithColors(catsFromApi);
       notifyListeners();
-        //});
     } catch (e) {
       print("Error fetching categories");
     }
@@ -55,18 +63,14 @@ class StController extends ChangeNotifier{
 
   void loadImage() async {
     final prefs = await SharedPreferences.getInstance();
-   // setState(() {
       _thumb = prefs.getString('image') ?? 'assets/default person picture.webp';
     notifyListeners();
-      //});
   }
 
   void loadUserName() async {
     final prefs = await SharedPreferences.getInstance();
-    //setState(() {
       userName = prefs.getString('name') ?? 'User';
     notifyListeners();
-      //});
   }
 
   final EnrollmentService enrollmentService = EnrollmentService();
@@ -75,13 +79,11 @@ class StController extends ChangeNotifier{
 
   Future<void> loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    // setState(() {
       userId = prefs.getInt('id');
       if (userId != null) {
         futureCourses = enrollmentService.getUserCourses(userId!);
       }
       notifyListeners();
-    // });
   }
 
 

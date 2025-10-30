@@ -74,8 +74,23 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    String formatTime(String dateTimeString) {
+      try {
+        final dateTime = DateTime.parse(dateTimeString);
+        final hour24 = dateTime.hour;
+        final minute = dateTime.minute.toString().padLeft(2, '0');
+        final hour12 = (hour24 % 12 == 0) ? 12 : hour24 % 12;
+        final hourStr = hour12.toString().padLeft(2, '0');
+
+        final period = hour24 >= 12 ? 'PM' : 'AM';
+        return '$hourStr:$minute $period';
+      } catch (e) {
+        return dateTimeString;
+      }
+    }
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF4E1FF),
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         backgroundColor: ColorManage.secondPrimary,
         centerTitle: true,
@@ -167,7 +182,7 @@ class _ChatPageState extends State<ChatPage> {
                                   ),
                                   const SizedBox(height: 3),
                                   Text(
-                                    msg.time,
+                                    formatTime( msg.time),
                                     style: const TextStyle(
                                       color: Colors.white70,
                                       fontSize: 10,

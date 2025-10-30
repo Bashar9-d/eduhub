@@ -9,48 +9,106 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Consumer<BottomNavBarController>(
-        builder: (context, bottomNavBarController, child) {
-          return IndexedStack(
-            index: bottomNavBarController.getCurrentIndex,
-            children: bottomNavBarController.getScreens,
-          );
-        },
-      ),
-      bottomNavigationBar: Consumer<BottomNavBarController>(
-        builder: (context, bottomNavBarController, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              splashFactory: NoSplash.splashFactory,
+    Future<bool> willPop() async {
+      return await showDialog(
+        context: context,
+        useSafeArea: true,
+        builder: (context) => AlertDialog(
+          scrollable: true,
+          title: const Text(
+            'Exit',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
-            child: BottomNavigationBar(
-              items: [
-                _buildBNBItem(
-                  Icons.home_outlined,
-                  bottomNavBarController.getCurrentIndex == 0,
-                ),
-                _buildBNBItem(
-                  Icons.local_mall_outlined,
-                  bottomNavBarController.getCurrentIndex == 1,
-                ),
-                _buildBNBItem(
-                  Icons.settings_outlined,
-                  bottomNavBarController.getCurrentIndex == 2,
-                ),
-              ],
-              backgroundColor: Colors.white,
-              currentIndex: bottomNavBarController.getCurrentIndex,
-              selectedItemColor: Colors.black,
-              unselectedItemColor: ColorManage.subtitleOnBoarding,
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              onTap: (value) => bottomNavBarController.onPageChanged(value),
+          ),
+          content: const Text(
+            'Do you want to exit the app?',
+            style: TextStyle(
+              fontSize: 16,
             ),
-          );
-        },
+          ),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red.shade100,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text(
+                'Exit',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue.shade100,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return WillPopScope(
+      onWillPop: willPop,
+      child: Scaffold(
+        body: Consumer<BottomNavBarController>(
+          builder: (context, bottomNavBarController, child) {
+            return IndexedStack(
+              index: bottomNavBarController.getCurrentIndex,
+              children: bottomNavBarController.getScreens,
+            );
+          },
+        ),
+        bottomNavigationBar: Consumer<BottomNavBarController>(
+          builder: (context, bottomNavBarController, child) {
+            return Theme(
+              data: Theme.of(context).copyWith(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                splashFactory: NoSplash.splashFactory,
+              ),
+              child: BottomNavigationBar(
+                items: [
+                  _buildBNBItem(
+                    Icons.home_outlined,
+                    bottomNavBarController.getCurrentIndex == 0,
+                  ),
+                  _buildBNBItem(
+                    Icons.local_mall_outlined,
+                    bottomNavBarController.getCurrentIndex == 1,
+                  ),
+                  _buildBNBItem(
+                    Icons.settings_outlined,
+                    bottomNavBarController.getCurrentIndex == 2,
+                  ),
+                ],
+                backgroundColor: Colors.white,
+                currentIndex: bottomNavBarController.getCurrentIndex,
+                selectedItemColor: Colors.black,
+                unselectedItemColor: ColorManage.subtitleOnBoarding,
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
+                onTap: (value) => bottomNavBarController.onPageChanged(value),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

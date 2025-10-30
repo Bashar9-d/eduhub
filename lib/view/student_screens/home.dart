@@ -20,7 +20,6 @@ class CoursesStorePage extends StatefulWidget {
 
 class _CoursesStorePageState extends State<CoursesStorePage> {
 
-  // ✅ إضافات البحث
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   List<CoursesModel> _filteredCourses = [];
@@ -37,7 +36,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       stProvider.futureCourses = stProvider.coursesService.getAllCourses().then((courses) {
-        stProvider.allCourses = courses; // هنا نخزن كل الكورسات
+        stProvider.allCourses = courses;
         return courses;
       });
 
@@ -49,7 +48,6 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
   String searchText = '';
   List<CoursesModel> searchResults = [];
 
-  // ✅ دالة فتح كورسات القسم
   void _openSections(CoursesModel course) {
     Navigator.push(
       context,
@@ -60,7 +58,6 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
     );
   }
 
-  // ✅ دالة فلترة الكورسات عند البحث
   void _onSearchChanged(String value, List<CoursesModel> courses) {
     setState(() {
       if (value.trim().isEmpty) {
@@ -114,7 +111,6 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                   }
 
                   final courses = snapshot.data!;
-
                   final displayCourses =
                   _filteredCourses.isNotEmpty ? _filteredCourses : courses;
 

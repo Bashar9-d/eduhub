@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:eduhub/constant/otherwise/color_manage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +16,7 @@ import '../otherwise/sections_service.dart';
 
 class TeacherController extends ChangeNotifier {
   final CoursesService coursesService = CoursesService();
-   Future<List<CoursesModel>>? futureCourses;
+  Future<List<CoursesModel>>? futureCourses;
   String userName = 'User';
   String? _thumb;
 
@@ -23,9 +24,8 @@ class TeacherController extends ChangeNotifier {
 
   String get getUserName => userName;
 
-
   final formKey = GlobalKey<FormState>();
-   Future<List<GroupModel>> groupsFuture= Future.value([]);
+  Future<List<GroupModel>> groupsFuture = Future.value([]);
   late TextEditingController title;
   late TextEditingController desc;
   late TextEditingController thumbField;
@@ -40,7 +40,6 @@ class TeacherController extends ChangeNotifier {
     title = TextEditingController();
     desc = TextEditingController();
     thumbField = TextEditingController();
-
   }
 
   @override
@@ -67,10 +66,9 @@ class TeacherController extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final teacherId = prefs.getInt('id') ?? 0;
 
-    futureCourses= coursesService.getCoursesByTeacher(teacherId);
+    futureCourses = coursesService.getCoursesByTeacher(teacherId);
     notifyListeners();
     return futureCourses!;
-
   }
 
   Future<void> fetchCategories() async {
@@ -90,16 +88,24 @@ class TeacherController extends ChangeNotifier {
     return Expanded(
       child: Column(
         children: [
-          Icon(icon, color: Colors.black87),
+          Icon(icon, color: ColorManage.firstPrimary),
           const SizedBox(height: 4),
           Text(
             title,
-            style: const TextStyle(fontSize: 12, color: Colors.black54),
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Colors.black54,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              color: Colors.black54,
+            ),
           ),
         ],
       ),
@@ -130,8 +136,6 @@ class TeacherController extends ChangeNotifier {
     }
   }
 
-
-
   final SectionsService sectionsService = SectionsService();
   final LessonsService lessonsService = LessonsService();
   final supabase = Supabase.instance.client;
@@ -140,73 +144,29 @@ class TeacherController extends ChangeNotifier {
   final Map<int, List<LessonsModel>> _lessonsMap = {};
   final Map<int, bool> _lessonsLoaded = {};
 
-  SectionsService get getSectionsService=>sectionsService;
-  LessonsService get getLessonsService=>lessonsService;
-  get getSupabase=>supabase;
-  Map<int, List<LessonsModel>> get lessonsMap=>_lessonsMap;
-  Map<int, bool> get lessonsLoaded=>_lessonsLoaded;
+  SectionsService get getSectionsService => sectionsService;
+
+  LessonsService get getLessonsService => lessonsService;
+
+  get getSupabase => supabase;
+
+  Map<int, List<LessonsModel>> get lessonsMap => _lessonsMap;
+
+  Map<int, bool> get lessonsLoaded => _lessonsLoaded;
+
   void loadSections(int courseId) {
-      futureSections = sectionsService.getSectionsByCourse(courseId);
+    futureSections = sectionsService.getSectionsByCourse(courseId);
     notifyListeners();
   }
 
-  // void _openAddSectionDialog() {
-  //   final titleController = TextEditingController();
-  //
-  //   showDialog(
-  //     context: context,
-  //     builder: (_) => AlertDialog(
-  //       title: const Text('Add Section'),
-  //       content: TextField(
-  //         controller: titleController,
-  //         decoration: const InputDecoration(labelText: 'Section Title'),
-  //       ),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () => Navigator.pop(context),
-  //           child: const Text('Cancel'),
-  //         ),
-  //         ElevatedButton(
-  //           onPressed: () async {
-  //             final title = titleController.text.trim();
-  //             if (title.isEmpty) return;
-  //
-  //             final newSection = SectionsModel(
-  //               courseId: widget.courseId,
-  //               title: title,
-  //             );
-  //             final ok = await sectionsService.createSection(newSection);
-  //             if (ok) {
-  //               Navigator.pop(context);
-  //               _loadSections();
-  //               ScaffoldMessenger.of(context).showSnackBar(
-  //                 const SnackBar(content: Text('Section added ')),
-  //               );
-  //             } else {
-  //               ScaffoldMessenger.of(context).showSnackBar(
-  //                 const SnackBar(content: Text('Failed to add section')),
-  //               );
-  //             }
-  //           },
-  //           child: const Text('Add'),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Future<void> loadLessons(int sectionId) async {
-      _lessonsLoaded[sectionId] = false;
-      notifyListeners();
+    _lessonsLoaded[sectionId] = false;
+    notifyListeners();
 
     final lessons = await lessonsService.getLessonsBySection(sectionId);
 
-      _lessonsMap[sectionId] = lessons;
-      _lessonsLoaded[sectionId] = true;
-      notifyListeners();
+    _lessonsMap[sectionId] = lessons;
+    _lessonsLoaded[sectionId] = true;
+    notifyListeners();
   }
-
-
-
-
 }

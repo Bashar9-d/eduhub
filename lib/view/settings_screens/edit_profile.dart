@@ -71,7 +71,6 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    // نستخدم PostFrameCallback حتى يكون context جاهز تمامًا
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<SettingController>(context, listen: false);
       // provider.loadUserName();
@@ -82,31 +81,16 @@ class _EditProfileState extends State<EditProfile> {
 
   loadImage() async {
     final prefs = await SharedPreferences.getInstance();
-    // setState(() {
     emailController.text = prefs.getString('email') ?? '';
     nameController.text = prefs.getString('name') ?? '';
-    // _thumb = prefs.getString("image") ?? 'assets/default person picture.webp';
-    //notifyListeners();
-    //});
   }
 
   @override
   void dispose() {
-    // ما نستخدم context هنا إطلاقًا
     nameController.dispose();
     emailController.dispose();
     super.dispose();
   }
-
-  //
-  // _loadImage() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     emailController.text = prefs.getString('email') ?? 'll';
-  //     nameController.text = prefs.getString('name') ?? '';
-  //     _thumb = prefs.getString("image") ?? 'assets/default person picture.webp';
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -180,11 +164,11 @@ class _EditProfileState extends State<EditProfile> {
                       Provider.of<SettingController>(
                         context,
                         listen: false,
-                      ).loadUserName(); ////
+                      ).loadUserName();
                       Provider.of<StController>(
                         context,
                         listen: false,
-                      ).loadUserName(); ////
+                      ).loadUserName();
                       Provider.of<StController>(
                         context,
                         listen: false,
@@ -192,7 +176,7 @@ class _EditProfileState extends State<EditProfile> {
                       Provider.of<TeacherController>(
                         context,
                         listen: false,
-                      ).loadUserName(); ////
+                      ).loadUserName();
                       Provider.of<TeacherController>(
                         context,
                         listen: false,
@@ -216,7 +200,6 @@ class _EditProfileState extends State<EditProfile> {
             ),
           );
         },
-        //child:
       ),
     );
   }

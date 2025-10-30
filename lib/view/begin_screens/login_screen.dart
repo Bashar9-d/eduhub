@@ -24,22 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool showErrorEmail = false;
   bool showErrorPassword = false;
   bool obsecureText = true;
-
-  // bool isEmail({required String email}) {
-  //   String p =
-  //       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-  //   RegExp regExp = RegExp(p);
-  //
-  //   return regExp.hasMatch(email);
-  // }
-  //
-  // bool validatePassword({required String password}) {
-  //   String pattern =
-  //       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-  //   RegExp regExp = RegExp(pattern);
-  //   return regExp.hasMatch(password);
-  // }
-
   @override
   void initState() {
     super.initState();
