@@ -58,7 +58,7 @@ class _DownloadedVideosPageState extends State<DownloadedVideosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("الفيديوهات المحمّلة"),
+        title: const Text("Downloaded Videos"),
         backgroundColor: Colors.purple,
         foregroundColor: Colors.white,
       ),
@@ -69,7 +69,7 @@ class _DownloadedVideosPageState extends State<DownloadedVideosPage> {
                 ? SizedBox(height: 250, child: Chewie(controller: _chewie!))
                 : null,
             _downloads.isEmpty
-                ? const Center(child: Text("لا يوجد فيديوهات محمّلة بعد."))
+                ? const Center(child: Text("No videos have been uploaded yet."))
                 : ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -81,7 +81,7 @@ class _DownloadedVideosPageState extends State<DownloadedVideosPage> {
                   child: ListTile(
                     leading:
                     const Icon(Icons.video_library, color: Colors.purple),
-                    title: Text(video['title'] ?? 'بدون عنوان'),
+                    title: Text(video['title'] ?? 'Untitled'),
                     subtitle: Text(video['localPath']),
                     onTap: () => _playVideo(video['localPath']),
                     trailing: IconButton(

@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constant/otherwise/image_manage.dart';
+import '../student_screens/bottom_nav_bar.dart';
+import '../teacher_screens/bnb_teacher.dart';
 import 'onboardin_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,12 +27,25 @@ class _SplashScreenState extends State<SplashScreen> {
     _checkOnBoarding();
   }
 
+
   Future<void> _checkOnBoarding() async {
     final prefs = await SharedPreferences.getInstance();
     final seen = prefs.getBool('onBoardingDone') ?? false;
 
-    setState(() {
-      nextPage = seen ? ToggleSwitchWidget() : OnboardingScreen();
+    setState(() async {
+      final prefs = await SharedPreferences.getInstance();
+      if (prefs.getString("email") != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+            prefs.getString("role") == "student" ? BottomNavBar() : HomeScreen(),
+          ),
+        );
+      }
+      else {
+        nextPage = seen ? ToggleSwitchWidget() : OnboardingScreen();
+      }
     });
   }
 
