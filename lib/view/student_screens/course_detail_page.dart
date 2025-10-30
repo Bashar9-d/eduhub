@@ -100,7 +100,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
     final group = await GroupService.getGroupByCourse(widget.course.id!);
     if (group != null) {
-      bool success = await GroupService.addUserToGroup(group.id!, userId);
+      bool success = await GroupService.addUserToGroup(group.id, userId);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -123,7 +123,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
       Dio dio = Dio();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("جاري تحميل ${lesson.title} ...")),
+        SnackBar(content: Text("Loading ${lesson.title} ...")),
       );
 
       await dio.download(lesson.videoUrl!, filePath);
@@ -131,11 +131,11 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       await DownloadsDB.insertDownload(lesson.id!, lesson.title ?? '', filePath);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("تم تحميل ${lesson.title} بنجاح ✅")),
+        SnackBar(content: Text("Loaded ${lesson.title} Successfully ✅")),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("حدث خطأ أثناء التحميل: $e")),
+        SnackBar(content: Text("An error occurred during loading: $e")),
       );
     }
   }
@@ -173,7 +173,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                   context,
                   MaterialPageRoute(
                     builder: (_) =>
-                        ChatPage(groupId: group.id!, userId: userId),
+                        ChatPage(groupId: group.id, userId: userId),
                   ),
                 );
               } else {
