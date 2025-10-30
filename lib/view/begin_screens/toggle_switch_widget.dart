@@ -22,23 +22,11 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
   int currentIndex = 0;
   bool firstSwitchValue = true;
 
-  checkLogin() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (prefs.getString("email") != null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              prefs.getString("role") == "student" ? BottomNavBar() : HomeScreen(),
-        ),
-      );
-    }
-  }
+
 
   @override
   void initState() {
     super.initState();
-    checkLogin();
   }
 
   @override
