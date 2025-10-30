@@ -4,12 +4,11 @@ import '../../view/student_screens/home.dart';
 import '../../view/student_screens/my_learning.dart';
 import '../../view/settings_screens/setting.dart';
 import '../../view/teacher_screens/group_page.dart';
-import '../../view/teacher_screens/teacher_courses.dart';
+import '../../view/teacher_screens/home.dart';
 
 class BottomNavBarController extends ChangeNotifier{
   final List<Widget> _studentScreens=[CoursesStorePage(),MyLearningScreen(),Setting()];
 
- // int _currentIndex = 0;
   int? _teacherId;
 
   final List<Widget> _pages = [];
@@ -19,7 +18,6 @@ class BottomNavBarController extends ChangeNotifier{
   Future<void> loadTeacherId() async {
     final prefs = await SharedPreferences.getInstance();
     final id = prefs.getInt('id') ?? 0;
-    //setState(() {
       _teacherId = id;
       _pages.clear();
       _pages.add(const CourseListScreen());
@@ -30,7 +28,6 @@ class BottomNavBarController extends ChangeNotifier{
       );
       _pages.add(Setting());
     notifyListeners();
-      // });
   }
 
   int _currentIndex=0;

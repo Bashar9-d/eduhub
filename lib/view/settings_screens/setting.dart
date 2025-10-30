@@ -14,25 +14,28 @@ import '../../constant/otherwise/textstyle_manage.dart';
 import '../../constant/setting_constants/gesture_and_row.dart';
 import '../begin_screens/toggle_switch_widget.dart';
 import 'change_password.dart';
+
 class Setting extends StatefulWidget {
   const Setting({super.key});
+
   @override
   State<Setting> createState() => _SettingState();
 }
+
 class _SettingState extends State<Setting> {
- //  String? _thumb ;
- //  bool isDarkMode = false;
- //  bool isPushNotifications = false;
- //  String userName = 'User';
- //
- //  void _loadUserName() async {
- //    final prefs = await SharedPreferences.getInstance();
- //    setState(() {
- //      userName = prefs.getString('name') ?? 'User';
- //    });
- //  }
- //
- // // Nano nn=Nano();
+  //  String? _thumb ;
+  //  bool isDarkMode = false;
+  //  bool isPushNotifications = false;
+  //  String userName = 'User';
+  //
+  //  void _loadUserName() async {
+  //    final prefs = await SharedPreferences.getInstance();
+  //    setState(() {
+  //      userName = prefs.getString('name') ?? 'User';
+  //    });
+  //  }
+  //
+  // // Nano nn=Nano();
   late SettingController settingProvider;
 
   @override
@@ -53,22 +56,22 @@ class _SettingState extends State<Setting> {
     });
   }
 
-
   //  @override
- //  void initState() {
- //    super.initState();
- //    Provider.of<SettingController>(context,listen: false).loadUserName();//.loadUserName();
- //    Provider.of<SettingController>(context,listen: false).loadImage();
- //  }
- //
- //  _loadImage() async {
- //    final prefs = await SharedPreferences.getInstance();
- //    _thumb = prefs.getString('image')??'assets/default person picture.webp';
- //  }
+  //  void initState() {
+  //    super.initState();
+  //    Provider.of<SettingController>(context,listen: false).loadUserName();//.loadUserName();
+  //    Provider.of<SettingController>(context,listen: false).loadImage();
+  //  }
+  //
+  //  _loadImage() async {
+  //    final prefs = await SharedPreferences.getInstance();
+  //    _thumb = prefs.getString('image')??'assets/default person picture.webp';
+  //  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Consumer<SettingController>(
         builder: (context, settingController, child) {
           return Stack(
@@ -107,6 +110,9 @@ class _SettingState extends State<Setting> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                       color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(color: Colors.black54, blurRadius: 1),
+                      ],
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: ListView(
@@ -118,7 +124,15 @@ class _SettingState extends State<Setting> {
                             children: [
                               CircleAvatar(
                                 radius: 28,
+<<<<<<< HEAD
                                 child: Icon(Icons.person, size: 30)
+=======
+                                backgroundImage: settingController.thumb == null
+                                    ? AssetImage(
+                                        'assets/default person picture.webp',
+                                      )
+                                    : NetworkImage(settingController.thumb!),
+>>>>>>> 5a4f50eace6d30704d7eec8deaf4082b130f93a7
                               ),
                               buildText(
                                 text: settingController.userName,
@@ -148,7 +162,9 @@ class _SettingState extends State<Setting> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    navigatorFunction(nextScreen: EditProfile()),
+                                    navigatorFunction(
+                                      nextScreen: EditProfile(),
+                                    ),
                                   );
                                 },
                                 child: rowWidget(
@@ -189,7 +205,8 @@ class _SettingState extends State<Setting> {
                                     value: settingController.isDarkMood,
                                     onChange: (bool? value) {
                                       setState(() {
-                                        settingController.isDarkMood = value ?? false;
+                                        settingController.isDarkMood =
+                                            value ?? false;
                                       });
                                     },
                                   ),
@@ -216,7 +233,9 @@ class _SettingState extends State<Setting> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    navigatorFunction(nextScreen: DownloadedVideosPage()),
+                                    navigatorFunction(
+                                      nextScreen: DownloadedVideosPage(),
+                                    ),
                                   );
                                 },
                                 child: rowWidget(
@@ -250,7 +269,9 @@ class _SettingState extends State<Setting> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    navigatorFunction(nextScreen: PrivacyPolicy()),
+                                    navigatorFunction(
+                                      nextScreen: PrivacyPolicy(),
+                                    ),
                                   );
                                 },
                                 child: rowWidget(
@@ -293,13 +314,15 @@ class _SettingState extends State<Setting> {
                                 ),
                               ),
                               inkWellBuilder(
-                                onTap: () {
+                                onTap: () async {
+                                  final prefs = await SharedPreferences.getInstance();
+                                  prefs.remove('email');
                                   Navigator.pushAndRemoveUntil(
                                     context,
                                     navigatorFunction(
                                       nextScreen: ToggleSwitchWidget(),
                                     ),
-                                        (route) => false,
+                                    (route) => false,
                                   );
                                 },
                                 child: buildText(
@@ -310,7 +333,7 @@ class _SettingState extends State<Setting> {
                               inkWellBuilder(
                                 onTap: () async {
                                   SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
+                                      await SharedPreferences.getInstance();
                                   prefs.remove('id');
                                   prefs.remove('name');
                                   prefs.remove('email');
@@ -321,7 +344,7 @@ class _SettingState extends State<Setting> {
                                     navigatorFunction(
                                       nextScreen: ToggleSwitchWidget(),
                                     ),
-                                        (route) => false,
+                                    (route) => false,
                                   );
                                 },
                                 child: buildText(

@@ -6,7 +6,6 @@ import '../../controller/otherwise/group_service.dart';
 import '../../controller/screens_controller/teacher_controller.dart';
 import '../../model/group_model.dart';
 import '../chat_page.dart';
-import '../settings_screens/setting.dart';
 
 class GroupPage extends StatefulWidget {
   final int teacherId;
@@ -18,8 +17,6 @@ class GroupPage extends StatefulWidget {
 }
 
 class _GroupPageState extends State<GroupPage> {
-  //late Future<List<GroupModel>> _groupsFuture;
-
   late TeacherController teachProvider;
 
   @override
@@ -32,7 +29,9 @@ class _GroupPageState extends State<GroupPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      teachProvider.groupsFuture = GroupService().getGroupsByTeacher(widget.teacherId);
+      teachProvider.groupsFuture = GroupService().getGroupsByTeacher(
+        widget.teacherId,
+      );
     });
   }
 
@@ -45,91 +44,52 @@ class _GroupPageState extends State<GroupPage> {
           "Groups",
           style: TextStyle(fontWeight: FontWeight.w400),
         ),
-
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
+      backgroundColor: Colors.grey[50],
       body: Consumer<TeacherController>(
         builder: (context, teacherController, child) {
-          //
-          // if (teacherController.groupsFuture == null) {
-          //   // لسه ما تم تحميل البيانات
-          //   return const Center(child: CircularProgressIndicator());
-          // }
           return FutureBuilder<List<GroupModel>>(
-          future: teacherController.groupsFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return  Center(child: CircularProgress.circular);
-            } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              final groups = snapshot.data!;
-              return ListView.builder(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                itemCount: groups.length,
-                itemBuilder: (context, index) {
-                  final group = groups[index];
-                  return GestureDetector(
-                    onLongPressStart: (details) async {
-                      final selected = await showMenu<String>(
-                        context: context,
-                        position: RelativeRect.fromLTRB(
-                          details.globalPosition.dx,
-                          details.globalPosition.dy,
-                          details.globalPosition.dx,
-                          details.globalPosition.dy,
+            future: teacherController.groupsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgress.circular);
+              } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                final groups = snapshot.data!;
+                return ListView.builder(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  itemCount: groups.length,
+                  itemBuilder: (context, index) {
+                    final group = groups[index];
+                    return GestureDetector(
+                      child: ListTile(
+                        leading: CircleAvatar(child: Icon(Icons.group)),
+                        title: Text(
+                          group.name,
+                          style: TextStyle(fontWeight: FontWeight.w500),
                         ),
-                        items: const [
-                          PopupMenuItem(
-                            value: 'Mark',
-                            child: Text('Mark ar read'),
-                          ),
-                          PopupMenuItem(value: 'Remove', child: Text('Remove')),
-                        ],
-                      );
-
-                      if (selected == null) {
-                        return;
-                      }
-                      switch (selected) {
-                        case 'Mark':
+                        onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Setting(),
+                              builder: (_) => ChatPage(
+                                groupId: group.id,
+                                userId: widget.teacherId,
+                              ),
                             ),
                           );
-                          break;
-                        case 'Remove':
-                          break;
-                      }
-                    },
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.group),
+                        },
                       ),
-                      title: Text(group.name, style: TextStyle(fontWeight: FontWeight.w500)),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ChatPage(
-                              groupId: group.id,
-                              userId: widget.teacherId,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              );
-            } else {
-              return const Center(child: Text("No groups found."));
-            }
-          },
-        );
+                    );
+                  },
+                );
+              } else {
+                return const Center(child: Text("No groups found."));
+              }
+            },
+          );
         },
-        //child:
       ),
     );
   }

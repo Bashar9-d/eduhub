@@ -1,4 +1,4 @@
-import 'package:eduhub/view/teacher_screens/teacher_courses.dart';
+import 'package:eduhub/view/teacher_screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../constant/otherwise/color_manage.dart';
@@ -40,65 +40,99 @@ class _HomeScreenState extends State<HomeScreen> {
     ).pages.isEmpty) {
       return Scaffold(body: Center(child: CircularProgress.circular));
     }
+    Future<bool> willPop() async {
+      return await showDialog(
+        context: context,
+        useSafeArea: true,
+        builder: (context) => AlertDialog(
+          scrollable: true,
+          title: const Text(
+            'Exit',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          content: const Text(
+            'Do you want to exit the app?',
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red.shade100,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text(
+                'Exit',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ColorManage.secondPrimary,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
-    return Scaffold(
-      body: Consumer<BottomNavBarController>(
-        builder: (context, bottomNavBarController, child) {
-          return IndexedStack(
-            index: bottomNavBarController.getCurrentIndex,
-            children: bottomNavBarController.pages,
-          );
-        },
-      ),
-      bottomNavigationBar: Consumer<BottomNavBarController>(
-        builder: (context, bottomNavBarController, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              splashFactory: NoSplash.splashFactory,
-            ),
-            child: BottomNavigationBar(
-              currentIndex: bottomNavBarController.getCurrentIndex,
-              onTap: (value) => bottomNavBarController.onPageChanged(value),
-              //????
-              selectedItemColor: Colors.black,
-              unselectedItemColor: Colors.grey,
-              items: [
-                _buildBNBItem(
-                  Icons.menu_book,
-                  bottomNavBarController.getCurrentIndex == 0,
-                ),
-                _buildBNBItem(
-                  Icons.group,
-                  bottomNavBarController.getCurrentIndex == 1,
-                ),
-                _buildBNBItem(
-                  Icons.settings_outlined,
-                  bottomNavBarController.getCurrentIndex == 2,
-                ),
-              ],
-            ),
-          );
-        },
-        // child: Theme(
-        //   data: Theme.of(context).copyWith(
-        //     splashColor: Colors.transparent,
-        //     highlightColor: Colors.transparent,
-        //     splashFactory: NoSplash.splashFactory,
-        //   ),
-        //   child: BottomNavigationBar(
-        //     currentIndex: _currentIndex,
-        //     onTap: _onTabTapped,
-        //     selectedItemColor: Colors.black,
-        //     unselectedItemColor: Colors.grey,
-        //     items: [
-        //       _buildBNBItem(Icons.menu_book, _currentIndex == 0),
-        //       _buildBNBItem(Icons.group, _currentIndex == 1),
-        //       _buildBNBItem(Icons.settings_outlined, _currentIndex == 2),
-        //     ],
-        //   ),
-        // ),
+    return WillPopScope(
+      onWillPop: willPop,
+      child: Scaffold(
+        body: Consumer<BottomNavBarController>(
+          builder: (context, bottomNavBarController, child) {
+            return IndexedStack(
+              index: bottomNavBarController.getCurrentIndex,
+              children: bottomNavBarController.pages,
+            );
+          },
+        ),
+        bottomNavigationBar: Consumer<BottomNavBarController>(
+          builder: (context, bottomNavBarController, child) {
+            return Theme(
+              data: Theme.of(context).copyWith(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                splashFactory: NoSplash.splashFactory,
+              ),
+              child: BottomNavigationBar(
+                currentIndex: bottomNavBarController.getCurrentIndex,
+                onTap: (value) => bottomNavBarController.onPageChanged(value),
+                backgroundColor: Colors.grey[50],
+                selectedItemColor: Colors.black,
+                unselectedItemColor: Colors.grey,
+                items: [
+                  _buildBNBItem(
+                    Icons.home_outlined,
+                    bottomNavBarController.getCurrentIndex == 0,
+                  ),
+                  _buildBNBItem(
+                    Icons.group_outlined,
+                    bottomNavBarController.getCurrentIndex == 1,
+                  ),
+                  _buildBNBItem(
+                    Icons.settings_outlined,
+                    bottomNavBarController.getCurrentIndex == 2,
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

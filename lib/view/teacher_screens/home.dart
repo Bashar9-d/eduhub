@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:eduhub/constant/setting_constants/gesture_and_row.dart';
 import 'package:eduhub/controller/screens_controller/teacher_controller.dart';
 import 'package:eduhub/view/settings_screens/edit_profile.dart';
-import 'package:eduhub/view/teacher_screens/teacher_courses.dart';
+import 'package:eduhub/view/teacher_screens/home.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../constant/otherwise/color_manage.dart';
+import '../../constant/otherwise/textstyle_manage.dart';
 import '../../constant/widgets/circular_progress.dart';
 import '../../controller/otherwise/courses_service.dart';
 import '../../controller/otherwise/group_service.dart';
@@ -136,7 +137,8 @@ class _CourseListScreenState extends State<CourseListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF3E8FF),
+      //appBar: AppBar(),
+      backgroundColor: Colors.grey[50],
       body: Consumer<TeacherController>(
         builder: (context, teacherController, child) {
           return SafeArea(
@@ -210,7 +212,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
                         teacherController.buildStatItem(
                           "Students",
                           "150",
-                          Icons.people_alt,
+                          Icons.people_alt_outlined,
                         ),
                         teacherController.buildStatItem(
                           "Courses",
@@ -220,7 +222,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
                         teacherController.buildStatItem(
                           "Evaluation",
                           "4.5",
-                          Icons.star_border,
+                          Icons.star_border_outlined,
                         ),
                         teacherController.buildStatItem(
                           "Messages",
@@ -233,7 +235,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children:  [
                       Text(
                         "Courses",
                         style: TextStyle(
@@ -241,10 +243,10 @@ class _CourseListScreenState extends State<CourseListScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text("View All", style: TextStyle(color: Colors.purple)),
+                      Text("View All", style: TextStyleManage.viewAllStyle),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 15),
 
                   Expanded(
                     child: FutureBuilder<List<CoursesModel>>(
@@ -368,7 +370,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.purple,
+        backgroundColor: ColorManage.secondPrimary,
         onPressed: () => _openForm(),
         child: const Icon(Icons.add, color: Colors.white),
       ),

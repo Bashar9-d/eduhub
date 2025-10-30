@@ -32,7 +32,7 @@ class TextStyleManage {
     fontSize: 32.sp,
     fontWeight: FontWeight.w600,
   );
-  //////;
+
   static TextStyle nextButton = TextStyle(
     color: Colors.white,
     fontSize: 16.sp,
@@ -44,7 +44,11 @@ class TextStyleManage {
     fontSize: 30.sp,
     fontWeight: FontWeight.w500,
   );
-
+static TextStyle viewAllStyle=TextStyle(
+  color: ColorManage.firstPrimary,
+  fontWeight: FontWeight.w600,
+  fontSize: 16,
+);
   static TextStyle courseNameInGridView= TextStyle(
   fontWeight: FontWeight.w600,
   fontSize: 18,

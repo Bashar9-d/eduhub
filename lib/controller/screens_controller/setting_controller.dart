@@ -15,7 +15,7 @@ class SettingController extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final username = prefs.getString('name') ?? 'user';
     final folderPath = '$username/image_course';
-   // notifyListeners();
+
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
     if (result == null) return;
 
@@ -28,35 +28,24 @@ class SettingController extends ChangeNotifier {
       final publicURL = Supabase.instance.client.storage
           .from('uploads')
           .getPublicUrl(path);
-      //setState(() =>
+
       _thumb = publicURL;
       notifyListeners();
-      //);
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     content: Text('The image has been uploaded successfully'),
-      //   ),
-      // );
+
       await prefs.setString("image", _thumb!);
     } catch (e) {
       print(e);
-      // ScaffoldMessenger.of(
-      //   context,
-      // ).showSnackBar(SnackBar(content: Text('Image upload failed:$e')));
-    }
+     }
   }
 
-  // String? _thumb ;
   bool _isDarkMode = false;
- // bool _isPushNotifications = false;
+
   String _userName = 'User';
 
   void loadUserName() async {
     final prefs = await SharedPreferences.getInstance();
-    //setState(() {
     _userName = prefs.getString('name') ?? 'User';
     notifyListeners();
-    //});
   }
 
 
@@ -79,14 +68,6 @@ class SettingController extends ChangeNotifier {
   bool _showErrorName = false;
   bool _showErrorEmail = false;
 
- // get loadImage => _loadImage();
-
-  //get loadImageS => _loadImageS();
-
-  //get loadUserName => _loadUserName();
-
-  //get pickAndUploadImage => _pickAndUploadImage;
-
   bool get isDarkMood => _isDarkMode;
 
   bool get showErrorName => _showErrorEmail;
@@ -98,7 +79,6 @@ class SettingController extends ChangeNotifier {
 
   bool get showErrorEmail => _showErrorName;
 
-  //bool get isPushNotifications => _isPushNotifications;
 
   String get userName => _userName;
 

@@ -68,7 +68,6 @@ class _DownloadedVideosPageState extends State<DownloadedVideosPage> {
             ?_chewie != null
                 ? SizedBox(height: 250, child: Chewie(controller: _chewie!))
                 : null,
-
             _downloads.isEmpty
                 ? const Center(child: Text("No videos have been uploaded yet."))
                 : ListView.builder(
