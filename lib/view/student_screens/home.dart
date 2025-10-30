@@ -164,14 +164,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                             ),
                             CircleAvatar(
                               radius: 28,
-                              backgroundImage:
-                              stController.thumb == null ||
-                                  stController.thumb ==
-                                      'assets/default person picture.webp'
-                                  ? AssetImage(
-                                  'assets/default person picture.webp')
-                                  : NetworkImage(stController.thumb!)
-                              as ImageProvider,
+                              child: Icon(Icons.person, size: 30)
                             ),
                           ],
                         ),
