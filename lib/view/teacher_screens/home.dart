@@ -1,22 +1,15 @@
-import 'dart:io';
-
 import 'package:eduhub/constant/setting_constants/gesture_and_row.dart';
 import 'package:eduhub/controller/screens_controller/teacher_controller.dart';
 import 'package:eduhub/view/settings_screens/edit_profile.dart';
-import 'package:eduhub/view/teacher_screens/home.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../constant/helpers/prefs.dart';
 import '../../constant/otherwise/color_manage.dart';
 import '../../constant/otherwise/textstyle_manage.dart';
 import '../../constant/widgets/circular_progress.dart';
-import '../../controller/otherwise/courses_service.dart';
 import '../../controller/otherwise/group_service.dart';
 import '../../model/courses_model.dart';
 import 'sections_screen.dart';
-import 'dart:math' as math;
 
 class CourseListScreen extends StatefulWidget {
   const CourseListScreen({super.key});
@@ -118,10 +111,10 @@ class _CourseListScreenState extends State<CourseListScreen> {
                   ),
                 );
                 if (ok == true) {
-                  final prefs = await SharedPreferences.getInstance();
+                  //final prefs = await SharedPreferences.getInstance();
                   await teachProvider.coursesService.deleteCourse(course.id!);
                   teachProvider.groupsFuture = GroupService()
-                      .getGroupsByTeacher(prefs.getInt('id')!);
+                      .getGroupsByTeacher(PrefsHelper.getInt('id')!);
                   setState(() {
                     teachProvider.futureCourses = teachProvider.load();
                   });
@@ -137,7 +130,6 @@ class _CourseListScreenState extends State<CourseListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(),
       backgroundColor: Colors.grey[50],
       body: Consumer<TeacherController>(
         builder: (context, teacherController, child) {
@@ -413,8 +405,8 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
   Future<void> _save() async {
     if (!teachProvider.formKey.currentState!.validate()) return;
 
-    final prefs = await SharedPreferences.getInstance();
-    final teacherId = prefs.getInt('id');
+    //final prefs = await SharedPreferences.getInstance();
+    final teacherId = PrefsHelper.getInt('id');
     if (teacherId == null) return;
 
     final selectedCats = teachProvider.selected.entries

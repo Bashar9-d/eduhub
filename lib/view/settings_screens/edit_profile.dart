@@ -1,16 +1,10 @@
-import 'dart:io';
-
+import 'package:eduhub/constant/helpers/prefs.dart';
 import 'package:eduhub/constant/otherwise/textstyle_manage.dart';
 import 'package:eduhub/constant/widgets/text_field_manage.dart';
 import 'package:eduhub/controller/screens_controller/student_controller.dart';
 import 'package:eduhub/controller/screens_controller/teacher_controller.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../../constant/otherwise/color_manage.dart';
 import '../../constant/widgets/style_widget_manage.dart';
 import '../../controller/screens_controller/setting_controller.dart';
 
@@ -22,40 +16,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  // String? _thumb;
-  //
-  // TextEditingController nameController = TextEditingController();
-  // TextEditingController emailController = TextEditingController();
-  //
-  // Future<void> _pickAndUploadImage() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final username = prefs.getString('name') ?? 'user';
-  //   final folderPath = '$username/image_course';
-  //   final result = await FilePicker.platform.pickFiles(type: FileType.image);
-  //   if (result == null) return;
-  //
-  //   final file = File(result.files.single.path!);
-  //   final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-  //   final path = '$folderPath/$fileName';
-  //
-  //   try {
-  //     await Supabase.instance.client.storage.from('uploads').upload(path, file);
-  //     final publicURL = Supabase.instance.client.storage
-  //         .from('uploads')
-  //         .getPublicUrl(path);
-  //     setState(() => _thumb = publicURL);
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Text('The image has been uploaded successfully'),
-  //       ),
-  //     );
-  //     await prefs.setString("image", _thumb!);
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(
-  //       context,
-  //     ).showSnackBar(SnackBar(content: Text('Image upload failed:$e')));
-  //   }
-  // }
+
   late SettingController settingProvider;
 
   TextEditingController nameController = TextEditingController();
@@ -64,7 +25,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // نحفظ الـ Provider لمرة وحدة فقط، بدون context في أماكن خطيرة
+
     settingProvider = Provider.of<SettingController>(context, listen: false);
   }
 
@@ -80,9 +41,9 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   loadImage() async {
-    final prefs = await SharedPreferences.getInstance();
-    emailController.text = prefs.getString('email') ?? '';
-    nameController.text = prefs.getString('name') ?? '';
+    //final prefs = await SharedPreferences.getInstance();
+    emailController.text = PrefsHelper.getString('email') ?? '';
+    nameController.text = PrefsHelper.getString('name') ?? '';
   }
 
   @override
@@ -155,12 +116,12 @@ class _EditProfileState extends State<EditProfile> {
                         emailController.text.isEmpty;
                     settingController.showErrorName =
                         nameController.text.isEmpty;
-                    final prefs = await SharedPreferences.getInstance();
+                    //final prefs = await SharedPreferences.getInstance();
                     if (!settingController.showErrorEmail &&
                         !settingController.showErrorName) {
-                      await prefs.setString('email', emailController.text);
-                      await prefs.setString('name', nameController.text);
-                      await prefs.setString('image', settingController.thumb!);
+                      await PrefsHelper.setString('email', emailController.text);
+                      await PrefsHelper.setString('name', nameController.text);
+                      await PrefsHelper.setString('image', settingController.thumb!);
                       Provider.of<SettingController>(
                         context,
                         listen: false,

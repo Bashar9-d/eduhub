@@ -20,6 +20,8 @@ class BottomNavBarController extends ChangeNotifier{
     final id = prefs.getInt('id') ?? 0;
       _teacherId = id;
       _pages.clear();
+
+
       _pages.add(const CourseListScreen());
       _pages.add(
         _teacherId != null

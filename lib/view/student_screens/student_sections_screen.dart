@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../constant/helpers/prefs.dart';
 import '../../constant/widgets/circular_progress.dart';
 import '../../controller/otherwise/enrollment_service.dart';
 import '../../controller/otherwise/group_service.dart';
@@ -16,13 +17,11 @@ import '../../model/courses_model.dart';
 class StudentSectionsScreen extends StatefulWidget {
   final CoursesModel course;
   final bool isPurchased;
-
   const StudentSectionsScreen({
     super.key,
     required this.course,
     required this.isPurchased,
   });
-
   @override
   State<StudentSectionsScreen> createState() => _StudentSectionsScreenState();
 }
@@ -404,8 +403,8 @@ Explore lessons of this course below. The first section is open for all.""",
                   ),
                 ),
                 onPressed: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  int userId = prefs.getInt('id') ?? 0;
+                 // final prefs = await SharedPreferences.getInstance();
+                  int userId = PrefsHelper.getInt('id') ?? 0;
 
                   if (userId == 0) {
                     ScaffoldMessenger.of(context).showSnackBar(

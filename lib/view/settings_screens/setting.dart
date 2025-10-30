@@ -9,7 +9,7 @@ import 'package:eduhub/view/settings_screens/downloaded_videos_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../constant/helpers/prefs.dart';
 import '../../constant/otherwise/textstyle_manage.dart';
 import '../../constant/setting_constants/gesture_and_row.dart';
 import '../begin_screens/toggle_switch_widget.dart';
@@ -23,50 +23,23 @@ class Setting extends StatefulWidget {
 }
 
 class _SettingState extends State<Setting> {
-  //  String? _thumb ;
-  //  bool isDarkMode = false;
-  //  bool isPushNotifications = false;
-  //  String userName = 'User';
-  //
-  //  void _loadUserName() async {
-  //    final prefs = await SharedPreferences.getInstance();
-  //    setState(() {
-  //      userName = prefs.getString('name') ?? 'User';
-  //    });
-  //  }
-  //
-  // // Nano nn=Nano();
   late SettingController settingProvider;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // نحفظ الـ Provider لمرة وحدة فقط، بدون context في أماكن خطيرة
     settingProvider = Provider.of<SettingController>(context, listen: false);
   }
 
   @override
   void initState() {
     super.initState();
-    // نستخدم PostFrameCallback حتى يكون context جاهز تمامًا
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<SettingController>(context, listen: false);
       provider.loadUserName();
       provider.loadImage();
     });
   }
-
-  //  @override
-  //  void initState() {
-  //    super.initState();
-  //    Provider.of<SettingController>(context,listen: false).loadUserName();//.loadUserName();
-  //    Provider.of<SettingController>(context,listen: false).loadImage();
-  //  }
-  //
-  //  _loadImage() async {
-  //    final prefs = await SharedPreferences.getInstance();
-  //    _thumb = prefs.getString('image')??'assets/default person picture.webp';
-  //  }
 
   @override
   Widget build(BuildContext context) {
@@ -307,8 +280,8 @@ class _SettingState extends State<Setting> {
                               ),
                               inkWellBuilder(
                                 onTap: () async {
-                                  final prefs = await SharedPreferences.getInstance();
-                                  prefs.remove('email');
+                                 // final prefs = await SharedPreferences.getInstance();
+                                  PrefsHelper.remove('email');
                                   Navigator.pushAndRemoveUntil(
                                     context,
                                     navigatorFunction(
@@ -324,13 +297,13 @@ class _SettingState extends State<Setting> {
                               ),
                               inkWellBuilder(
                                 onTap: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  prefs.remove('id');
-                                  prefs.remove('name');
-                                  prefs.remove('email');
-                                  prefs.remove('role');
-                                  prefs.remove('image');
+                                  // SharedPreferences prefs =
+                                  //     await SharedPreferences.getInstance();
+                                  PrefsHelper.remove('id');
+                                  PrefsHelper.remove('name');
+                                  PrefsHelper.remove('email');
+                                  PrefsHelper.remove('role');
+                                  PrefsHelper.remove('image');
                                   Navigator.pushAndRemoveUntil(
                                     context,
                                     navigatorFunction(
@@ -355,7 +328,6 @@ class _SettingState extends State<Setting> {
             ],
           );
         },
-        //child:
       ),
     );
   }

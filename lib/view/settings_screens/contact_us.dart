@@ -8,11 +8,10 @@ class ContactUs extends StatefulWidget {
   @override
   State<ContactUs> createState() => _ContactUsState();
 }
-
 class _ContactUsState extends State<ContactUs> {
   @override
   Widget build(BuildContext context) {
-    final Uri phoneNumber = Uri.parse('tel:+962782573330');
+    final Uri phoneNumber = Uri.parse('tel:+962771457216');
     final Uri emailUri = Uri.parse('mailto:amrosramrosr05@gmail.com');
     return Scaffold(
       appBar: AppBar(title: Text('Contact Us'), centerTitle: true),
@@ -40,7 +39,7 @@ class _ContactUsState extends State<ContactUs> {
                 size: 30,
               ),
               title: Text('Mobile Number'),
-              subtitle: Text('+962782573330'),
+              subtitle: Text('+962771457216'),
             ),
             ListTile(
               onTap: () async {

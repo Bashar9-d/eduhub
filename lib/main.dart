@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:eduhub/controller/screens_controller/teacher_controller.dart';
 import 'package:eduhub/view/begin_screens/splash_screen.dart';
-import 'package:eduhub/view/teacher_screens/bnb_teacher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'constant/helpers/prefs.dart';
 import 'controller/screens_controller/bottom_nav_bar_controller.dart';
 import 'controller/screens_controller/setting_controller.dart';
 import 'controller/screens_controller/student_controller.dart';
@@ -21,8 +21,9 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await PrefsHelper.init();
   await Supabase.initialize(
     url: 'https://jynyyuxgdcguecpzxhyr.supabase.co',
     anonKey:

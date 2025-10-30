@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:eduhub/constant/helpers/prefs.dart';
 import 'package:eduhub/constant/widgets/style_widget_manage.dart';
 import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../constant/otherwise/image_manage.dart';
 import '../student_screens/bottom_nav_bar.dart';
 import '../teacher_screens/bnb_teacher.dart';
@@ -19,53 +20,49 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  Widget? nextPage;
-
   @override
   void initState() {
     super.initState();
-    _checkOnBoarding();
+    _navigateAfterSplash();
   }
 
+  Future<void> _navigateAfterSplash() async {
+    // Wait a bit to show splash animation
+    await Future.delayed(const Duration(seconds: 2));
 
-  Future<void> _checkOnBoarding() async {
-    final prefs = await SharedPreferences.getInstance();
-    final seen = prefs.getBool('onBoardingDone') ?? false;
+    final seen = PrefsHelper.getBool('onBoardingDone') ?? false;
+    final email = PrefsHelper.getString('email');
+    final role = PrefsHelper.getString('role');
 
-    setState(() async {
-      if (prefs.getString("email") != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-            prefs.getString("role") == "student" ? BottomNavBar() : HomeScreen(),
-          ),
-        );
-      }
-      else {
-        nextPage = seen ? ToggleSwitchWidget() : OnboardingScreen();
-      }
-    });
+    Widget nextPage;
+
+    if (email != null) {
+      nextPage = role == "student" ? const BottomNavBar() : const HomeScreen();
+    } else {
+      nextPage = seen ? const ToggleSwitchWidget() : const OnboardingScreen();
+    }
+
+    // Navigate after splash
+    Navigator.pushReplacement(
+      context,
+      PageTransition(
+        type: PageTransitionType.fade,
+        child: nextPage,
+
+        duration: const Duration(milliseconds: 100),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (nextPage == null) {
-      return Container(
-        decoration: StyleWidgetManage.gradiantDecoration,
-        child:  Center(
-          child: Image(image: AssetImage(ImageManage.logo), width: 200.w),
-        ),
-      );
-    }
-
     return Container(
       decoration: StyleWidgetManage.gradiantDecoration,
       child: AnimatedSplashScreen(
         backgroundColor: Colors.transparent,
         splash: Image.asset(ImageManage.logo),
         splashIconSize: 300,
-        nextScreen: nextPage!,
+        nextScreen:const SizedBox(),
         duration: 2300,
         pageTransitionType: PageTransitionType.rightToLeft,
         splashTransition: SplashTransition.fadeTransition,

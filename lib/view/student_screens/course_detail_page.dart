@@ -1,8 +1,8 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
+import '../../constant/helpers/prefs.dart';
 import '../../constant/otherwise/color_manage.dart';
 import '../../constant/widgets/circular_progress.dart';
 import '../../controller/otherwise/group_service.dart';
@@ -89,8 +89,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   }
 
   Future<void> _joinGroup() async {
-    final prefs = await SharedPreferences.getInstance();
-    int userId = prefs.getInt('id') ?? 0;
+   // final prefs = await SharedPreferences.getInstance();
+    int userId = PrefsHelper.getInt('id') ?? 0;
     if (userId == 0) {
       ScaffoldMessenger.of(
         context,
@@ -156,8 +156,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
               children: const [Icon(Icons.group, size: 20), SizedBox(width: 4)],
             ),
             onPressed: () async {
-              final prefs = await SharedPreferences.getInstance();
-              int userId = prefs.getInt('id') ?? 0;
+              //final prefs = await SharedPreferences.getInstance();
+              int userId = PrefsHelper.getInt('id') ?? 0;
               if (userId == 0) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Please login first")),
