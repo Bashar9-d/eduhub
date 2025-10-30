@@ -33,7 +33,6 @@ class _SplashScreenState extends State<SplashScreen> {
     final seen = prefs.getBool('onBoardingDone') ?? false;
 
     setState(() async {
-      final prefs = await SharedPreferences.getInstance();
       if (prefs.getString("email") != null) {
         Navigator.pushReplacement(
           context,
