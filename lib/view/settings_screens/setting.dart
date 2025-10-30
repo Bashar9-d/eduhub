@@ -124,15 +124,7 @@ class _SettingState extends State<Setting> {
                             children: [
                               CircleAvatar(
                                 radius: 28,
-<<<<<<< HEAD
-                                child: Icon(Icons.person, size: 30)
-=======
-                                backgroundImage: settingController.thumb == null
-                                    ? AssetImage(
-                                        'assets/default person picture.webp',
-                                      )
-                                    : NetworkImage(settingController.thumb!),
->>>>>>> 5a4f50eace6d30704d7eec8deaf4082b130f93a7
+                                child: Icon(Icons.person, size: 30),
                               ),
                               buildText(
                                 text: settingController.userName,
