@@ -396,7 +396,8 @@ class _SectionsScreenState extends State<SectionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F4FB),
+
+      //backgroundColor: const Color(0xFFF6F4FB),
       appBar: AppBar(
         backgroundColor:ColorManage.secondPrimary,
         elevation: 0,
@@ -413,6 +414,7 @@ class _SectionsScreenState extends State<SectionsScreen> {
         tooltip: 'Add Section',
         child: const Icon(Icons.add, color: Colors.white),
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Consumer<TeacherController>(
         builder: (context, teacherController, child) {
           return FutureBuilder<List<SectionsModel>>(

@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: BottomNavigationBar(
                 currentIndex: bottomNavBarController.getCurrentIndex,
                 onTap: (value) => bottomNavBarController.onPageChanged(value),
-                backgroundColor: Colors.grey[50],
+                backgroundColor: Theme.of(context).colorScheme.background,
                 selectedItemColor: Colors.black,
                 unselectedItemColor: Colors.grey,
                 items: [
@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
       icon: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon),
+          Icon(icon,color: isSelected? Theme.of(context).colorScheme.primary:null,),
           const SizedBox(height: 4),
           if (isSelected)
             Container(

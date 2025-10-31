@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:eduhub/constant/helpers/prefs.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SettingController extends ChangeNotifier {
@@ -12,8 +12,8 @@ class SettingController extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
 
   Future<void> pickAndUploadImage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final username = prefs.getString('name') ?? 'user';
+   // final prefs = await SharedPreferences.getInstance();
+    final username = PrefsHelper.getString('name') ?? 'user';
     final folderPath = '$username/image_course';
 
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
@@ -32,7 +32,7 @@ class SettingController extends ChangeNotifier {
       _thumb = publicURL;
       notifyListeners();
 
-      await prefs.setString("image", _thumb!);
+      await PrefsHelper.setString("image", _thumb!);
     } catch (e) {
       print(e);
      }
@@ -43,25 +43,25 @@ class SettingController extends ChangeNotifier {
   String _userName = 'User';
 
   void loadUserName() async {
-    final prefs = await SharedPreferences.getInstance();
-    _userName = prefs.getString('name') ?? 'User';
+    //final prefs = await SharedPreferences.getInstance();
+    _userName = PrefsHelper.getString('name') ?? 'User';
     notifyListeners();
   }
 
 
   loadImage() async {
-    final prefs = await SharedPreferences.getInstance();
+   // final prefs = await SharedPreferences.getInstance();
     // setState(() {
-    emailController.text = prefs.getString('email') ?? '';
-    nameController.text = prefs.getString('name') ?? '';
-    _thumb = prefs.getString("image") ?? 'assets/default person picture.webp';
+    emailController.text = PrefsHelper.getString('email') ?? '';
+    nameController.text = PrefsHelper.getString('name') ?? '';
+    _thumb = PrefsHelper.getString("image") ?? 'assets/default person picture.webp';
     notifyListeners();
     //});
   }
 
   loadImageS() async {
-    final prefs = await SharedPreferences.getInstance();
-    _thumb = prefs.getString('image') ?? 'assets/default person picture.webp';
+   // final prefs = await SharedPreferences.getInstance();
+    _thumb = PrefsHelper.getString('image') ?? 'assets/default person picture.webp';
     notifyListeners();
   }
 

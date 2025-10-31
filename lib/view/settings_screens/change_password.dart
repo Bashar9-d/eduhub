@@ -28,7 +28,8 @@ class _VerifyingState extends State<Verifying> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Verifying password'), centerTitle: true),
+      appBar: AppBar(title: Text('Verifying password'), centerTitle: true,backgroundColor: Theme.of(context).colorScheme.background,),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -41,7 +42,7 @@ class _VerifyingState extends State<Verifying> {
               suffix: IconButton(
                 onPressed: () => setState(() => obscureText = !obscureText),
                 icon: Icon(
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.primary,
                   obscureText
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
@@ -50,7 +51,7 @@ class _VerifyingState extends State<Verifying> {
               errorText: showError ? 'Enter valid password' : null,
 
               hint: 'Enter your old Password',
-              label: 'Old Password',
+              label: 'Old Password',fillColor: Theme.of(context).colorScheme.secondary
             ),
             SizedBox(height: 50),
             GestureDetector(
@@ -119,7 +120,8 @@ class _ChangePasswordState extends State<ChangePassword> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
 
-      appBar: AppBar(title: Text('Change password'), centerTitle: true),
+      appBar: AppBar(title: Text('Change password'), centerTitle: true,backgroundColor: Theme.of(context).colorScheme.background,),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -135,7 +137,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   });
                 },
                 icon: Icon(
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.primary,
                   obscureText1
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
@@ -144,7 +146,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               errorText: showError1 ? 'Enter strong password' : null,
               keyboardType: TextInputType.visiblePassword,
               label: 'New Password',
-              hint: 'Enter your New Password',
+              hint: 'Enter your New Password',fillColor: Theme.of(context).colorScheme.secondary
             ),
             buildTextField(
               controller: reNewPassword,
@@ -157,7 +159,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   });
                 },
                 icon: Icon(
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.primary,
                   obscureText2
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
@@ -167,6 +169,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               keyboardType: TextInputType.visiblePassword,
               label: 'Confirm Password',
               hint: 'Confirm New Password',
+              fillColor: Theme.of(context).colorScheme.secondary
             ),
             SizedBox(height: 20),
             GestureDetector(

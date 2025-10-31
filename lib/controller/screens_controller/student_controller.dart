@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import '../../constant/helpers/prefs.dart';
 import '../../model/courses_model.dart';
 import '../otherwise/courses_service.dart';
 import '../otherwise/enrollment_service.dart';
@@ -62,14 +61,14 @@ class StController extends ChangeNotifier{
   }
 
   void loadImage() async {
-    final prefs = await SharedPreferences.getInstance();
-      _thumb = prefs.getString('image') ?? 'assets/default person picture.webp';
+    //final prefs = await SharedPreferences.getInstance();
+      _thumb = PrefsHelper.getString('image') ?? 'assets/default person picture.webp';
     notifyListeners();
   }
 
   void loadUserName() async {
-    final prefs = await SharedPreferences.getInstance();
-      userName = prefs.getString('name') ?? 'User';
+    //final prefs = await SharedPreferences.getInstance();
+      userName = PrefsHelper.getString('name') ?? 'User';
     notifyListeners();
   }
 
@@ -78,8 +77,8 @@ class StController extends ChangeNotifier{
   int? userId;
 
   Future<void> loadUserId() async {
-    final prefs = await SharedPreferences.getInstance();
-      userId = prefs.getInt('id');
+    //final prefs = await SharedPreferences.getInstance();
+      userId = PrefsHelper.getInt('id');
       if (userId != null) {
         futureCourses = enrollmentService.getUserCourses(userId!);
       }

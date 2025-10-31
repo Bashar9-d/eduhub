@@ -1,4 +1,5 @@
 import 'package:eduhub/constant/otherwise/color_manage.dart';
+import 'package:eduhub/constant/widgets/circle_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../constant/widgets/circular_progress.dart';
@@ -47,7 +48,7 @@ class _GroupPageState extends State<GroupPage> {
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Consumer<TeacherController>(
         builder: (context, teacherController, child) {
           return FutureBuilder<List<GroupModel>>(
@@ -64,7 +65,12 @@ class _GroupPageState extends State<GroupPage> {
                     final group = groups[index];
                     return GestureDetector(
                       child: ListTile(
-                        leading: CircleAvatar(child: Icon(Icons.group)),
+                        leading: circleAvatar(
+                          context,
+                          childSize: 24,
+                          radius: 20,
+                          icon: Icons.group_outlined,
+                        ),
                         title: Text(
                           group.name,
                           style: TextStyle(fontWeight: FontWeight.w500),

@@ -1,5 +1,5 @@
+import 'package:eduhub/constant/helpers/prefs.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../view/student_screens/home.dart';
 import '../../view/student_screens/my_learning.dart';
 import '../../view/settings_screens/setting.dart';
@@ -16,8 +16,8 @@ class BottomNavBarController extends ChangeNotifier{
   int? get teacherId=>_teacherId;
 
   Future<void> loadTeacherId() async {
-    final prefs = await SharedPreferences.getInstance();
-    final id = prefs.getInt('id') ?? 0;
+    //final prefs = await SharedPreferences.getInstance();
+    final id = PrefsHelper.getInt('id') ?? 0;
       _teacherId = id;
       _pages.clear();
 

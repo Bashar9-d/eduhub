@@ -4,8 +4,6 @@ import 'package:eduhub/view/student_screens/bottom_nav_bar.dart';
 import 'package:eduhub/view/teacher_screens/bnb_teacher.dart';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../constant/otherwise/numbers_manage.dart';
 import '../../constant/otherwise/textstyle_manage.dart';
 import '../../constant/widgets/circular_progress.dart';
@@ -98,6 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: NumbersManage.horizontalLoginAndRegister,
@@ -114,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               hint: 'Enter Email here',
 
-              label: 'Email',
+              label: 'Email',fillColor: Theme.of(context).colorScheme.secondary
             ),
 
             buildTextField(
@@ -123,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
               keyboardType: TextInputType.visiblePassword,
               suffix: IconButton(
                 onPressed: () => setState(() => obsecureText = !obsecureText),
-                icon: Icon(color: Colors.black,
+                icon: Icon(color: Theme.of(context).colorScheme.primary,
                   obsecureText
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
@@ -132,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
               errorText: showErrorPassword ? 'Enter stronger password' : null,
 
               hint: 'Enter Password here',
-              label: 'Password',
+              label: 'Password',fillColor: Theme.of(context).colorScheme.secondary
             ),
 
             Padding(

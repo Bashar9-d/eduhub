@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:eduhub/constant/otherwise/color_manage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../constant/helpers/prefs.dart';
 import '../../model/courses_model.dart';
 import '../../model/group_model.dart';
 import '../../model/lessons_model.dart';
@@ -51,23 +51,29 @@ class TeacherController extends ChangeNotifier {
   }
 
   void loadImage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _thumb = prefs.getString('image') ?? 'assets/default person picture.webp';
-    notifyListeners();
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+    _thumb = PrefsHelper.getString('image') ?? 'assets/default person picture.webp';
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 
   void loadUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName = prefs.getString('name') ?? 'User';
-    notifyListeners();
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+    userName = PrefsHelper.getString('name') ?? 'User';
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 
   Future<List<CoursesModel>> load() async {
-    final prefs = await SharedPreferences.getInstance();
-    final teacherId = prefs.getInt('id') ?? 0;
+   // final prefs = await SharedPreferences.getInstance();
+    final teacherId = PrefsHelper.getInt('id') ?? 0;
 
     futureCourses = coursesService.getCoursesByTeacher(teacherId);
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
     return futureCourses!;
   }
 
@@ -80,11 +86,19 @@ class TeacherController extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _loadingCategories = false;
-      notifyListeners();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
     }
   }
 
-  Widget buildStatItem(String title, String value, IconData icon) {
+  Widget buildStatItem(
+    String title,
+    String value,
+    IconData icon, {
+    Color? color1 = Colors.black54,
+    Color? color2 = Colors.black54,
+  }) {
     return Expanded(
       child: Column(
         children: [
@@ -95,16 +109,16 @@ class TeacherController extends ChangeNotifier {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: Colors.black54,
+              color: color1,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(
+            style:  TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 14,
-              color: Colors.black54,
+              color: color2,
             ),
           ),
         ],
@@ -113,8 +127,8 @@ class TeacherController extends ChangeNotifier {
   }
 
   Future<void> pickAndUploadImage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final username = prefs.getString('name') ?? 'user';
+   // final prefs = await SharedPreferences.getInstance();
+    final username = PrefsHelper.getString('name') ?? 'user';
     final folderPath = '$username/image_course';
 
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
@@ -130,7 +144,9 @@ class TeacherController extends ChangeNotifier {
           .from('uploads')
           .getPublicUrl(path);
       thumbField.text = publicURL;
-      notifyListeners();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
     } catch (e) {
       print('Image upload failed: $e');
     }
@@ -156,17 +172,23 @@ class TeacherController extends ChangeNotifier {
 
   void loadSections(int courseId) {
     futureSections = sectionsService.getSectionsByCourse(courseId);
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 
   Future<void> loadLessons(int sectionId) async {
     _lessonsLoaded[sectionId] = false;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
 
     final lessons = await lessonsService.getLessonsBySection(sectionId);
 
     _lessonsMap[sectionId] = lessons;
     _lessonsLoaded[sectionId] = true;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 }

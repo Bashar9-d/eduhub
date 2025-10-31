@@ -99,6 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: NumbersManage.horizontalLoginAndRegister,
@@ -112,15 +113,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               errorText: showErrorName ? 'This field is required' : null,
               hint: 'Enter Name here',
               label: 'Name',
+              fillColor: Theme.of(context).colorScheme.secondary,
             ),
             SizedBox(height: NumbersManage.verticalLoginAndRegister),
             Text("Role"),
+
             SizedBox(
               width: double.infinity,
               child: DropdownButtonFormField<String>(
+                dropdownColor: Theme.of(context).colorScheme.background,
+
+                //  style: TextStyle(color: Theme.of(context).colorScheme.primary),
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: ColorManage.field,
+                  fillColor: Theme.of(context).colorScheme.secondary,
                   alignLabelWithHint: true,
                   hintText: 'Choose Role',
                   errorText: showErrorDropDown
@@ -137,7 +143,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         value: item,
                         child: Text(
                           item,
-                          style: TextStyleManage.textInDropDown,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ),
                     )
@@ -153,6 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               errorText: showErrorEmail ? 'Enter your correct email' : null,
               hint: 'Enter Email here',
               label: 'Email',
+              fillColor: Theme.of(context).colorScheme.secondary,
             ),
             buildTextField(
               obscure: obsecureText,
@@ -164,7 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   obsecureText = !obsecureText;
                 }),
                 icon: Icon(
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.primary,
                   obsecureText
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
@@ -172,6 +181,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               hint: 'Enter Password here',
               label: 'Password',
+              fillColor: Theme.of(context).colorScheme.secondary,
             ),
             buildTextField(
               obscure: obsecureText2,
@@ -183,14 +193,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   obsecureText2 = !obsecureText2;
                 }),
                 icon: Icon(
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.primary,
                   obsecureText2
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
                 ),
               ),
-              hint: 'Enter Password here',
-              label: 'Password',
+              hint: 'Enter Confirm Password here',
+              label: 'Confirm Password',
+              fillColor: Theme.of(context).colorScheme.secondary,
             ),
             InkWell(
               onTap: register,

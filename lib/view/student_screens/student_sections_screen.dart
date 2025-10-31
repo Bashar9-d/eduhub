@@ -78,7 +78,7 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
     final course = widget.course;
     return Scaffold(
 
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Stack(
         children: [
           SizedBox(
@@ -107,8 +107,8 @@ class _StudentSectionsScreenState extends State<StudentSectionsScreen> {
             builder: (context, scrollController) {
               return Container(
                 padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration:  BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
                   boxShadow: [
                     BoxShadow(
@@ -263,7 +263,8 @@ Explore lessons of this course below. The first section is open for all.""",
                                       ),
                                       padding: const EdgeInsets.all(14),
                                       decoration: BoxDecoration(
-                                        color: Colors.grey[100],
+                                      //  border: BoxBorder.all(color:Colors.grey),
+                                        color: Theme.of(context).colorScheme.background,
                                         borderRadius: BorderRadius.circular(16),
                                       ),
                                       child: Row(
@@ -457,14 +458,14 @@ Explore lessons of this course below. The first section is open for all.""",
       decoration: active
           ? StyleWidgetManage.nextButtonDecoration
           : BoxDecoration(
-              color: Colors.grey[200],
+              color:Theme.of(context).colorScheme.secondary,
               borderRadius: BorderRadius.circular(20),
             ),
       child: Center(
         child: Text(
           text,
           style: TextStyle(
-            color: active ? Colors.white : Colors.black,
+            color: active ? Colors.white : Theme.of(context).colorScheme.primary,
             fontWeight: FontWeight.bold,
           ),
         ),

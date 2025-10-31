@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:eduhub/constant/helpers/prefs.dart';
 import 'package:eduhub/constant/otherwise/color_manage.dart';
@@ -83,7 +82,7 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
         centerTitle: true,
         foregroundColor: Colors.white,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Consumer<StController>(
         builder: (context, stController, child) {
           return stController.userId == null
@@ -117,7 +116,7 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
+                               // horizontal: 16,
                                 vertical: 10,
                               ),
                               child: CourseSearchField(
@@ -159,7 +158,7 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: Theme.of(context).colorScheme.background,
                                       borderRadius: BorderRadius.circular(16),
                                       boxShadow: [
                                         BoxShadow(
@@ -235,7 +234,6 @@ class _MyLearningScreenState extends State<MyLearningScreen> {
                     );
                   },
                 );
-          ;
         },
       ),
     );

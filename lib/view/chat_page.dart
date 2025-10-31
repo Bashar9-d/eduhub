@@ -90,7 +90,7 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         backgroundColor: ColorManage.secondPrimary,
         centerTitle: true,
@@ -141,10 +141,10 @@ class _ChatPageState extends State<ChatPage> {
                                 const EdgeInsets.only(left: 8, bottom: 3),
                                 child: Text(
                                   msg.userName,
-                                  style: const TextStyle(
+                                  style:  TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black54,
+                                    //color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                               ),
@@ -207,7 +207,7 @@ class _ChatPageState extends State<ChatPage> {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
+                      color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: TextField(

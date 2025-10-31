@@ -1,4 +1,5 @@
 import 'package:eduhub/constant/setting_constants/gesture_and_row.dart';
+import 'package:eduhub/constant/widgets/circle_avatar.dart';
 import 'package:eduhub/controller/screens_controller/teacher_controller.dart';
 import 'package:eduhub/view/settings_screens/edit_profile.dart';
 import 'package:flutter/material.dart';
@@ -130,7 +131,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Consumer<TeacherController>(
         builder: (context, teacherController, child) {
           return SafeArea(
@@ -172,12 +173,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
                             ),
                           ],
                         ),
-                        CircleAvatar(
-                          radius: 28,
-                          backgroundImage: teacherController.thumb == null
-                              ? AssetImage('assets/default person picture.webp')
-                              : NetworkImage(teacherController.thumb!),
-                        ),
+                        circleAvatar(context),
                       ],
                     ),
                   ),
@@ -188,7 +184,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
                       vertical: 12,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.background,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
@@ -205,21 +201,45 @@ class _CourseListScreenState extends State<CourseListScreen> {
                           "Students",
                           "150",
                           Icons.people_alt_outlined,
+                          color1: PrefsHelper.getBool('dark')!
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black54,
+                          color2: PrefsHelper.getBool('dark')!
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black54,
                         ),
                         teacherController.buildStatItem(
                           "Courses",
                           "7",
                           Icons.menu_book_outlined,
+                          color1: PrefsHelper.getBool('dark')!
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black54,
+                          color2: PrefsHelper.getBool('dark')!
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black54,
                         ),
                         teacherController.buildStatItem(
                           "Evaluation",
                           "4.5",
                           Icons.star_border_outlined,
+                          color1: PrefsHelper.getBool('dark')!
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black54,
+                          color2: PrefsHelper.getBool('dark')!
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black54,
                         ),
                         teacherController.buildStatItem(
                           "Messages",
                           "9",
                           Icons.message_outlined,
+                          color1: PrefsHelper.getBool('dark')!
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black54,
+                          color2: PrefsHelper.getBool('dark')!
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black54,
                         ),
                       ],
                     ),
@@ -227,7 +247,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children:  [
+                    children: [
                       Text(
                         "Courses",
                         style: TextStyle(
@@ -282,7 +302,9 @@ class _CourseListScreenState extends State<CourseListScreen> {
                               onLongPress: () => _showCourseOptions(c),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.background,
                                   borderRadius: BorderRadius.circular(18),
                                   boxShadow: [
                                     BoxShadow(
@@ -383,7 +405,7 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
   late TeacherController teachProvider = Provider.of<TeacherController>(
     context,
     listen: false,
-  );////
+  );
 
   @override
   void didChangeDependencies() {
@@ -444,28 +466,40 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
     final isEdit = widget.course != null;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F5FF),
+      //backgroundColor: const Color(0xFFF9F5FF),
       appBar: AppBar(
-        backgroundColor: Color(0xFFF3D1F9),
-        foregroundColor: Colors.white,
+        backgroundColor: PrefsHelper.getBool('dark') == true
+            ? Theme.of(context).colorScheme.background
+            : Color(0xFFF3D1F9),
+        foregroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0,
-        leading: const BackButton(color: Colors.black),
+        // leading: const BackButton(color: Colors.black),
         title: Text(
           isEdit ? 'Edit Course' : 'Create Course',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            // color: Colors.black,
           ),
         ),
         centerTitle: true,
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFF3D1F9), Color(0xFFDAD4FC)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+        decoration: BoxDecoration(
+          gradient: PrefsHelper.getBool('dark') == true
+              ? LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.background,
+                    Theme.of(context).colorScheme.background,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                )
+              : LinearGradient(
+                  colors: [Color(0xFFF3D1F9), Color(0xFFDAD4FC)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
         ),
         child: Consumer<TeacherController>(
           builder: (context, teacherController, child) {
@@ -475,18 +509,24 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
                 key: teacherController.formKey,
                 child: ListView(
                   children: [
-                    _buildTextField(teacherController.title, "Title"),
+                    _buildTextField(
+                      teacherController.title,
+                      "Title",
+                      fillColor: Theme.of(context).colorScheme.secondary,
+                    ),
                     const SizedBox(height: 12),
                     _buildTextField(
                       teacherController.desc,
                       "Description",
                       maxLines: 3,
+                      fillColor: Theme.of(context).colorScheme.secondary,
                     ),
                     const SizedBox(height: 12),
                     _buildTextField(
                       teacherController.thumbField,
                       "Image URL",
                       readOnly: true,
+                      fillColor: Theme.of(context).colorScheme.secondary,
                     ),
                     const SizedBox(height: 20),
 
@@ -517,7 +557,7 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
                     ),
 
                     const SizedBox(height: 25),
-                    const Divider(thickness: 1.2),
+                     Divider(thickness: 1.2,color: Theme.of(context).colorScheme.primary,),
                     const SizedBox(height: 10),
                     const Text(
                       "Categories:",
@@ -607,6 +647,7 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
     String hint, {
     int maxLines = 1,
     bool readOnly = false,
+    Color? fillColor = Colors.white,
   }) {
     return TextFormField(
       controller: controller,
@@ -616,7 +657,7 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
-        fillColor: Colors.white,
+        fillColor: fillColor,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 14,

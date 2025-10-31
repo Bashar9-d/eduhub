@@ -4,9 +4,11 @@ import 'package:eduhub/constant/helpers/prefs.dart';
 import 'package:eduhub/constant/widgets/style_widget_manage.dart';
 import 'package:eduhub/view/begin_screens/toggle_switch_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
+import '../../constant/helpers/theme_provider.dart';
 import '../../constant/otherwise/image_manage.dart';
+import '../../constant/helpers/theme.dart';
 import '../student_screens/bottom_nav_bar.dart';
 import '../teacher_screens/bnb_teacher.dart';
 import 'onboardin_screen.dart';
@@ -23,11 +25,40 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateAfterSplash();
+
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _darkInit();
+      _navigateAfterSplash();
+    });
+  }
+  _darkInit()async{
+     if(PrefsHelper.getBool('dark')!=null) {
+      return PrefsHelper.getBool('dark')! ?
+      Provider
+          .of<ThemeProvider>(
+        context,
+        listen: false,
+      )
+          .themeData = darkMode : Provider
+          .of<ThemeProvider>(
+        context,
+        listen: false,
+      )
+          .themeData = lightMode;
+    }
+    else{
+      return Provider
+          .of<ThemeProvider>(
+        context,
+        listen: false,
+      )
+          .themeData = lightMode;
+    }
   }
 
   Future<void> _navigateAfterSplash() async {
-    // Wait a bit to show splash animation
+
     await Future.delayed(const Duration(seconds: 2));
 
     final seen = PrefsHelper.getBool('onBoardingDone') ?? false;
@@ -42,7 +73,6 @@ class _SplashScreenState extends State<SplashScreen> {
       nextPage = seen ? const ToggleSwitchWidget() : const OnboardingScreen();
     }
 
-    // Navigate after splash
     Navigator.pushReplacement(
       context,
       PageTransition(
@@ -68,5 +98,4 @@ class _SplashScreenState extends State<SplashScreen> {
         splashTransition: SplashTransition.fadeTransition,
       ),
     );
-  }
-}
+  }}

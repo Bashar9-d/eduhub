@@ -14,7 +14,7 @@ class AboutUs extends StatelessWidget {
         children: [
           RichText(
             text: TextSpan(
-              style: const TextStyle(fontSize: 16, height: 1.6, color: Colors.black87),
+              style:  TextStyle(fontSize: 16, height: 1.6, color:Theme.of(context).colorScheme.primary),
               children: [
                 const TextSpan(
                   text: "About EduHub\n\n",
@@ -109,6 +109,7 @@ class AboutUs extends StatelessWidget {
           ),
         ),
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: content,
     );
   }

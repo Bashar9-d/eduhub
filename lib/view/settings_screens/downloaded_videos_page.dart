@@ -62,6 +62,7 @@ class _DownloadedVideosPageState extends State<DownloadedVideosPage> {
         backgroundColor: Colors.purple,
         foregroundColor: Colors.white,
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: Column(
           children: [

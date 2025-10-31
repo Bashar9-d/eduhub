@@ -80,7 +80,7 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
         centerTitle: true,
         foregroundColor: Colors.white,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: FutureBuilder<List<CoursesModel>>(
         future: _futureCourses,
         builder: (context, snapshot) {
@@ -136,7 +136,7 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
                         onTap: () => _openSections(course),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.background,
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(

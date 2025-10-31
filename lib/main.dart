@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'constant/helpers/prefs.dart';
+import 'constant/helpers/theme_provider.dart';
 import 'controller/screens_controller/bottom_nav_bar_controller.dart';
 import 'controller/screens_controller/setting_controller.dart';
 import 'controller/screens_controller/student_controller.dart';
@@ -30,7 +31,12 @@ Future<void> main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5bnl5dXhnZGNndWVjcHp4aHlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxNDExNzIsImV4cCI6MjA3NTcxNzE3Mn0.0ixSenYe04SfEakq9-i2aauAKCLmOJiTTZr9zET3kVE',
   );
   HttpOverrides.global = MyHttpOverrides();
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -48,23 +54,19 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (context) => BottomNavBarController(),
             ),
-            ChangeNotifierProvider(
-              create: (context) => TeacherController(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => StController(),
-            ),ChangeNotifierProvider(
-              create: (context) => SettingController(),
-            ),
+            ChangeNotifierProvider(create: (context) => TeacherController()),
+            ChangeNotifierProvider(create: (context) => StController()),
+            ChangeNotifierProvider(create: (context) => SettingController()),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Edu hub',
             home: SplashScreen(),
+            theme: Provider.of<ThemeProvider>(context).themeData,
+            //darkTheme: darkMode,
           ),
         );
       },
     );
   }
-
 }

@@ -4,6 +4,7 @@ import 'package:eduhub/view/settings_screens/edit_profile.dart';
 import 'package:eduhub/view/student_screens/student_sections_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../constant/widgets/circle_avatar.dart';
 import '../../constant/widgets/circular_progress.dart';
 import '../../controller/screens_controller/student_controller.dart';
 import '../../model/courses_model.dart';
@@ -92,7 +93,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Consumer<StController>(
         builder: (context, stController, child) {
           return SafeArea(
@@ -159,10 +160,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                                 ],
                               ),
                             ),
-                            CircleAvatar(
-                              radius: 28,
-                              child: Icon(Icons.person, size: 30)
-                            ),
+                            circleAvatar(context),
                           ],
                         ),
                       ),
@@ -280,7 +278,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
                                 width: 180,
                                 margin: const EdgeInsets.only(right: 12),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color:Theme.of(context).colorScheme.background,
                                   borderRadius: BorderRadius.circular(16),
                                   boxShadow: [
                                     BoxShadow(

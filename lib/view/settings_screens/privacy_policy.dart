@@ -23,10 +23,11 @@ class PrivacyPolicy extends StatelessWidget {
             centerTitle: true,
             foregroundColor: Colors.white,
             backgroundColor: Colors.transparent,
-            elevation: 0,
           ),
         ),
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Column(
@@ -34,10 +35,10 @@ class PrivacyPolicy extends StatelessWidget {
           children: [
             RichText(
               text: TextSpan(
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 16,
                   height: 1.6,
-                  color: Colors.black87,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 children: [
                   const TextSpan(

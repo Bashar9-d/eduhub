@@ -46,7 +46,7 @@ class BottomNavBar extends StatelessWidget {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue.shade100,
+                backgroundColor: ColorManage.secondPrimary,
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -54,7 +54,7 @@ class BottomNavBar extends StatelessWidget {
               child: const Text(
                 'Cancel',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -87,18 +87,18 @@ class BottomNavBar extends StatelessWidget {
                 items: [
                   _buildBNBItem(
                     Icons.home_outlined,
-                    bottomNavBarController.getCurrentIndex == 0,
+                    bottomNavBarController.getCurrentIndex == 0,context
                   ),
                   _buildBNBItem(
                     Icons.local_mall_outlined,
-                    bottomNavBarController.getCurrentIndex == 1,
+                    bottomNavBarController.getCurrentIndex == 1,context
                   ),
                   _buildBNBItem(
                     Icons.settings_outlined,
-                    bottomNavBarController.getCurrentIndex == 2,
+                    bottomNavBarController.getCurrentIndex == 2,context
                   ),
                 ],
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 currentIndex: bottomNavBarController.getCurrentIndex,
                 selectedItemColor: Colors.black,
                 unselectedItemColor: ColorManage.subtitleOnBoarding,
@@ -113,12 +113,12 @@ class BottomNavBar extends StatelessWidget {
     );
   }
 
-  BottomNavigationBarItem _buildBNBItem(IconData icon, bool isSelected) {
+  BottomNavigationBarItem _buildBNBItem(IconData icon, bool isSelected,BuildContext context) {
     return BottomNavigationBarItem(
       icon: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon),
+          Icon(icon,color: isSelected?Theme.of(context).colorScheme.primary:null),
           const SizedBox(height: 4),
           if (isSelected)
             Container(

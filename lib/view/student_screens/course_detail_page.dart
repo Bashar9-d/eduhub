@@ -5,6 +5,7 @@ import 'package:video_player/video_player.dart';
 import '../../constant/helpers/prefs.dart';
 import '../../constant/otherwise/color_manage.dart';
 import '../../constant/widgets/circular_progress.dart';
+import '../../constant/widgets/style_widget_manage.dart';
 import '../../controller/otherwise/group_service.dart';
 import '../../controller/otherwise/lessons_service.dart';
 import '../../controller/otherwise/sections_service.dart';
@@ -188,7 +189,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
         ],
       ),
 
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Stack(
         children: [
           SizedBox(
@@ -214,8 +215,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
             builder: (context, scrollController) {
               return Container(
                 padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration:  BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
                   boxShadow: [
                     BoxShadow(
@@ -292,13 +293,16 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                       ),
                       const SizedBox(height: 20),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _tabButton("Playlist", true),
-                          _tabButton("Review", false),
-                          _tabButton("Related", false),
-                        ],
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            _tabButton("Playlist", true),
+                            _tabButton("Review", false),
+                            _tabButton("Related", false),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 16),
 
@@ -340,7 +344,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                       ),
                                       padding: const EdgeInsets.all(14),
                                       decoration: BoxDecoration(
-                                        color: Colors.grey[100],
+                                        color: Theme.of(context).colorScheme.background,
                                         borderRadius: BorderRadius.circular(16),
                                       ),
                                       child: Row(
@@ -456,16 +460,23 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
 
   Widget _tabButton(String text, bool active) {
     return Container(
+      width: MediaQuery.of(context).size.width * 0.3,
+      height: MediaQuery.of(context).size.height * 0.05,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-      decoration: BoxDecoration(
-        color: active ? Colors.purple : Colors.grey[200],
+      decoration: active
+          ? StyleWidgetManage.nextButtonDecoration
+          : BoxDecoration(
+        color:Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: active ? Colors.white : Colors.black,
-          fontWeight: FontWeight.bold,
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: active ? Colors.white : Theme.of(context).colorScheme.primary,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

@@ -15,6 +15,8 @@ class _ContactUsState extends State<ContactUs> {
     final Uri emailUri = Uri.parse('mailto:amrosramrosr05@gmail.com');
     return Scaffold(
       appBar: AppBar(title: Text('Contact Us'), centerTitle: true),
+      backgroundColor: Theme.of(context).colorScheme.background,
+
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(

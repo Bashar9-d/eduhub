@@ -27,7 +27,7 @@ class CourseSearchField extends StatelessWidget {
       child: Material(
         elevation: 3,
         borderRadius: BorderRadius.circular(40),
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           height: 55,
@@ -40,7 +40,7 @@ class CourseSearchField extends StatelessWidget {
                   onChanged: onChanged,
                   onTap: () {
                     if (controller.text.isNotEmpty) {
-                      // ممكن نضيف أي سلوك عند التركيز
+
                     }
                   },
                   decoration: const InputDecoration(

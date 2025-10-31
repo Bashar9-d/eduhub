@@ -5,6 +5,7 @@ import 'package:eduhub/controller/screens_controller/student_controller.dart';
 import 'package:eduhub/controller/screens_controller/teacher_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../constant/widgets/circle_avatar.dart';
 import '../../constant/widgets/style_widget_manage.dart';
 import '../../controller/screens_controller/setting_controller.dart';
 
@@ -56,7 +57,8 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Edit Profile'), centerTitle: true),
+      appBar: AppBar(title: Text('Edit Profile'), centerTitle: true,backgroundColor: Theme.of(context).colorScheme.background,),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Consumer<SettingController>(
         builder: (context, settingController, child) {
           return Padding(
@@ -69,10 +71,8 @@ class _EditProfileState extends State<EditProfile> {
                    // onTap: settingController.pickAndUploadImage,
                     child: Stack(
                       children: [
-                        CircleAvatar(
-                          radius: 70,
-                          child: Icon(Icons.person,size: 65,),
-                        )
+                        circleAvatar(context,radius: 70,childSize:65)
+
                         // CircleAvatar(
                         //   radius: 70,
                         //   backgroundImage: settingController.thumb == null
@@ -103,6 +103,7 @@ class _EditProfileState extends State<EditProfile> {
                   errorText: settingController.showErrorName
                       ? 'This field cannot be empty'
                       : null,
+                  fillColor: Theme.of(context).colorScheme.secondary
                 ),
                 buildTextField(
                   controller: emailController,
@@ -112,6 +113,7 @@ class _EditProfileState extends State<EditProfile> {
                   errorText: settingController.showErrorEmail
                       ? 'This field cannot be empty'
                       : null,
+                  fillColor: Theme.of(context).colorScheme.secondary
                 ),
                 SizedBox(height: 20),
                 GestureDetector(
@@ -120,7 +122,7 @@ class _EditProfileState extends State<EditProfile> {
                         emailController.text.isEmpty;
                     settingController.showErrorName =
                         nameController.text.isEmpty;
-                    //final prefs = await SharedPreferences.getInstance();
+
                     if (!settingController.showErrorEmail &&
                         !settingController.showErrorName) {
                       await PrefsHelper.setString('email', emailController.text);

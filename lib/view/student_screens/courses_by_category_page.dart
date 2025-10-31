@@ -41,7 +41,8 @@ class _CoursesByCategoryPageState extends State<CoursesByCategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.categoryName)),
+      appBar: AppBar(title: Text(widget.categoryName),centerTitle: true,backgroundColor: Theme.of(context).colorScheme.background,),
+     backgroundColor: Theme.of(context).colorScheme.background,
       body: FutureBuilder<List<CoursesModel>>(
         future: _futureCourses,
         builder: (context, snapshot) {

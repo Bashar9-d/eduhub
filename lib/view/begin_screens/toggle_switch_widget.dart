@@ -33,6 +33,7 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
   Widget build(BuildContext context) {
     Future<bool> willPop() async {
       return await showDialog(
+
         context: context,
         useSafeArea: true,
         builder: (context) => AlertDialog(
@@ -68,7 +69,7 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue.shade100,
+                backgroundColor: ColorManage.secondPrimary,
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -76,7 +77,7 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
               child: const Text(
                 'Cancel',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -110,7 +111,7 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
                     local.value ? 'Login' : 'Register',
                     style: TextStyle(
                       color: Color.lerp(
-                        Colors.black,
+                        Theme.of(context).colorScheme.primary,
                         Colors.white,
                         local.animationValue,
                       ),
@@ -120,6 +121,7 @@ class _ToggleSwitchWidgetState extends State<ToggleSwitchWidget> {
                   iconAnimationType: AnimationType.onSelected,
                   style: ToggleStyle(
                     indicatorGradient: StyleWidgetManage.onBoardingIndicatorTrue,
+                    backgroundColor: Theme.of(context).colorScheme.background,
                     boxShadow: [
                       const BoxShadow(
                         color: ColorManage.boxShadowToggle,

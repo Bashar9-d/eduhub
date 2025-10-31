@@ -60,7 +60,7 @@ static TextStyle viewAllStyle=TextStyle(
     fontWeight: FontWeight.w500,
   );
 
-  static const textInDropDown = TextStyle(color: Color(0xFF616161));
+  //static TextStyle textInDropDown = TextStyle(color: Theme.of(context).colorScheme.primary);
   static const TextStyle settingTextStyle=TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 17,
