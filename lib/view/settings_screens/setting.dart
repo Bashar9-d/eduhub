@@ -6,7 +6,6 @@ import 'package:eduhub/view/settings_screens/contact_us.dart';
 import 'package:eduhub/view/settings_screens/edit_profile.dart';
 import 'package:eduhub/view/settings_screens/privacy_policy.dart';
 import 'package:eduhub/view/settings_screens/downloaded_videos_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../constant/helpers/prefs.dart';

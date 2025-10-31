@@ -66,28 +66,32 @@ class _EditProfileState extends State<EditProfile> {
               children: [
                 Center(
                   child: GestureDetector(
-                    onTap: settingController.pickAndUploadImage,
+                   // onTap: settingController.pickAndUploadImage,
                     child: Stack(
                       children: [
                         CircleAvatar(
                           radius: 70,
-                          backgroundImage: settingController.thumb == null
-                              ? AssetImage('assets/default person picture.webp')
-                              : NetworkImage(settingController.thumb!),
-                        ),
-                        Positioned(
-                          bottom: 10,
-                          right: 10,
-                          child: CircleAvatar(
-                            radius: 12,
-                            backgroundColor: Colors.black,
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 16,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                          child: Icon(Icons.person,size: 65,),
+                        )
+                        // CircleAvatar(
+                        //   radius: 70,
+                        //   backgroundImage: settingController.thumb == null
+                        //       ? AssetImage('assets/default person picture.webp')
+                        //       : NetworkImage(settingController.thumb!),
+                        // ),
+                        // Positioned(
+                        //   bottom: 10,
+                        //   right: 10,
+                        //   child: CircleAvatar(
+                        //     radius: 12,
+                        //     backgroundColor: Colors.black,
+                        //     child: Icon(
+                        //       Icons.camera_alt,
+                        //       size: 16,
+                        //       color: Colors.white,
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

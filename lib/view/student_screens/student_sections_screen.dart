@@ -392,7 +392,6 @@ Explore lessons of this course below. The first section is open for all.""",
             right: 20,
             child: Container(
               decoration: StyleWidgetManage.nextButtonDecoration,
-
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,

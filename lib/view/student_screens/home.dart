@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../../constant/widgets/circular_progress.dart';
 import '../../controller/screens_controller/student_controller.dart';
 import '../../model/courses_model.dart';
-import 'all_gourses_page.dart';
+import 'all_courses_page.dart';
 import '../../constant/widgets/course_search_field.dart';
 import 'courses_by_category_page.dart';
 
@@ -20,9 +20,7 @@ class CoursesStorePage extends StatefulWidget {
 
 class _CoursesStorePageState extends State<CoursesStorePage> {
 
-  final TextEditingController _searchController = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
-  List<CoursesModel> _filteredCourses = [];
+
   late StController stProvider;
 
   @override
@@ -45,8 +43,7 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
       stProvider.loadImage();
     });
   }
-  String searchText = '';
-  List<CoursesModel> searchResults = [];
+
 
   void _openSections(CoursesModel course) {
     Navigator.push(
@@ -57,7 +54,11 @@ class _CoursesStorePageState extends State<CoursesStorePage> {
       ),
     );
   }
-
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  List<CoursesModel> _filteredCourses = [];
+  String searchText = '';
+  List<CoursesModel> searchResults = [];
   void _onSearchChanged(String value, List<CoursesModel> courses) {
     setState(() {
       if (value.trim().isEmpty) {
