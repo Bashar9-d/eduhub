@@ -142,4 +142,36 @@ class GroupService {
       return false;
     }
   }
+  static Future<bool> updateGroupName(int courseId, String newName) async {
+    try {
+      final uri = Uri.parse('$baseUrl?action=update_name');
+      final body = json.encode({
+        'course_id': courseId,
+        'new_name': newName,
+      });
+
+      final res = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: body,
+      );
+
+      if (res.statusCode == 200) {
+        final data = json.decode(res.body);
+        if (data['success'] == true) {
+          print('✅ Group name updated successfully.');
+          return true;
+        } else {
+          print('⚠️ Failed to update group name: ${res.body}');
+        }
+      } else {
+        print('❌ HTTP error while updating group name: ${res.statusCode}');
+      }
+      return false;
+    } catch (e) {
+      print('⚠️ Error in updateGroupName: $e');
+      return false;
+    }
+  }
+
 }
