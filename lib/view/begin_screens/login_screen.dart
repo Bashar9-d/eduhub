@@ -49,16 +49,10 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pop(context);
       print(result);
       if (result["success"] == true) {
-        //final prefs = await SharedPreferences.getInstance();
         await PrefsHelper.setString("email", result["data"]["email"]);
         await PrefsHelper.setString("name", result["data"]["name"]);
         await PrefsHelper.setInt("id", result["data"]["id"]);
         await PrefsHelper.setString("role", result["data"]["role"]);
-        //await PrefsHelper.setString(key, value);
-        // await prefs.setString("email", result["data"]["email"]);
-        // await prefs.setString("name", result["data"]["name"]);
-        // await prefs.setInt("id", result["data"]["id"]);
-        // await prefs.setString("role", result["data"]["role"]);
         if (result["data"]["role"] == "student") {
           Navigator.pushReplacement(
             context,

@@ -4,15 +4,12 @@ import 'package:eduhub/view/begin_screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'constant/helpers/prefs.dart';
 import 'constant/helpers/theme_provider.dart';
 import 'controller/screens_controller/bottom_nav_bar_controller.dart';
 import 'controller/screens_controller/setting_controller.dart';
 import 'controller/screens_controller/student_controller.dart';
-import 'l10n/app_localizations.dart';
-
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -63,7 +60,6 @@ class MyApp extends StatelessWidget {
             title: 'Edu hub',
             home: SplashScreen(),
             theme: Provider.of<ThemeProvider>(context).themeData,
-            //darkTheme: darkMode,
           ),
         );
       },

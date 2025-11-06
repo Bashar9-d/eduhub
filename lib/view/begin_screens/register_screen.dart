@@ -122,8 +122,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               width: double.infinity,
               child: DropdownButtonFormField<String>(
                 dropdownColor: Theme.of(context).colorScheme.background,
-
-                //  style: TextStyle(color: Theme.of(context).colorScheme.primary),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Theme.of(context).colorScheme.secondary,

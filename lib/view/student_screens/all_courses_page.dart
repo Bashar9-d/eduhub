@@ -130,7 +130,6 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
                         ? courses.length
                         : displayCourses.length,
                     itemBuilder: (context, i) {
-                      // final course = courses[i];
                       final course = displayCourses[i];
                       return GestureDetector(
                         onTap: () => _openSections(course),

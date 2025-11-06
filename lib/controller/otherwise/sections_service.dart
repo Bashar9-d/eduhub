@@ -77,6 +77,6 @@ class SectionsService {
       return data['success'] == true;
     } else {
       return false;
-    }
+      }
   }
 }

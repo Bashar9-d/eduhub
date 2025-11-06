@@ -187,15 +187,22 @@ class CoursesService {
 
 
   Future<bool> deleteCourse(int id) async {
+    print('   REMOVE01');
     final uri = Uri.parse('$baseUrl?action=delete');
     final body = json.encode({'id': id});
     final res = await http.post(uri,
         headers: {'Content-Type': 'application/json'}, body: body);
+    print('   REMOVE02');
     if (res.statusCode == 200) {
+      print('   REMOVE03');
       final data = json.decode(res.body);
+      print('   REMOVE');
+
       return (data is Map && data['success'] == true) || res.body.contains('deleted');
     } else {
-      throw Exception('Failed to delete CoursesModel');
+      print('   REMOVE04');
+      print('NO    REMOVE');
+    throw Exception('Failed to delete CoursesModel');
     }
   }
 

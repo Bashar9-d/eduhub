@@ -59,6 +59,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
   }
 
   void _showCourseOptions(CoursesModel course) async {
+    print('Remove');
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -79,6 +80,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
                 ),
               ),
             ),
+
             ListTile(
               leading: const Icon(Icons.edit, color: Colors.purple),
               title: const Text('Update Course'),
@@ -90,7 +92,9 @@ class _CourseListScreenState extends State<CourseListScreen> {
             ListTile(
               leading: const Icon(Icons.delete, color: Colors.red),
               title: const Text('Remove Course'),
+
               onTap: () async {
+                print('Remove2 ');
                 Navigator.pop(context);
                 final ok = await showDialog<bool>(
                   context: context,
@@ -112,12 +116,15 @@ class _CourseListScreenState extends State<CourseListScreen> {
                   ),
                 );
                 if (ok == true) {
+                  print('Remove3');
                   //final prefs = await SharedPreferences.getInstance();
                   await teachProvider.coursesService.deleteCourse(course.id!);
+                  print('Remove4');
                   teachProvider.groupsFuture = GroupService()
                       .getGroupsByTeacher(PrefsHelper.getInt('id')!);
-                  setState(() {
-                    teachProvider.futureCourses = teachProvider.load();
+                  print('Remove5');
+                  setState(() {print('Remove6');
+                    teachProvider.futureCourses = teachProvider.load();print('Remove7');
                   });
                 }
               },
@@ -201,10 +208,10 @@ class _CourseListScreenState extends State<CourseListScreen> {
                           "Students",
                           "150",
                           Icons.people_alt_outlined,
-                          color1: PrefsHelper.getBool('dark')!
+                          color1: PrefsHelper.getBool('dark')==true
                               ? Theme.of(context).colorScheme.primary
                               : Colors.black54,
-                          color2: PrefsHelper.getBool('dark')!
+                          color2: PrefsHelper.getBool('dark')==true
                               ? Theme.of(context).colorScheme.primary
                               : Colors.black54,
                         ),
@@ -212,10 +219,10 @@ class _CourseListScreenState extends State<CourseListScreen> {
                           "Courses",
                           "7",
                           Icons.menu_book_outlined,
-                          color1: PrefsHelper.getBool('dark')!
+                          color1: PrefsHelper.getBool('dark')==true
                               ? Theme.of(context).colorScheme.primary
                               : Colors.black54,
-                          color2: PrefsHelper.getBool('dark')!
+                          color2: PrefsHelper.getBool('dark')==true
                               ? Theme.of(context).colorScheme.primary
                               : Colors.black54,
                         ),
@@ -223,10 +230,10 @@ class _CourseListScreenState extends State<CourseListScreen> {
                           "Evaluation",
                           "4.5",
                           Icons.star_border_outlined,
-                          color1: PrefsHelper.getBool('dark')!
+                          color1: PrefsHelper.getBool('dark')==true
                               ? Theme.of(context).colorScheme.primary
                               : Colors.black54,
-                          color2: PrefsHelper.getBool('dark')!
+                          color2: PrefsHelper.getBool('dark')==true
                               ? Theme.of(context).colorScheme.primary
                               : Colors.black54,
                         ),
@@ -234,10 +241,10 @@ class _CourseListScreenState extends State<CourseListScreen> {
                           "Messages",
                           "9",
                           Icons.message_outlined,
-                          color1: PrefsHelper.getBool('dark')!
+                          color1: PrefsHelper.getBool('dark')==true
                               ? Theme.of(context).colorScheme.primary
                               : Colors.black54,
-                          color2: PrefsHelper.getBool('dark')!
+                          color2: PrefsHelper.getBool('dark')==true
                               ? Theme.of(context).colorScheme.primary
                               : Colors.black54,
                         ),
@@ -321,6 +328,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
                                       borderRadius: const BorderRadius.vertical(
                                         top: Radius.circular(18),
                                       ),
+                                     /////////////////////////////////////////////////////////////////////////////
                                       child:
                                           c.thumbnail != null &&
                                               c.thumbnail!.isNotEmpty
@@ -466,19 +474,18 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
     final isEdit = widget.course != null;
 
     return Scaffold(
-      //backgroundColor: const Color(0xFFF9F5FF),
+
       appBar: AppBar(
         backgroundColor: PrefsHelper.getBool('dark') == true
             ? Theme.of(context).colorScheme.background
             : Color(0xFFF3D1F9),
         foregroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0,
-        // leading: const BackButton(color: Colors.black),
+
         title: Text(
           isEdit ? 'Edit Course' : 'Create Course',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            // color: Colors.black,
           ),
         ),
         centerTitle: true,
@@ -602,7 +609,6 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
 
                     const SizedBox(height: 40),
 
-                    // Create Button
                     Container(
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(

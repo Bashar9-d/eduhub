@@ -111,9 +111,9 @@ class _SettingState extends State<Setting> {
                           ),
                         ),
                         Divider(
-                          // color: PrefsHelper.getBool('dark')!
-                          //     ? Colors.white
-                          //     : Colors.grey,
+                          color: PrefsHelper.getBool('dark')==true
+                              ? Colors.white
+                              : Colors.grey,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -174,7 +174,6 @@ class _SettingState extends State<Setting> {
                                       PrefsHelper.getBool('dark') ??
                                       settingController.isDarkMood,
                                   onChange: (bool? value) async {
-                                    //setState(() {
                                     settingController.isDarkMood =
                                         value ?? false;
                                     if (PrefsHelper.getBool('dark') == true) {
@@ -187,7 +186,6 @@ class _SettingState extends State<Setting> {
                                       context,
                                       listen: false,
                                     ).toggleTheme();
-                                    //});
                                     await PrefsHelper.setBool(
                                       'dark',
                                       settingController.isDarkMood,
@@ -199,9 +197,9 @@ class _SettingState extends State<Setting> {
                           ),
                         ),
                         Divider(
-                          // color: PrefsHelper.getBool('dark')!
-                          //     ? Colors.white
-                          //     : Colors.grey,
+                          color: PrefsHelper.getBool('dark')==true
+                              ? Colors.white
+                              : Colors.grey,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(

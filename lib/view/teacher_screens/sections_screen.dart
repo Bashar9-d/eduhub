@@ -397,7 +397,6 @@ class _SectionsScreenState extends State<SectionsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      //backgroundColor: const Color(0xFFF6F4FB),
       appBar: AppBar(
         backgroundColor:ColorManage.secondPrimary,
         elevation: 0,
@@ -439,9 +438,10 @@ class _SectionsScreenState extends State<SectionsScreen> {
                   final lessons = teacherController.lessonsMap[section.id] ?? [];
 
                   return Container(
+
                     margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(

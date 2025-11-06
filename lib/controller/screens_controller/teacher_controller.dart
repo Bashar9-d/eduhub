@@ -156,7 +156,7 @@ class TeacherController extends ChangeNotifier {
   final LessonsService lessonsService = LessonsService();
   final supabase = Supabase.instance.client;
 
-  late Future<List<SectionsModel>> futureSections;
+  Future<List<SectionsModel>>? futureSections;
   final Map<int, List<LessonsModel>> _lessonsMap = {};
   final Map<int, bool> _lessonsLoaded = {};
 

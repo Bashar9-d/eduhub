@@ -17,7 +17,6 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-
   late SettingController settingProvider;
 
   TextEditingController nameController = TextEditingController();
@@ -34,15 +33,12 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<SettingController>(context, listen: false);
-      // provider.loadUserName();
-      // provider.loadImage();
       loadImage();
     });
   }
 
   loadImage() async {
-    //final prefs = await SharedPreferences.getInstance();
+
     emailController.text = PrefsHelper.getString('email') ?? '';
     nameController.text = PrefsHelper.getString('name') ?? '';
   }
@@ -57,7 +53,11 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Edit Profile'), centerTitle: true,backgroundColor: Theme.of(context).colorScheme.background,),
+      appBar: AppBar(
+        title: Text('Edit Profile'),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.background,
+      ),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Consumer<SettingController>(
         builder: (context, settingController, child) {
@@ -68,30 +68,9 @@ class _EditProfileState extends State<EditProfile> {
               children: [
                 Center(
                   child: GestureDetector(
-                   // onTap: settingController.pickAndUploadImage,
                     child: Stack(
                       children: [
-                        circleAvatar(context,radius: 70,childSize:65)
-
-                        // CircleAvatar(
-                        //   radius: 70,
-                        //   backgroundImage: settingController.thumb == null
-                        //       ? AssetImage('assets/default person picture.webp')
-                        //       : NetworkImage(settingController.thumb!),
-                        // ),
-                        // Positioned(
-                        //   bottom: 10,
-                        //   right: 10,
-                        //   child: CircleAvatar(
-                        //     radius: 12,
-                        //     backgroundColor: Colors.black,
-                        //     child: Icon(
-                        //       Icons.camera_alt,
-                        //       size: 16,
-                        //       color: Colors.white,
-                        //     ),
-                        //   ),
-                        // ),
+                        circleAvatar(context, radius: 70, childSize: 65),
                       ],
                     ),
                   ),
@@ -103,7 +82,7 @@ class _EditProfileState extends State<EditProfile> {
                   errorText: settingController.showErrorName
                       ? 'This field cannot be empty'
                       : null,
-                  fillColor: Theme.of(context).colorScheme.secondary
+                  fillColor: Theme.of(context).colorScheme.secondary,
                 ),
                 buildTextField(
                   controller: emailController,
@@ -113,7 +92,7 @@ class _EditProfileState extends State<EditProfile> {
                   errorText: settingController.showErrorEmail
                       ? 'This field cannot be empty'
                       : null,
-                  fillColor: Theme.of(context).colorScheme.secondary
+                  fillColor: Theme.of(context).colorScheme.secondary,
                 ),
                 SizedBox(height: 20),
                 GestureDetector(
@@ -125,9 +104,15 @@ class _EditProfileState extends State<EditProfile> {
 
                     if (!settingController.showErrorEmail &&
                         !settingController.showErrorName) {
-                      await PrefsHelper.setString('email', emailController.text);
+                      await PrefsHelper.setString(
+                        'email',
+                        emailController.text,
+                      );
                       await PrefsHelper.setString('name', nameController.text);
-                      await PrefsHelper.setString('image', settingController.thumb!);
+                      await PrefsHelper.setString(
+                        'image',
+                        settingController.thumb!,
+                      );
                       Provider.of<SettingController>(
                         context,
                         listen: false,
