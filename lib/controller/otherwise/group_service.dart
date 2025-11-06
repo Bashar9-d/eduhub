@@ -38,7 +38,7 @@ class GroupService {
     return null;
   }
 
-   Future<List<GroupModel>> getGroupsByTeacher(int teacherId) async {
+  Future<List<GroupModel>> getGroupsByTeacher(int teacherId) async {
     final uri = Uri.parse('$baseUrl?action=my_groups&teacher_id=$teacherId');
     final res = await http.get(uri);
     if (res.statusCode == 200) {
@@ -64,14 +64,14 @@ class GroupService {
         return messages
             .map(
               (e) => MessageModel.fromJson({
-                'message_id': int.tryParse(e['message_id'].toString()) ?? 0,
-                'group_id': int.tryParse(e['group_id'].toString()) ?? 0,
-                'sender_id': int.tryParse(e['sender_id'].toString()) ?? 0,
-                'message': e['message'] ?? '',
-                'sent_at': e['sent_at'] ?? '',
-                'sender_name': e['sender_name'] ?? '',
-              }),
-            )
+            'message_id': int.tryParse(e['message_id'].toString()) ?? 0,
+            'group_id': int.tryParse(e['group_id'].toString()) ?? 0,
+            'sender_id': int.tryParse(e['sender_id'].toString()) ?? 0,
+            'message': e['message'] ?? '',
+            'sent_at': e['sent_at'] ?? '',
+            'sender_name': e['sender_name'] ?? '',
+          }),
+        )
             .toList();
       }
     }
@@ -79,10 +79,10 @@ class GroupService {
   }
 
   static Future<bool> sendMessage(
-    int groupId,
-    int senderId,
-    String message,
-  ) async {
+      int groupId,
+      int senderId,
+      String message,
+      ) async {
     final uri = Uri.parse(
       'https://eduhub44.atwebpages.com/messages.php?action=send',
     );
@@ -105,10 +105,10 @@ class GroupService {
   }
 
   static Future<bool> createGroup(
-    int courseId,
-    int teacherId,
-    String groupName,
-  ) async {
+      int courseId,
+      int teacherId,
+      String groupName,
+      ) async {
     try {
       final groupUri = Uri.parse('$baseUrl?action=create_group');
       final groupBody = json.encode({

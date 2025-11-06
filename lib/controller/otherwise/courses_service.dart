@@ -215,53 +215,46 @@ class CoursesService {
   }
 
   Future<bool> deleteCourse(int id) async {
-    print('   REMOVE01');
     final uri = Uri.parse('$baseUrl?action=delete');
     final body = json.encode({'id': id});
     final res = await http.post(uri,
         headers: {'Content-Type': 'application/json'}, body: body);
-    print('   REMOVE02');
     if (res.statusCode == 200) {
-      print('   REMOVE03');
       final data = json.decode(res.body);
-      print('   REMOVE');
-
       return (data is Map && data['success'] == true) || res.body.contains('deleted');
     } else {
-      print('   REMOVE04');
-      print('NO    REMOVE');
-    throw Exception('Failed to delete CoursesModel');
+      throw Exception('Failed to delete CoursesModel');
     }
   }
 
-Future<List<int>> getCourseCategories(int courseId) async {
-  try {
-    final uri = Uri.parse('$baseUrl?action=get_categories&course_id=$courseId');
-    final res = await http.get(uri);
+  Future<List<int>> getCourseCategories(int courseId) async {
+    try {
+      final uri = Uri.parse('$baseUrl?action=get_categories&course_id=$courseId');
+      final res = await http.get(uri);
 
-    if (res.statusCode == 200) {
-      final data = json.decode(res.body);
+      if (res.statusCode == 200) {
+        final data = json.decode(res.body);
 
-      if (data is Map && data['success'] == true && data['data'] != null) {
+        if (data is Map && data['success'] == true && data['data'] != null) {
 
-        final categories = List.from(data['data']);
-        if (categories.isNotEmpty && categories.first is Map) {
-          return categories.map<int>((c) => int.tryParse(c['id'].toString()) ?? 0).toList();
+          final categories = List.from(data['data']);
+          if (categories.isNotEmpty && categories.first is Map) {
+            return categories.map<int>((c) => int.tryParse(c['id'].toString()) ?? 0).toList();
+          } else {
+            return categories.map<int>((c) => int.tryParse(c.toString()) ?? 0).toList();
+          }
         } else {
-          return categories.map<int>((c) => int.tryParse(c.toString()) ?? 0).toList();
+          print('⚠️ Unexpected response format: $data');
+          return [];
         }
       } else {
-        print('⚠️ Unexpected response format: $data');
-        return [];
+        throw Exception('Failed to load course categories');
       }
-    } else {
-      throw Exception('Failed to load course categories');
+    } catch (e) {
+      print('❌ Error in getCourseCategories: $e');
+      return [];
     }
-  } catch (e) {
-    print('❌ Error in getCourseCategories: $e');
-    return [];
   }
-}
 
   Future<List<Map<String, dynamic>>> getCategories() async {
     try {
@@ -288,4 +281,3 @@ Future<List<int>> getCourseCategories(int courseId) async {
     }
   }
 }
-

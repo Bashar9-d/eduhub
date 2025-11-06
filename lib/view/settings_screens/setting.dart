@@ -111,9 +111,7 @@ class _SettingState extends State<Setting> {
                           ),
                         ),
                         Divider(
-                          color: PrefsHelper.getBool('dark')==true
-                              ? Colors.white
-                              : Colors.grey,
+                          color:Colors.grey
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -197,9 +195,8 @@ class _SettingState extends State<Setting> {
                           ),
                         ),
                         Divider(
-                          color: PrefsHelper.getBool('dark')==true
-                              ? Colors.white
-                              : Colors.grey,
+                          color: Colors.grey
+
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -214,7 +211,7 @@ class _SettingState extends State<Setting> {
                                 text: 'More',
                                 style: TextStyleManage.settingTextStyleGrey,
                               ),
-                              //////////////////////////
+
                               if (PrefsHelper.getString('role') == 'student')
                                 inkWellBuilder(
                                   onTap: () {
@@ -235,18 +232,18 @@ class _SettingState extends State<Setting> {
                                     ),
                                   ),
                                 ),
-                              inkWellBuilder(
-                                onTap: () {},
-                                child: rowWidget(
-                                  text: buildText(
-                                    text: 'Language Setting',
-                                    style: TextStyleManage.settingTextStyle,
-                                  ),
-                                  trailing: Icon(
-                                    Icons.keyboard_arrow_right_rounded,
-                                  ),
-                                ),
-                              ),
+                              // inkWellBuilder(
+                              //   onTap: () {},
+                              //   child: rowWidget(
+                              //     text: buildText(
+                              //       text: 'Language Setting',
+                              //       style: TextStyleManage.settingTextStyle,
+                              //     ),
+                              //     trailing: Icon(
+                              //       Icons.keyboard_arrow_right_rounded,
+                              //     ),
+                              //   ),
+                              // ),
                               inkWellBuilder(
                                 onTap: () {
                                   Navigator.push(

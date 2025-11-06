@@ -15,5 +15,3 @@ Widget circleAvatar(
     ),
   );
 }
-//Widget circleAvatarGr
-

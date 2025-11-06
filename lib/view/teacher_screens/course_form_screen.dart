@@ -228,7 +228,7 @@ class _CourseFormScreenState extends State<CourseFormScreen> {
 
                     const SizedBox(height: 40),
 
-                    // Create Button
+
                     Container(
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
