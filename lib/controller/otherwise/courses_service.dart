@@ -184,7 +184,35 @@ class CoursesService {
       return false;
     }
   }
+  Future<bool> updateCourseWithGroup(CoursesModel course, List<int> categoryIds) async {
+    try {
 
+      bool success = await updateCourse(course, categoryIds: categoryIds);
+
+      if (success) {
+        print('✅ Course updated successfully.');
+
+        final updatedGroup = await GroupService.updateGroupName(
+          course.id!,
+          course.title ?? '',
+        );
+
+        if (updatedGroup) {
+          print('✅ Group name updated successfully.');
+        } else {
+          print('⚠️ Failed to update group name.');
+        }
+
+        return true;
+      } else {
+        print('❌ Course update failed.');
+        return false;
+      }
+    } catch (e) {
+      print('⚠️ Error in updateCourseWithGroup: $e');
+      return false;
+    }
+  }
 
   Future<bool> deleteCourse(int id) async {
     final uri = Uri.parse('$baseUrl?action=delete');
