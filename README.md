@@ -19,15 +19,22 @@ A modern, full-featured cross-platform **Educational Learning Management System 
 
 ## 📸 Screenshots & Showcase
 
-### 📱 Core Application Flows
+### 📱 Real Device Screenshots
 
-| Splash Screen | Onboarding Flow | Auth & Role Toggle |
-| :---: | :---: | :---: |
-| <img src="screenshots/1_splash_screen.png" width="220"/> | <img src="screenshots/2_onboarding_screen.png" width="220"/> | <img src="screenshots/3_login_toggle_screen.png" width="220"/> |
+#### 1. Onboarding & Authentication
+| Splash Screen | Onboarding (Slide 1) | Onboarding (Slide 2) | Login Screen | Register Screen |
+| :---: | :---: | :---: | :---: | :---: |
+| <img src="screenshots/1_splash_screen.png" width="180"/> | <img src="screenshots/2_onboarding_screen.png" width="180"/> | <img src="screenshots/2b_onboarding_slide2.png" width="180"/> | <img src="screenshots/3_login_screen.png" width="180"/> | <img src="screenshots/4_register_screen.png" width="180"/> |
 
-| Courses Catalog & Store | Video Lesson & Syllabus | Teacher Portal | Study Group Discussion |
+#### 2. Student Experience & Learning
+| Courses Catalog | My Learning | Course Details | Study Group Chat |
 | :---: | :---: | :---: | :---: |
-| <img src="screenshots/4_courses_store_screen.png" width="200"/> | <img src="screenshots/5_lessons_syllabus_screen.png" width="200"/> | <img src="screenshots/6_teacher_portal_screen.png" width="200"/> | <img src="screenshots/7_group_chat_screen.png" width="200"/> |
+| <img src="screenshots/5_courses_store_screen.png" width="220"/> | <img src="screenshots/6_my_learning_screen.png" width="220"/> | <img src="screenshots/7_course_detail_screen.png" width="220"/> | <img src="screenshots/8_group_chat_screen.png" width="220"/> |
+
+#### 3. Teacher Dashboard & Dark Mode
+| Teacher Portal | Profile & Settings | Dark Mode (Settings) | Dark Mode (Catalog) |
+| :---: | :---: | :---: | :---: |
+| <img src="screenshots/12_teacher_dashboard_screen.png" width="220"/> | <img src="screenshots/9_settings_screen.png" width="220"/> | <img src="screenshots/10_settings_dark_screen.png" width="220"/> | <img src="screenshots/11_home_dark_screen.png" width="220"/> |
 
 ---
 
