@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../../constant/env_config.dart';
 import '../../model/courses_model.dart';
 import 'group_service.dart';
 
 
 class CoursesService {
 
-  static const String baseUrl = 'http://eduhub44.atwebpages.com/courses.php';
+  static String get baseUrl => EnvConfig.coursesUrl;
 
   Future<List<CoursesModel>> getCoursesByCategory(int categoryId) async {
     final uri = Uri.parse('$baseUrl?action=get_by_category&category_id=$categoryId');
@@ -258,7 +259,7 @@ class CoursesService {
 
   Future<List<Map<String, dynamic>>> getCategories() async {
     try {
-      final uri = Uri.parse("https://eduhub44.atwebpages.com/categories.php?action=get_all");
+      final uri = Uri.parse("${EnvConfig.categoriesUrl}?action=get_all");
       final res = await http.get(uri);
 
       if (res.statusCode == 200) {

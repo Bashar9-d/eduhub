@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../../constant/env_config.dart';
 import '../../model/group_model.dart';
 import '../../model/message_model.dart';
 
-const String baseUrl = 'https://eduhub44.atwebpages.com/groups.php';
+final String baseUrl = EnvConfig.groupsUrl;
 
 class GroupService {
   static Future<bool> addUserToGroup(int groupId, int userId) async {
@@ -53,7 +54,7 @@ class GroupService {
 
   static Future<List<MessageModel>> getMessages(int groupId) async {
     final uri = Uri.parse(
-      'https://eduhub44.atwebpages.com/messages.php?action=get&group_id=$groupId',
+      '${EnvConfig.messagesUrl}?action=get&group_id=$groupId',
     );
     final res = await http.get(uri);
     if (res.statusCode == 200) {
@@ -84,7 +85,7 @@ class GroupService {
       String message,
       ) async {
     final uri = Uri.parse(
-      'https://eduhub44.atwebpages.com/messages.php?action=send',
+      '${EnvConfig.messagesUrl}?action=send',
     );
     final body = json.encode({
       'group_id': groupId,

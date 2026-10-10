@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../constant/env_config.dart';
 import '../../model/users_model.dart';
 
 class AuthService {
-  final String baseUrl = "https://eduhub44.atwebpages.com/users.php";
+  final String baseUrl = EnvConfig.usersUrl;
 
   Future<Map<String, dynamic>> addUser(UsersModel user) async {
     final response = await http.post(

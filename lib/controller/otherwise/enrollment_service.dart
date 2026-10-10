@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../../constant/env_config.dart';
 import '../../model/courses_model.dart';
 
 class EnrollmentService {
-  static const String baseUrl = 'http://eduhub44.atwebpages.com/enrollments.php';
+  static String get baseUrl => EnvConfig.enrollmentsUrl;
 
   Future<bool> enrollStudent(int userId, int courseId) async {
     final uri = Uri.parse('$baseUrl?action=enroll');

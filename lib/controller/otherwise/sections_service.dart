@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../constant/env_config.dart';
 import '../../model/sections_model.dart';
 
 class SectionsService {
-  final String baseUrl = 'https://eduhub44.atwebpages.com/sections.php';
+  final String baseUrl = EnvConfig.sectionsUrl;
 
   Future<List<SectionsModel>> getSectionsByCourse(int courseId) async {
     final url = Uri.parse('$baseUrl?action=get_by_course&course_id=$courseId');

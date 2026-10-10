@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'constant/env_config.dart';
 import 'constant/helpers/prefs.dart';
 import 'constant/helpers/theme_provider.dart';
 import 'controller/screens_controller/bottom_nav_bar_controller.dart';
@@ -21,11 +22,11 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EnvConfig.init();
   await PrefsHelper.init();
   await Supabase.initialize(
-    url: 'https://jynyyuxgdcguecpzxhyr.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5bnl5dXhnZGNndWVjcHp4aHlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxNDExNzIsImV4cCI6MjA3NTcxNzE3Mn0.0ixSenYe04SfEakq9-i2aauAKCLmOJiTTZr9zET3kVE',
+    url: EnvConfig.supabaseUrl,
+    anonKey: EnvConfig.supabaseAnonKey,
   );
   HttpOverrides.global = MyHttpOverrides();
   runApp(
