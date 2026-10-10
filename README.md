@@ -21,13 +21,13 @@ A modern, full-featured cross-platform **Educational Learning Management System 
 
 ### 📱 Core Application Flows
 
-| Onboarding Flow | Dual-Role Auth Portal | Courses Catalog |
+| Splash Screen | Onboarding Flow | Auth & Role Toggle |
 | :---: | :---: | :---: |
-| <img src="screenshots/1_onboarding.png" width="230"/> | <img src="screenshots/2_auth_portal.png" width="230"/> | <img src="screenshots/3_courses_store.png" width="230"/> |
+| <img src="screenshots/1_splash_screen.png" width="220"/> | <img src="screenshots/2_onboarding_screen.png" width="220"/> | <img src="screenshots/3_login_toggle_screen.png" width="220"/> |
 
-| Video Lesson Player | Teacher Management Portal | Study Group Discussion |
-| :---: | :---: | :---: |
-| <img src="screenshots/4_video_player.png" width="230"/> | <img src="screenshots/5_teacher_portal.png" width="230"/> | <img src="screenshots/6_group_chat.png" width="230"/> |
+| Courses Catalog & Store | Video Lesson & Syllabus | Teacher Portal | Study Group Discussion |
+| :---: | :---: | :---: | :---: |
+| <img src="screenshots/4_courses_store_screen.png" width="200"/> | <img src="screenshots/5_lessons_syllabus_screen.png" width="200"/> | <img src="screenshots/6_teacher_portal_screen.png" width="200"/> | <img src="screenshots/7_group_chat_screen.png" width="200"/> |
 
 ---
 
